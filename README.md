@@ -34,3 +34,4 @@ If you are new to it, please have a read through the website and the tutorial he
 
 The support for Firestore was added using this guide:
 https://firebase.google.com/docs/flutter/setup?platform=web
+
