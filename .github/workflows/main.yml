@@ -2,7 +2,7 @@ name: Build and Deploy Auto
 on:
   push:
     branches:
-    - develop
+    - main
           
 jobs:
   build:
