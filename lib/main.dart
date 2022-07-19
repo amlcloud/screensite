@@ -2,11 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:seeder/lists/lists_page.dart';
-import 'package:seeder/login_page.dart';
-import 'package:seeder/search/search_page.dart';
-import 'package:seeder/state/generic_state_notifier.dart';
-import 'package:seeder/theme.dart';
+import 'package:screensite/lists/lists_page.dart';
+import 'package:screensite/login_page.dart';
+import 'package:screensite/search/search_page.dart';
+import 'package:screensite/state/generic_state_notifier.dart';
+import 'package:screensite/theme.dart';
 
 import 'firebase_options.dart';
 

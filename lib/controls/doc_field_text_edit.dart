@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:seeder/providers/firestore.dart';
+import 'package:screensite/providers/firestore.dart';
 
 class DocFieldTextEdit extends ConsumerStatefulWidget {
   final DocumentReference docRef;

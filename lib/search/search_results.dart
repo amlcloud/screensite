@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:seeder/providers/firestore.dart';
+import 'package:screensite/providers/firestore.dart';
 
 class SearchResults extends ConsumerWidget {
   final String searchId;

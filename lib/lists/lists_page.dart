@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:seeder/app_bar.dart';
-import 'package:seeder/lists/lists_list.dart';
-import 'package:seeder/lists/list_details.dart';
-import 'package:seeder/state/generic_state_notifier.dart';
+import 'package:screensite/app_bar.dart';
+import 'package:screensite/lists/lists_list.dart';
+import 'package:screensite/lists/list_details.dart';
+import 'package:screensite/state/generic_state_notifier.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 final activeList =

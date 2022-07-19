@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:seeder/common.dart';
-import 'package:seeder/providers/transactions.dart';
-import 'package:seeder/timeline/day.dart';
+import 'package:screensite/common.dart';
+import 'package:screensite/providers/transactions.dart';
+import 'package:screensite/timeline/day.dart';
 
 class Timeline extends ConsumerWidget {
   static Jiffy startDate = Jiffy().add(days: -25);

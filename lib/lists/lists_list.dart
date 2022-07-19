@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:seeder/lists/list_list_item.dart';
-import 'package:seeder/lists/filter_my_entities.dart';
-import 'package:seeder/providers/firestore.dart';
-import 'package:seeder/state/generic_state_notifier.dart';
+import 'package:screensite/lists/list_list_item.dart';
+import 'package:screensite/lists/filter_my_entities.dart';
+import 'package:screensite/providers/firestore.dart';
+import 'package:screensite/state/generic_state_notifier.dart';
 
 final activeSort =
     StateNotifierProvider<GenericStateNotifier<String?>, String?>(

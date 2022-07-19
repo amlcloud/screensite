@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:seeder/providers/firestore.dart';
+import 'package:screensite/providers/firestore.dart';
 import 'package:csv/csv.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import "package:universal_html/html.dart" as html;

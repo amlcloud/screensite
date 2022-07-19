@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:seeder/lists/lists_page.dart';
-import 'package:seeder/providers/firestore.dart';
+import 'package:screensite/lists/lists_page.dart';
+import 'package:screensite/providers/firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class EntityListItem extends ConsumerWidget {

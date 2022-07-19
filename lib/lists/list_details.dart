@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:seeder/lists/list_info.dart';
-import 'package:seeder/lists/transaction_list.dart';
+import 'package:screensite/lists/list_info.dart';
+import 'package:screensite/lists/transaction_list.dart';
 
 class ListDetails extends ConsumerWidget {
   final String entityId;

@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:math' as math;
 
 import 'package:jiffy/jiffy.dart';
-import 'package:seeder/common.dart';
+import 'package:screensite/common.dart';
 
 class GenerateTransactionsButton extends ConsumerWidget {
   final String entityId;
