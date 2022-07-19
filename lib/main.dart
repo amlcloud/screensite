@@ -7,7 +7,6 @@ import 'package:screensite/login_page.dart';
 import 'package:screensite/search/search_page.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
 import 'package:screensite/theme.dart';
-
 import 'firebase_options.dart';
 
 void main() async {
@@ -94,4 +93,3 @@ class TheAppState extends ConsumerState<TheApp> {
     }
   }
 }
-
