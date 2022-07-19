@@ -1,24 +1,15 @@
-# seeder
+# screensite
 
-Transaction generator for AML Cloud users.
+Sanctions Screening App
 
-Those users (Compliance Specialists) who define AML rules need test data samples to test rules on.
-
-The purpose of this app is to configure individual entities (for instance a bank customer or a superfund member) with paramters of their income and spending. Based on those parameters transactions should be generated.
+Purpose:
+- Provide sanctions screening via UI: results ranked by match score (0.95-100%)
 
 Intended features:
-- Show list of en
-- Configure individual entity parameters: income, min balance, recurring and random spending
-- Define transaction range parameters: period
-- Define additional specific transactions (for rule testing)
-- See entity transactions
-- Combine entities' transaction into batches
-- Export transactions into CSV (to be imported into amlcloud.io)
+- Screen an entity (person/item or organisation) against all open sanctions lists.
+- Look at up-to-date sanctions lists in one location.
 
 This repo is only the front-end of the app and it is built with Flutter backed by Firebase Firestore. (Another repository will be created to define server functions, which will serve as a back-end of the application).
-
-Another goal of the project is educational, therefore there is an embeded sandbox for Widget testing added to it for better efficiency (experimental).
-
 
 ## Flutter
 
@@ -43,6 +34,3 @@ If you are new to it, please have a read through the website and the tutorial he
 
 The support for Firestore was added using this guide:
 https://firebase.google.com/docs/flutter/setup?platform=web
-
-
-# screensite
