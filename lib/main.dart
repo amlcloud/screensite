@@ -18,7 +18,7 @@ void main() async {
 
   runApp(ProviderScope(
       child: MaterialApp(
-    title: 'Data Generator',
+    title: 'Sanctions Screener',
     themeMode: ThemeMode.dark,
     theme: lightTheme,
     darkTheme: darkTheme,

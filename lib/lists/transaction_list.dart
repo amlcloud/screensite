@@ -38,10 +38,15 @@ class EntityList extends ConsumerWidget {
                             columns: (trnCol.docs.first.data().entries.toList()
                                   ..sort((a, b) => a.key.compareTo(b.key)))
                                 .map((value) => DataColumn(
-                                      label: Text(
-                                        value.key,
-                                        style: TextStyle(
-                                            fontStyle: FontStyle.italic),
+                                      label: Row(
+                                        children: [
+                                          Text(
+                                            value.key,
+                                            style: TextStyle(
+                                                fontStyle: FontStyle.italic),
+                                            overflow: TextOverflow.fade,
+                                          )
+                                        ],
                                       ),
                                     ))
                                 .toList(),

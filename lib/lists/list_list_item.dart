@@ -5,9 +5,9 @@ import 'package:screensite/lists/lists_page.dart';
 import 'package:screensite/providers/firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class EntityListItem extends ConsumerWidget {
+class ListItem extends ConsumerWidget {
   final String entityId;
-  const EntityListItem(this.entityId);
+  const ListItem(this.entityId);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,19 +24,6 @@ class EntityListItem extends ConsumerWidget {
                   ),
                   trailing: Column(children: <Widget>[
                     Text(entityDoc.data()!['id'] ?? 'id'),
-                    IconButton(
-                      onPressed: () => {
-                        DeleteEntity(
-                            context,
-                            ref,
-                            FirebaseFirestore.instance
-                                .collection('list')
-                                .doc(entityId)),
-                      },
-                      padding: EdgeInsets.zero,
-                      constraints: BoxConstraints(),
-                      icon: Icon(Icons.delete),
-                    )
                   ]),
                   subtitle: Text(entityDoc.data()!['desc'] ?? 'desc'),
                   onTap: () {
@@ -63,76 +50,4 @@ class EntityListItem extends ConsumerWidget {
     }
     return false;
   }
-
-  DeleteEntity(BuildContext context, WidgetRef ref, doc) async {
-    bool temp = await CheckSelected();
-    return showDialog<String>(
-        context: context,
-        builder: (BuildContext context) => !temp
-            ? AlertDialog(
-                title: const Text('Deleting entity'),
-                content:
-                    const Text('Are you sure you want to delete this entity?'),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () => Navigator.pop(context, 'Cancel'),
-                    child: const Text('Cancel'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context, 'OK');
-                      FirebaseFirestore.instance
-                          .runTransaction((Transaction myTransaction) async {
-                        myTransaction.delete(doc);
-                      });
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
-              )
-            : AlertDialog(
-                title: const Text('Warning!'),
-                content: const Text(
-                    'The action cannot be completed because this entity selected in the Batch list'),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () => Navigator.pop(context, 'OK'),
-                    child: const Text('OK'),
-                  ),
-                ],
-              ));
-  }
-}
-
-buildDeleteEntityButton(BuildContext context, doc, button) {
-  return IconButton(
-    onPressed: () {
-      showDialog<String>(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: const Text('Deleting entity'),
-          content: const Text('Are you sure you want to delete this entity?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context, 'Cancel'),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context, 'OK');
-                FirebaseFirestore.instance
-                    .runTransaction((Transaction myTransaction) async {
-                  myTransaction.delete(doc);
-                });
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
-    },
-    icon: button,
-    padding: EdgeInsets.zero,
-    constraints: BoxConstraints(),
-  );
 }

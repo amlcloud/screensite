@@ -28,7 +28,17 @@ class ListInfo extends ConsumerWidget {
                       //     decoration: InputDecoration(hintText: "ID"))
                       ),
                   Flexible(
-                      child: Text('Last update: ' +
+                      child: Text('Last updated: ' +
+                          Jiffy(entityDoc.data()!['lastUpdateTime'].toDate())
+                              .format())
+                      //     DocFieldTextEdit(
+                      //   FirebaseFirestore.instance.doc('list/${entityId}'),
+                      //   'name',
+                      //   decoration: InputDecoration(hintText: "Name"),
+                      // )
+                      ),
+                  Flexible(
+                      child: Text('Last changed: ' +
                           Jiffy(entityDoc.data()!['lastUpdateTime'].toDate())
                               .format())
                       //     DocFieldTextEdit(

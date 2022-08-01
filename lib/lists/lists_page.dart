@@ -27,7 +27,6 @@ class ListsPage extends ConsumerWidget {
                           child: Column(
                     children: [
                       Lists(),
-                      buildAddEntityButton(context, ref),
                     ],
                   ))),
                   Expanded(
@@ -37,64 +36,5 @@ class ListsPage extends ConsumerWidget {
                         : ListDetails(ref.watch(activeList)!),
                   )
                 ])));
-  }
-
-  buildAddEntityButton(BuildContext context, WidgetRef ref) {
-    TextEditingController id_inp = TextEditingController();
-    TextEditingController name_inp = TextEditingController();
-    TextEditingController desc_inp = TextEditingController();
-    return ElevatedButton(
-      child: Text("Add Entity"),
-      onPressed: () {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                scrollable: true,
-                title: Text('Adding Entity...'),
-                content: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Form(
-                    child: Column(
-                      children: <Widget>[
-                        TextFormField(
-                          controller: id_inp,
-                          decoration: InputDecoration(labelText: 'ID'),
-                        ),
-                        TextFormField(
-                          controller: name_inp,
-                          decoration: InputDecoration(
-                            labelText: 'Name',
-                          ),
-                        ),
-                        TextFormField(
-                          controller: desc_inp,
-                          decoration: InputDecoration(
-                            labelText: 'Description',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                actions: [
-                  TextButton(
-                      child: Text("Submit"),
-                      onPressed: () {
-                        FirebaseFirestore.instance.collection('list').add({
-                          'id': id_inp.text.toString(),
-                          'name': name_inp.text.toString(),
-                          'desc': desc_inp.text.toString(),
-                          'time Created': FieldValue.serverTimestamp(),
-                          'author': FirebaseAuth.instance.currentUser!.uid,
-                          // 'author': FirebaseAuth.instance.currentUser!.uid
-                        });
-                        Navigator.of(context).pop();
-                      })
-                ],
-              );
-            });
-      },
-    );
   }
 }
