@@ -55,8 +55,6 @@ class SearchPage extends ConsumerWidget {
                                     //     'Response status: ${response.statusCode}');
                                     // print('Response body: ${response.body}');
 
-// print(await http.read(Uri.parse('https://example.com/foobar.txt')));
-
                                     FirebaseFirestore.instance
                                         .collection('search')
                                         .add({
