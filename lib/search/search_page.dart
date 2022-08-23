@@ -57,7 +57,8 @@ class SearchPage extends ConsumerWidget {
 
                                     FirebaseFirestore.instance
                                         .collection('search')
-                                        .add({
+                                        .doc(searchCtrl.text)
+                                        .set({
                                       'target': searchCtrl.text,
                                       'timeCreated':
                                           FieldValue.serverTimestamp(),
