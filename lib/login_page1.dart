@@ -68,7 +68,8 @@ class LoginPage extends ConsumerWidget {
                             fontWeight: FontWeight.w500),
                       )),
                 ])),
-            SizedBox(height: 50),
+            //Github login
+            /*SizedBox(height: 50),
             ElevatedButton(
                 style: LoginStyle.buttonStyle,
                 onPressed: () async {
@@ -100,6 +101,7 @@ class LoginPage extends ConsumerWidget {
                       ))
                 ])),
             SizedBox(height: 50),
+            // SSO login
             ElevatedButton(
                 style: LoginStyle.buttonStyle,
                 onPressed: () {}, // need SSO login
@@ -123,6 +125,7 @@ class LoginPage extends ConsumerWidget {
                         style: LoginStyle.buttontextStyle,
                       ))
                 ])),
+                //Email login
             SizedBox(height: 50),
             ElevatedButton(
                 style: LoginStyle.buttonStyle,
@@ -144,7 +147,8 @@ class LoginPage extends ConsumerWidget {
                       width: 180,
                       child: Text('Log in with Email',
                           style: LoginStyle.buttontextStyle))
-                ])),
+                ])),*/
+            //Sign in Anonymously
             SizedBox(height: 50),
             ElevatedButton(
                 style: LoginStyle.buttonStyle,
@@ -210,10 +214,6 @@ class LoginPage extends ConsumerWidget {
     ]));
   }
 }
-
-
-
-
 
 // void signOutGoogle() async{
 //   await googleSignIn.signOut();
