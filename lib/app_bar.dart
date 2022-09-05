@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:screensite/app_bar_avatar.dart';
 import 'package:screensite/main.dart';
 
 class MyAppBar {
@@ -37,6 +38,10 @@ class MyAppBar {
                 },
               ))),
       actions: [
+        Container(
+          margin: EdgeInsets.all(2),
+          child: SetAvatar(),
+        ),
         IconButton(
             onPressed: () {
               ref.read(isLoggedIn.notifier).value = false;
