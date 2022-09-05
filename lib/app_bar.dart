@@ -40,7 +40,7 @@ class MyAppBar {
       actions: [
         Container(
           margin: EdgeInsets.all(2),
-          child: SetAvatar(),
+          child: AppBarAvatar(),
         ),
         IconButton(
             onPressed: () {

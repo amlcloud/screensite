@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SetAvatar extends ConsumerWidget {
+class AppBarAvatar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     bool isUserHasAvatar = FirebaseAuth.instance.currentUser?.photoURL != null;
