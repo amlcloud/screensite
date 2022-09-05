@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:screensite/lists/lists_page.dart';
-import 'package:screensite/login_page1.dart';
+import 'package:screensite/login_page.dart';
 import 'package:screensite/search/search_page.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
 import 'package:screensite/theme.dart';
