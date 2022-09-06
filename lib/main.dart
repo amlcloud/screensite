@@ -6,6 +6,7 @@ import 'package:screensite/lists/lists_page.dart';
 import 'package:screensite/login_page.dart';
 import 'package:screensite/search/search_page.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
+import 'package:screensite/state/theme_state_notifier.dart';
 import 'package:screensite/theme.dart';
 import 'firebase_options.dart';
 
@@ -16,19 +17,25 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(ProviderScope(
-      child: MaterialApp(
-    title: 'Sanctions Screener',
-    themeMode: ThemeMode.dark,
-    theme: lightTheme,
-    darkTheme: darkTheme,
-    // home: SandboxLauncher(
-    //     // sandbox for texting individual widgets
-    //     sandbox: Material(child: Sandbox()),
-    // the main app
-    // app: TheApp()),
-    home: TheApp(),
-  )));
+  runApp(ProviderScope(child: MainApp()));
+}
+
+class MainApp extends ConsumerWidget {
+  const MainApp({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    bool isDarkTheme = ref.watch(themeStateNotifierProvider);
+    return MaterialApp(
+      title: 'Sanctions Screener',
+      themeMode: isDarkTheme ? ThemeMode.dark : ThemeMode.light,
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      home: TheApp(),
+    );
+  }
 }
 
 final isLoggedIn = StateNotifierProvider<GenericStateNotifier<bool>, bool>(
