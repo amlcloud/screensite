@@ -2,6 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:screensite/main.dart';
+import 'package:screensite/state/theme_state_notifier.dart';
+import 'package:screensite/search/search_page.dart';
+import 'package:screensite/lists/lists_page.dart';
 
 class MyAppBar {
   static final List<String> _tabs = ['search', 'lists'];
@@ -37,6 +40,7 @@ class MyAppBar {
                 },
               ))),
       actions: [
+        ThemeIconButton(),
         IconButton(
             onPressed: () {
               ref.read(isLoggedIn.notifier).value = false;
@@ -46,5 +50,20 @@ class MyAppBar {
             icon: Icon(Icons.exit_to_app))
       ],
     );
+  }
+}
+
+class ThemeIconButton extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    var isDarkState = ref.watch(themeStateNotifierProvider);
+    return IconButton(
+        tooltip: 'dark/light mode',
+        onPressed: () {
+          ref.read(themeStateNotifierProvider.notifier).changeTheme();
+        },
+        icon: Icon(isDarkState == true
+            ? Icons.nightlight
+            : Icons.nightlight_outlined));
   }
 }
