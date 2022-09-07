@@ -6,39 +6,40 @@ import 'package:screensite/state/theme_state_notifier.dart';
 import 'package:screensite/search/search_page.dart';
 import 'package:screensite/lists/lists_page.dart';
 
-class MyAppBar {
+class DrawerAppBar {
   static final List<String> _tabs = ['search', 'lists'];
 
   static PreferredSizeWidget getBar(BuildContext context, WidgetRef ref) {
     return AppBar(
-      automaticallyImplyLeading: false,
+      // automaticallyImplyLeading: false,
       title: Align(
-          alignment: Alignment.centerLeft,
-          child: SizedBox(
-              // width: 300,
-              child: TabBar(
-            tabs: _tabs
-                .map((t) => Tab(
-                    iconMargin: EdgeInsets.all(0),
-                    child:
-                        // GestureDetector(
-                        //     behavior: HitTestBehavior.translucent,
-                        //onTap: () => navigatePage(text, context),
-                        //child:
-                        Text(t.toUpperCase(),
-                            overflow: TextOverflow.fade,
-                            softWrap: false,
-                            style: TextStyle(
-                                color:
-                                    // Theme.of(context).brightness == Brightness.light
-                                    //     ? Color(DARK_GREY)
-                                    //:
-                                    Colors.white))))
-                .toList(),
-            onTap: (index) {
-              Navigator.of(context).pushNamed(_tabs[index]);
-            },
-          ))),
+        alignment: Alignment.centerLeft,
+        // child: SizedBox(
+        //     width: 300,
+        //     child: TabBar(
+        //       tabs: _tabs
+        //           .map((t) => Tab(
+        //               iconMargin: EdgeInsets.all(0),
+        //               child:
+        //                   // GestureDetector(
+        //                   //     behavior: HitTestBehavior.translucent,
+        //                   //onTap: () => navigatePage(text, context),
+        //                   //child:
+        //                   Text(t.toUpperCase(),
+        //                       overflow: TextOverflow.fade,
+        //                       softWrap: false,
+        //                       style: TextStyle(
+        //                           color:
+        //                               // Theme.of(context).brightness == Brightness.light
+        //                               //     ? Color(DARK_GREY)
+        //                               //:
+        //                               Colors.white))))
+        //           .toList(),
+        //       onTap: (index) {
+        //         Navigator.of(context).pushNamed(_tabs[index]);
+        //       },
+        //     ))
+      ),
       actions: [
         ThemeIconButton(),
         IconButton(
