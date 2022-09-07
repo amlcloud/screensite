@@ -7,7 +7,7 @@ import 'package:screensite/search/search_page.dart';
 import 'package:screensite/lists/lists_page.dart';
 
 class MyAppBar {
-  static final List<String> _tabs = ['search', 'lists'];
+  static final List<String> _tabs = ['search', 'lists', 'pep'];
 
   static PreferredSizeWidget getBar(BuildContext context, WidgetRef ref) {
     return AppBar(

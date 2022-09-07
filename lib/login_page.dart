@@ -55,8 +55,8 @@ class LoginPage extends ConsumerWidget {
                     decoration: LoginStyle.containerStyle,
                     child: Container(
                         margin: EdgeInsets.only(right: 20),
-                        child:
-                            Image.asset("search.png", width: 30, height: 30)),
+                        child: Image.asset("assets/search.png",
+                            width: 30, height: 30)),
                   ),
                   Container(
                       width: 180,
@@ -167,7 +167,7 @@ class LoginPage extends ConsumerWidget {
                       margin: EdgeInsets.only(right: 70),
                       child: Container(
                           margin: EdgeInsets.only(right: 20),
-                          child: Image.asset("anonymous.png",
+                          child: Image.asset("assets/anonymous.png",
                               width: 30, height: 30))),
                   Container(
                       width: 180,
@@ -207,7 +207,8 @@ class LoginPage extends ConsumerWidget {
           Text("by", textAlign: TextAlign.center),
           Padding(
               padding: EdgeInsets.all(10),
-              child: Image.asset("amlcloud-lg.png", width: 50, height: 50))
+              child:
+                  Image.asset("assets/amlcloud-lg.png", width: 50, height: 50))
         ])
       ]) // can be replace by AML logo using Image.asset
           )
