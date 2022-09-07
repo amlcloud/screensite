@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:screensite/main.dart';
 
 class MyAppBar {
-  static final List<String> _tabs = ['search', 'lists'];
+  static final List<String> _tabs = ['search', 'lists', 'pep'];
 
   static PreferredSizeWidget getBar(BuildContext context, WidgetRef ref) {
     return AppBar(
