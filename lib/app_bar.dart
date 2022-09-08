@@ -7,7 +7,13 @@ import 'package:screensite/search/search_page.dart';
 import 'package:screensite/lists/lists_page.dart';
 
 class MyAppBar {
-  static final List<String> _tabs = ['search', 'lists', 'pep'];
+  static final List<String> _tabs = [
+    'search',
+    'lists',
+    'pep admin',
+    'pep library',
+    'adverse media'
+  ];
 
   static PreferredSizeWidget getBar(BuildContext context, WidgetRef ref) {
     return AppBar(
@@ -15,7 +21,7 @@ class MyAppBar {
       title: Align(
           alignment: Alignment.centerLeft,
           child: SizedBox(
-              width: 300,
+              width: 800,
               child: TabBar(
                 tabs: _tabs
                     .map((t) => Tab(

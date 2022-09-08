@@ -5,7 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:screensite/lists/lists_page.dart';
 import 'package:screensite/login_page.dart';
 import 'package:screensite/search/search_page.dart';
-import 'package:screensite/pep/pep_page.dart';
+import 'package:screensite/pep/pep_admin.dart';
+import 'package:screensite/pep/pep_library.dart';
+import 'package:screensite/adversemedia/adversemedia_page.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
 import 'package:screensite/state/theme_state_notifier.dart';
 import 'package:screensite/theme.dart';
@@ -83,7 +85,7 @@ class TheAppState extends ConsumerState<TheApp> {
               ? LoginPage()
               : DefaultTabController(
                   initialIndex: 0,
-                  length: 3,
+                  length: 5,
                   child: Navigator(
                     onGenerateRoute: (RouteSettings settings) {
                       // print('onGenerateRoute: ${settings}');
@@ -93,9 +95,15 @@ class TheAppState extends ConsumerState<TheApp> {
                       } else if (settings.name == 'lists') {
                         return PageRouteBuilder(
                             pageBuilder: (_, __, ___) => ListsPage());
-                      } else if (settings.name == 'pep') {
+                      } else if (settings.name == 'pep admin') {
                         return PageRouteBuilder(
-                            pageBuilder: (_, __, ___) => PepPage());
+                            pageBuilder: (_, __, ___) => PepAdminPage());
+                      } else if (settings.name == 'pep library') {
+                        return PageRouteBuilder(
+                            pageBuilder: (_, __, ___) => PepLibraryPage());
+                      } else if (settings.name == 'adverse media') {
+                        return PageRouteBuilder(
+                            pageBuilder: (_, __, ___) => AdverseMediaPage());
                       } else {
                         throw 'no page to show';
                       }
