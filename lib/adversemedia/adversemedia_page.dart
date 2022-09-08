@@ -8,7 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 final activePep = StateNotifierProvider<GenericStateNotifier<String?>, String?>(
     (ref) => GenericStateNotifier<String?>(null));
 
-class PepPage extends ConsumerWidget {
+class AdverseMediaPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
@@ -18,21 +18,6 @@ class PepPage extends ConsumerWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
-              /*children: [
-                  Flexible(
-                      child: SingleChildScrollView(
-                          child: Column(
-                    children: [
-                      Lists(),
-                    ],
-                  ))),
-                  Expanded(
-                    flex: 2,
-                    child: ref.watch(activePep) == null
-                        ? Container()
-                        : ListDetails(ref.watch(activePep)!),
-                  )
-                ]*/
             )));
   }
 }
