@@ -40,3 +40,5 @@ List<Jiffy> generateDays(Jiffy start, Jiffy end) {
   }
   return list;
 }
+
+const WIDE_SCREEN_WIDTH = 600;
