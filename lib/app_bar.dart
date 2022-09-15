@@ -6,7 +6,13 @@ import 'package:screensite/state/theme_state_notifier.dart';
 import 'package:screensite/common.dart';
 
 class MyAppBar {
-  static final List<String> _tabs = ['search', 'lists'];
+  static final List<String> _tabs = [
+    'search',
+    'lists',
+    'pep admin',
+    'pep library',
+    'adverse media'
+  ];
 
   static PreferredSizeWidget getBar(BuildContext context, WidgetRef ref) {
     return AppBar(
@@ -21,6 +27,12 @@ class MyAppBar {
               child: SizedBox(
                   // width: 300,
                   child: TabBar(
+      automaticallyImplyLeading: false,
+      title: Align(
+          alignment: Alignment.centerLeft,
+          child: SizedBox(
+              width: 800,
+              child: TabBar(
                 tabs: _tabs
                     .map((t) => Tab(
                         iconMargin: EdgeInsets.all(0),
