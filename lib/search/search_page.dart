@@ -3,10 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:screensite/app_bar.dart';
+import 'package:screensite/common.dart';
 import 'package:screensite/search/search_details.dart';
 import 'package:screensite/search/search_list.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
-import 'package:screensite/drawer_app_bar.dart';
+import 'package:screensite/drawer.dart';
 
 final activeBatch =
     StateNotifierProvider<GenericStateNotifier<String?>, String?>(
@@ -19,10 +20,10 @@ class SearchPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
         appBar: MyAppBar.getBar(context, ref),
-        drawer: (MediaQuery.of(context).size.width < 600)
-            ? DrawerAppBar.buildDrawer(context)
+        drawer: (MediaQuery.of(context).size.width < WIDE_SCREEN_WIDTH)
+            ? TheDrawer.buildDrawer(context)
             : null,
-        body: (MediaQuery.of(context).size.width < 600)
+        body: (MediaQuery.of(context).size.width < WIDE_SCREEN_WIDTH)
             ? Container(
                 alignment: Alignment.topLeft,
                 child: Row(

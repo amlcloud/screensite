@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:screensite/main.dart';
 import 'package:screensite/state/theme_state_notifier.dart';
-import 'package:screensite/search/search_page.dart';
-import 'package:screensite/lists/lists_page.dart';
+import 'package:screensite/common.dart';
 
 class MyAppBar {
   static final List<String> _tabs = ['search', 'lists'];
@@ -12,8 +11,10 @@ class MyAppBar {
   static PreferredSizeWidget getBar(BuildContext context, WidgetRef ref) {
     return AppBar(
       automaticallyImplyLeading:
-          (MediaQuery.of(context).size.width < 600) ? true : false,
-      title: (MediaQuery.of(context).size.width < 600)
+          (MediaQuery.of(context).size.width < WIDE_SCREEN_WIDTH)
+              ? true
+              : false,
+      title: (MediaQuery.of(context).size.width < WIDE_SCREEN_WIDTH)
           ? null
           : Align(
               alignment: Alignment.centerLeft,
