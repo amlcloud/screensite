@@ -19,30 +19,30 @@ class MyAppBar {
           : Align(
               alignment: Alignment.centerLeft,
               child: SizedBox(
-                  // width: 300,
+                  width: 800,
                   child: TabBar(
-                tabs: _tabs
-                    .map((t) => Tab(
-                        iconMargin: EdgeInsets.all(0),
-                        child:
-                            // GestureDetector(
-                            //     behavior: HitTestBehavior.translucent,
-                            //onTap: () => navigatePage(text, context),
-                            //child:
-                            Text(t.toUpperCase(),
-                                overflow: TextOverflow.fade,
-                                softWrap: false,
-                                style: TextStyle(
-                                    color:
-                                        // Theme.of(context).brightness == Brightness.light
-                                        //     ? Color(DARK_GREY)
-                                        //:
-                                        Colors.white))))
-                    .toList(),
-                onTap: (index) {
-                  Navigator.of(context).pushNamed(_tabs[index]);
-                },
-              ))),
+                    tabs: _tabs
+                        .map((t) => Tab(
+                            iconMargin: EdgeInsets.all(0),
+                            child:
+                                // GestureDetector(
+                                //     behavior: HitTestBehavior.translucent,
+                                //onTap: () => navigatePage(text, context),
+                                //child:
+                                Text(t.toUpperCase(),
+                                    overflow: TextOverflow.fade,
+                                    softWrap: false,
+                                    style: TextStyle(
+                                        color:
+                                            // Theme.of(context).brightness == Brightness.light
+                                            //     ? Color(DARK_GREY)
+                                            //:
+                                            Colors.white))))
+                        .toList(),
+                    onTap: (index) {
+                      Navigator.of(context).pushNamed(_tabs[index]);
+                    },
+                  ))),
       actions: [
         ThemeIconButton(),
         IconButton(
