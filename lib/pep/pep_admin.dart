@@ -25,9 +25,21 @@ class PepAdminPage extends ConsumerWidget {
                       child: Column(
                     children: [
                       Row(children: [
-                        Text(
-                          'Pep Admin',
-                        ),
+                        Container(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Country:')),
+                        Container(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('PEP Page URL:')),
+                        Container(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Expected:')),
+                        Container(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Actual:')),
+                        Container(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Comment:')),
                       ])
                     ],
                   )),
