@@ -18,6 +18,21 @@ class PepAdminPage extends ConsumerWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
+              children: [
+                Flexible(
+                  flex: 1,
+                  child: SingleChildScrollView(
+                      child: Column(
+                    children: [
+                      Row(children: [
+                        Text(
+                          'Pep Admin',
+                        ),
+                      ])
+                    ],
+                  )),
+                )
+              ],
             )));
   }
 }
