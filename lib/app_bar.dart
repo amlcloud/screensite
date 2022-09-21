@@ -49,7 +49,7 @@ class MyAppBar {
                     },
                   ))),
       actions: [
-        ThemeIconButton(),
+        //ThemeIconButton(),
         IconButton(
             onPressed: () {
               ref.read(isLoggedIn.notifier).value = false;
