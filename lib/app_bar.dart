@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:screensite/main.dart';
 import 'package:screensite/state/theme_state_notifier.dart';
 import 'package:screensite/common.dart';
+import 'package:userprofile/userprofile.dart';
 
 class MyAppBar {
   static final List<String> _tabs = [
@@ -49,14 +50,15 @@ class MyAppBar {
                     },
                   ))),
       actions: [
-        //ThemeIconButton(),
+        AvatarImage(),
+        ThemeIconButton(),
         IconButton(
             onPressed: () {
               ref.read(isLoggedIn.notifier).value = false;
               FirebaseAuth.instance.signOut();
               // print("Signed out");
             },
-            icon: Icon(Icons.exit_to_app))
+            icon: Icon(Icons.exit_to_app)),
       ],
     );
   }
