@@ -2,11 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:screensite/app_bar.dart';
+import 'package:screensite/pep/peplibrary_list.dart';
+import 'package:screensite/pep/pep_list_detail.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-final activePep = StateNotifierProvider<GenericStateNotifier<String?>, String?>(
-    (ref) => GenericStateNotifier<String?>(null));
+final activePepLib =
+    StateNotifierProvider<GenericStateNotifier<String?>, String?>(
+        (ref) => GenericStateNotifier<String?>(null));
 
 class PepLibraryPage extends ConsumerStatefulWidget {
   const PepLibraryPage({Key? key}) : super(key: key);
@@ -35,7 +38,7 @@ class _PepLibraryPageState extends ConsumerState<PepLibraryPage> {
   void initState() {
     super.initState();
     // "ref" can be used in all life-cycles of a StatefulWidget.
-    ref.read(activePep);
+    ref.read(activePepLib);
   }
 
   @override
@@ -134,155 +137,18 @@ class _PepLibraryPageState extends ConsumerState<PepLibraryPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Expanded(
-                    flex: 3,
-                    child: Card(
-                      child: InkWell(
-                        splashColor: Colors.blue.withAlpha(30),
-                        onTap: () {
-                          debugPrint('Card tapped.');
-                        },
-                        child: SizedBox(
-                            width: 300,
-                            height: 100,
-                            child: Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(children: <Widget>[
-                                    Expanded(
-                                        child: Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom:
-                                                    10), //apply padding to all four sides
-                                            child: Text("https://"))),
-                                    Expanded(
-                                        child: Align(
-                                            alignment: Alignment.centerRight,
-                                            child: IconButton(
-                                              icon: Icon(Icons.help_outline),
-                                              hoverColor:
-                                                  Colors.white.withOpacity(0.3),
-                                              onPressed: () {},
-                                            )))
-                                  ]),
-                                  Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: <Widget>[
-                                        Expanded(
-                                          child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Text('Right'),
-                                                Text('4 people')
-                                              ]),
-                                        ),
-                                        Expanded(
-                                          child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Text('Last updated:'),
-                                                Text('Created:')
-                                              ]),
-                                        )
-                                      ])
-                                ],
-                              ),
-                            )),
-                      ),
-                    ),
-                  ),
+                      flex: 3,
+                      child: SingleChildScrollView(
+                          child: Column(
+                        children: [
+                          PepLibrarylists(),
+                        ],
+                      ))),
                   Expanded(
                       flex: 3,
-                      child: Card(
-                          child: Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                      padding: EdgeInsets.only(
-                                          bottom:
-                                              10), //apply padding to all four sides
-                                      child: Text("https://"))
-                                ]),
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                      padding: EdgeInsets.only(
-                                          bottom:
-                                              10), //apply padding to all four sides
-                                      child: Text('Last updated:'))
-                                ]),
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                      padding: EdgeInsets.only(
-                                          bottom:
-                                              10), //apply padding to all four sides
-                                      child: Text('Last source change:'))
-                                ]),
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                      padding: EdgeInsets.only(
-                                          bottom:
-                                              10), //apply padding to all four sides
-                                      child: Text('Last fetch change:'))
-                                ]),
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                      padding: EdgeInsets.only(
-                                          bottom:
-                                              10), //apply padding to all four sides
-                                      child: Text('When data broke:'))
-                                ]),
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Container(
-                                      width: 500,
-                                      height: 300,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Color.fromARGB(
-                                                  255, 236, 238, 240))),
-                                      padding: EdgeInsets.all(5),
-                                      margin: EdgeInsets.all(5),
-                                      child: Text(
-                                        "text",
-                                      ))
-                                ]),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                TextButton(
-                                  child: const Text('Re-fetch'),
-                                  onPressed: () {/* ... */},
-                                ),
-                                const SizedBox(width: 8),
-                                TextButton(
-                                  child: const Text('Delete'),
-                                  onPressed: () {/* ... */},
-                                ),
-                                const SizedBox(width: 8),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ))),
+                      child: ref.watch(activePepLib) == null
+                          ? Container()
+                          : PepListDetail(ref.watch(activePepLib)!)),
                 ],
               )
             ])));
