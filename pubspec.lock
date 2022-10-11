@@ -335,8 +335,8 @@ packages:
     dependency: "direct main"
     description:
       path: login
-      ref: logo-theme
-      resolved-ref: b7d168ef210af05e2929499d442a6f45ede53647
+      ref: HEAD
+      resolved-ref: "9f2e022cbd593a1f1d7893c1b01a811202dd7822"
       url: "https://github.com/amlcloud/flutter-lib.git"
     source: git
     version: "0.0.1"
@@ -344,8 +344,8 @@ packages:
     dependency: "direct main"
     description:
       path: logo
-      ref: logo-theme
-      resolved-ref: b7d168ef210af05e2929499d442a6f45ede53647
+      ref: HEAD
+      resolved-ref: "9f2e022cbd593a1f1d7893c1b01a811202dd7822"
       url: "https://github.com/amlcloud/flutter-lib.git"
     source: git
     version: "0.0.1"
