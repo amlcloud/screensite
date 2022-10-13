@@ -50,7 +50,7 @@ class MyAppBar {
                     },
                   ))),
       actions: [
-        AvatarImage(),
+        AppBarUserProfile(),
         ThemeIconButton(),
         IconButton(
             onPressed: () {
