@@ -18,6 +18,12 @@ class LoginPage extends ConsumerWidget {
         "loginAnonymous": true,
         "signupOption": true,
       },
+      tcLinks: {
+        "termsOfServiceLink":
+            "https://docs.github.com/en/site-policy/github-terms/github-terms-of-service",
+        "privacyPolicyLink":
+            "https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement",
+      },
       mainTitle: "AML Cloud",
     ));
   }

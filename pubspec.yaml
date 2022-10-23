@@ -46,6 +46,8 @@ dependencies:
     git: 
       url: https://github.com/amlcloud/flutter-lib.git
       path: login
+      ref: signup_terms_conditions
+      
   country_picker: ^2.0.16
   logo:
     git:
