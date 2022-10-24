@@ -137,15 +137,13 @@ class _PepLibraryPageState extends ConsumerState<PepLibraryPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Expanded(
-                      flex: 3,
                       child: SingleChildScrollView(
                           child: Column(
-                        children: [
-                          PepLibrarylists(),
-                        ],
-                      ))),
+                    children: [
+                      PepLibrarylists(),
+                    ],
+                  ))),
                   Expanded(
-                      flex: 3,
                       child: ref.watch(activePepLib) == null
                           ? Container()
                           : PepListDetail(ref.watch(activePepLib)!)),

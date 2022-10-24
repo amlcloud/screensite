@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:screensite/providers/firestore.dart';
+import 'package:screensite/theme.dart';
 
 class PepEntityList extends ConsumerWidget {
   final String entityId;
@@ -19,9 +20,7 @@ class PepEntityList extends ConsumerWidget {
                   Container(
                       width: 500,
                       height: 300,
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Color.fromARGB(255, 236, 238, 240))),
+                      decoration: EntityContainerStyle.containerStyle,
                       padding: EdgeInsets.all(5),
                       margin: EdgeInsets.all(5),
                       child: SingleChildScrollView(

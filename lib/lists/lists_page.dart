@@ -22,7 +22,7 @@ class ListsPage extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Flexible(
+                  Expanded(
                       child: SingleChildScrollView(
                           child: Column(
                     children: [
@@ -30,11 +30,21 @@ class ListsPage extends ConsumerWidget {
                     ],
                   ))),
                   Expanded(
-                    flex: 2,
                     child: ref.watch(activeList) == null
                         ? Container()
                         : ListDetails(ref.watch(activeList)!),
-                  )
+                  ),
+                  Expanded(
+                      child: Card(
+                          child: SizedBox(
+                              width: 300,
+                              height: 100,
+                              child: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [Text('text')])))))
                 ])));
   }
 }

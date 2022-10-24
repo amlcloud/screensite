@@ -18,7 +18,6 @@ class PepListItem extends ConsumerWidget {
         data: (entityDoc) => entityDoc.exists == false
             ? Center(child: Text('No entity data exists'))
             : Expanded(
-                flex: 3,
                 child: Card(
                   child: InkWell(
                     splashColor: Colors.blue.withAlpha(30),
