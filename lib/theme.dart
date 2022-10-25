@@ -57,3 +57,8 @@ class LoginStyle {
     color: Color.fromARGB(255, 208, 208, 208),
   )));
 }
+
+class EntityContainerStyle {
+  static BoxDecoration containerStyle = BoxDecoration(
+      border: Border.all(color: Color.fromARGB(255, 236, 238, 240)));
+}
