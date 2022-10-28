@@ -19,8 +19,7 @@ class ListsPage extends ConsumerWidget {
         drawer: (MediaQuery.of(context).size.width < WIDE_SCREEN_WIDTH)
             ? TheDrawer.buildDrawer(context)
             : null,
-        body: (MediaQuery.of(context).size.width < WIDE_SCREEN_WIDTH)
-            ? Container(
+        body: Container(
             alignment: Alignment.topLeft,
             child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
