@@ -19,46 +19,35 @@ class ListsPage extends ConsumerWidget {
         drawer: (MediaQuery.of(context).size.width < WIDE_SCREEN_WIDTH)
             ? TheDrawer.buildDrawer(context)
             : null,
-        body: (MediaQuery.of(context).size.width < WIDE_SCREEN_WIDTH)
-            ? Container(
-                alignment: Alignment.topLeft,
-                child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
+        body: Container(
+            alignment: Alignment.topLeft,
+            child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                      child: SingleChildScrollView(
+                          child: Column(
                     children: [
-                      Flexible(
-                          child: SingleChildScrollView(
-                              child: Column(
-                        children: [
-                          Lists(),
-                        ],
-                      ))),
-                      Expanded(
-                        flex: 2,
-                        child: ref.watch(activeList) == null
-                            ? Container()
-                            : ListDetails(ref.watch(activeList)!),
-                      )
-                    ]))
-            : Container(
-                alignment: Alignment.topLeft,
-                child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Flexible(
-                          child: SingleChildScrollView(
-                              child: Column(
-                        children: [
-                          Lists(),
-                        ],
-                      ))),
-                      Expanded(
-                        flex: 2,
-                        child: ref.watch(activeList) == null
-                            ? Container()
-                            : ListDetails(ref.watch(activeList)!),
-                      )
-                    ])));
+                      Lists(),
+                    ],
+                  ))),
+                  Expanded(
+                    child: ref.watch(activeList) == null
+                        ? Container()
+                        : ListDetails(ref.watch(activeList)!),
+                  ),
+                  Expanded(
+                      child: Card(
+                          child: SizedBox(
+                              width: 300,
+                              height: 100,
+                              child: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [Text('text')])))))
+                ])));
   }
 }
