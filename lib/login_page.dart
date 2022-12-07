@@ -8,7 +8,7 @@ class LoginPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-        body: LoginScreen(
+        body: HomePage(
       screenTitle: "Log in",
       loginOptions: {
         "loginGitHub": true,

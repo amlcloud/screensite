@@ -5,6 +5,7 @@ import 'package:screensite/main.dart';
 import 'package:screensite/state/theme_state_notifier.dart';
 import 'package:screensite/common.dart';
 import 'package:userprofile/userprofile.dart';
+import 'package:logo/logo.dart';
 
 class MyAppBar {
   static final List<String> _tabs = [
@@ -21,6 +22,14 @@ class MyAppBar {
           (MediaQuery.of(context).size.width < WIDE_SCREEN_WIDTH)
               ? true
               : false,
+      leadingWidth:
+          (MediaQuery.of(context).size.width < WIDE_SCREEN_WIDTH) ? null : 100,
+      leading: (MediaQuery.of(context).size.width < WIDE_SCREEN_WIDTH)
+          ? null
+          : Padding(
+              padding: EdgeInsets.all(10),
+              child: Logo(),
+            ),
       title: (MediaQuery.of(context).size.width < WIDE_SCREEN_WIDTH)
           ? null
           : Align(

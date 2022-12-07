@@ -23,133 +23,83 @@ class SearchPage extends ConsumerWidget {
         drawer: (MediaQuery.of(context).size.width < WIDE_SCREEN_WIDTH)
             ? TheDrawer.buildDrawer(context)
             : null,
-        body: (MediaQuery.of(context).size.width < WIDE_SCREEN_WIDTH)
-            ? Container(
-                alignment: Alignment.topLeft,
-                child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Flexible(
-                          flex: 5,
-                          child: Column(
+        body: Container(
+            alignment: Alignment.topLeft,
+            child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Flexible(
+                      flex: 5,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                      child: TextField(
-                                          onChanged: (v) {},
-                                          controller: searchCtrl)),
-                                  ElevatedButton(
-                                      child: Text("Search"),
-                                      onPressed: () async {
-                                        if (searchCtrl.text.isEmpty) return;
+                              Expanded(
+                                  child: TextField(
+                                      onChanged: (v) {},
+                                      controller: searchCtrl)),
+                              ElevatedButton(
+                                  child: Text("Search"),
+                                  onPressed: () async {
+                                    if (searchCtrl.text.isEmpty) return;
 
-                                        // var url = Uri.parse(
-                                        //     'https://screen-od6zwjoy2a-an.a.run.app/?name=${searchCtrl.text.toLowerCase()}');
-                                        // var response = await http.post(url, body: {
-                                        //   // 'name': 'doodle',
-                                        //   // 'color': 'blue'
-                                        // });
-                                        // print(
-                                        //     'Response status: ${response.statusCode}');
-                                        // print('Response body: ${response.body}');
+                                    // var url = Uri.parse(
+                                    //     'https://screen-od6zwjoy2a-an.a.run.app/?name=${searchCtrl.text.toLowerCase()}');
+                                    // var response = await http.post(url, body: {
+                                    //   // 'name': 'doodle',
+                                    //   // 'color': 'blue'
+                                    // });
+                                    // print(
+                                    //     'Response status: ${response.statusCode}');
+                                    // print('Response body: ${response.body}');
 
-                                        FirebaseFirestore.instance
-                                            .collection('search')
-                                            .doc(searchCtrl.text)
-                                            .set({
-                                          'target': searchCtrl.text,
-                                          'timeCreated':
-                                              FieldValue.serverTimestamp(),
-                                          'author': FirebaseAuth
-                                              .instance.currentUser!.uid,
-                                        });
-                                      })
-                                ],
-                              ),
-                              Expanded(child: SearchHistory()),
+                                    // FirebaseFirestore.instance
+                                    //     .collection('search')
+                                    //     .doc(searchCtrl.text)
+                                    //     .set({
+                                    //   'target': searchCtrl.text,
+                                    //   'timeCreated':
+                                    //       FieldValue.serverTimestamp(),
+                                    //   'author': FirebaseAuth
+                                    //       .instance.currentUser!.uid,
+                                    // });
+
+                                    FirebaseFirestore.instance
+                                        .collection('user')
+                                        .doc(FirebaseAuth
+                                            .instance.currentUser!.uid)
+                                        .collection('search')
+                                        .doc(searchCtrl.text)
+                                        .set({
+                                      'target': searchCtrl.text,
+                                      'timeCreated':
+                                          FieldValue.serverTimestamp(),
+                                      'author': FirebaseAuth
+                                          .instance.currentUser!.uid,
+                                    });
+                                  })
                             ],
-                          )),
-                      Expanded(
-                          flex: 5,
-                          child: ref.watch(activeBatch) == null
-                              ? Container()
-                              : Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: SearchDetails(
-                                    FirebaseFirestore.instance.doc(
-                                        'search/${ref.watch(activeBatch)}'),
-                                  )))
-                    ]))
-            : Container(
-                alignment: Alignment.topLeft,
-                child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Flexible(
-                          flex: 1,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                      child: TextField(
-                                          onChanged: (v) {},
-                                          controller: searchCtrl)),
-                                  ElevatedButton(
-                                      child: Text("Search"),
-                                      onPressed: () async {
-                                        if (searchCtrl.text.isEmpty) return;
-
-                                        // var url = Uri.parse(
-                                        //     'https://screen-od6zwjoy2a-an.a.run.app/?name=${searchCtrl.text.toLowerCase()}');
-                                        // var response = await http.post(url, body: {
-                                        //   // 'name': 'doodle',
-                                        //   // 'color': 'blue'
-                                        // });
-                                        // print(
-                                        //     'Response status: ${response.statusCode}');
-                                        // print('Response body: ${response.body}');
-
-                                        FirebaseFirestore.instance
-                                            .collection('search')
-                                            .doc(searchCtrl.text)
-                                            .set({
-                                          'target': searchCtrl.text,
-                                          'timeCreated':
-                                              FieldValue.serverTimestamp(),
-                                          'author': FirebaseAuth
-                                              .instance.currentUser!.uid,
-                                        });
-                                      })
-                                ],
-                              ),
-                              Expanded(child: SearchHistory()),
-                            ],
-                          )),
-                      Expanded(
-                          flex: 4,
-                          child: ref.watch(activeBatch) == null
-                              ? Container()
-                              : Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: SearchDetails(
-                                    FirebaseFirestore.instance.doc(
-                                        'search/${ref.watch(activeBatch)}'),
-                                  )))
-                    ])));
+                          ),
+                          Expanded(child: SearchHistory()),
+                        ],
+                      )),
+                  Expanded(
+                      flex: 5,
+                      child: ref.watch(activeBatch) == null
+                          ? Container()
+                          : Padding(
+                              padding: EdgeInsets.all(8),
+                              child: SearchDetails(
+                                FirebaseFirestore.instance
+                                    .doc('search/${ref.watch(activeBatch)}'),
+                              )))
+                ])));
   }
 }
 
