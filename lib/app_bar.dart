@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:screensite/main.dart';
 import 'package:screensite/state/theme_state_notifier.dart';
 import 'package:screensite/common.dart';
-import 'package:userprofile/userprofile.dart';
+// import 'package:userprofile/userprofile.dart';
 import 'package:logo/logo.dart';
 
 class MyAppBar {
@@ -59,7 +59,7 @@ class MyAppBar {
                     },
                   ))),
       actions: [
-        AppBarUserProfile(),
+        // AppBarUserProfile(),
         ThemeIconButton(),
         IconButton(
             onPressed: () {

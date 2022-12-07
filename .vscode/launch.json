@@ -5,6 +5,12 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Flutter",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart"
+    },
+    {
       "type": "node",
       "request": "launch",
       "name": "fetch",
@@ -17,34 +23,5 @@
       ],
       "sourceMaps": true
     },
-    {
-      "name": "Flutter",
-      "type": "dart",
-      "request": "launch",
-      "program": "lib/main.dart"
-    },
-    {
-      "name": "seeder",
-      "request": "launch",
-      "type": "dart"
-    },
-    {
-      "name": "seeder (profile mode)",
-      "request": "launch",
-      "type": "dart",
-      "flutterMode": "profile"
-    },
-    {
-      "name": "seeder (release mode)",
-      "request": "launch",
-      "type": "dart",
-      "flutterMode": "release"
-    },
-    {
-      "name": "Flutter (lib/main.dart)",
-      "type": "dart",
-      "request": "launch",
-      "program": "lib/main.dart"
-    }
   ]
 }
