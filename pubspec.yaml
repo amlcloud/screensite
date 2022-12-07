@@ -42,9 +42,6 @@ dependencies:
   jiffy: ^5.0.0
   rxdart: ^0.27.4
   http: ^0.13.4
-
-  url_launcher: ^6.1.6
-
   login:
     git: 
       url: https://github.com/amlcloud/flutter-lib.git
@@ -57,7 +54,12 @@ dependencies:
       path: logo
       ref: main_signup
 
-
+  userprofile:
+    git: 
+      url: https://github.com/amlcloud/flutter-lib.git
+      path: userprofile
+      ref: main_dependencies_versions
+      
 dev_dependencies:
   flutter_test:
     sdk: flutter
