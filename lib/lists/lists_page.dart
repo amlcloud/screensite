@@ -39,15 +39,11 @@ class ListsPage extends ConsumerWidget {
                   ),
                   Expanded(
                       child: Card(
-                          child: SizedBox(
-                              width: 300,
-                              height: 100,
-                              child: Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [Text('text')])))))
+                          child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [Text('text1')]))))
                 ])));
   }
 }
