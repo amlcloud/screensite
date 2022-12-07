@@ -23,7 +23,7 @@ class ListItem extends ConsumerWidget {
                 child:
                     Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
                 ListTile(
-                  tileColor: Color.fromARGB(255, 44, 44, 44),
+                  tileColor: Color.fromARGB(255, 255, 255, 255),
                   focusColor: Color.fromARGB(255, 133, 116, 116),
                   title: Text(
                     (entityDoc.data()!['uiName'] != null)
