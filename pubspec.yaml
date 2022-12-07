@@ -49,11 +49,13 @@ dependencies:
     git: 
       url: https://github.com/amlcloud/flutter-lib.git
       path: login
+      ref: main_signup
   country_picker: ^2.0.16
   logo:
     git:
       url: https://github.com/amlcloud/flutter-lib.git
       path: logo
+      ref: main_signup
 
 
 dev_dependencies:
