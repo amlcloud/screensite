@@ -45,15 +45,22 @@ class ListsPage extends ConsumerWidget {
                   ),
                   Expanded(
                       child: Card(
-                          child: Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    ref.watch(selectedItem) == null
-                                        ? Container()
-                                        : JsonViewer(ref.watch(selectedItem))
-                                  ]))))
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                        Expanded(
+                            child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: ref.watch(selectedItem) == null
+                                      ? Container()
+                                      : JsonViewer(ref.watch(selectedItem)))
+                            ],
+                          ),
+                        ))
+                      ])))
                 ])));
   }
 }
