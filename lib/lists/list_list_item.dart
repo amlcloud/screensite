@@ -23,8 +23,6 @@ class ListItem extends ConsumerWidget {
                 child:
                     Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
                 ListTile(
-                  tileColor: Color.fromARGB(255, 255, 255, 255),
-                  focusColor: Color.fromARGB(255, 133, 116, 116),
                   title: Text(
                     (entityDoc.data()!['uiName'] != null)
                         ? entityDoc.data()!['uiName']
@@ -55,9 +53,8 @@ class ListItem extends ConsumerWidget {
                           padding: EdgeInsets.all(8.0),
                           child: Text.rich(TextSpan(
                               style: TextStyle(
-                                  color: Colors.blue,
                                   decoration: TextDecoration.underline),
-                              //make link blue and underline
+                              //make link underline
                               text: "View source page",
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () async {
@@ -81,9 +78,8 @@ class ListItem extends ConsumerWidget {
                           padding: EdgeInsets.all(8.0),
                           child: Text.rich(TextSpan(
                               style: TextStyle(
-                                  color: Colors.blue,
                                   decoration: TextDecoration.underline),
-                              //make link blue and underline
+                              //make link underline
                               text: "View source list",
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () async {
