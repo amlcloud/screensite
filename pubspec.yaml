@@ -57,7 +57,8 @@ dependencies:
       url: https://github.com/amlcloud/flutter-lib.git
       path: logo
       ref: main_signup
-
+  flutter_json_viewer: ^1.0.1
+  
   # userprofile:
   #   git: 
   #     url: https://github.com/amlcloud/flutter-lib.git
