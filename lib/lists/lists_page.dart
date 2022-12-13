@@ -6,10 +6,15 @@ import 'package:screensite/lists/list_details.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
 import 'package:screensite/drawer.dart';
 import 'package:screensite/common.dart';
+import 'package:flutter_json_viewer/flutter_json_viewer.dart';
 
 final activeList =
     StateNotifierProvider<GenericStateNotifier<String?>, String?>(
         (ref) => GenericStateNotifier<String?>(null));
+
+final selectedItem = StateNotifierProvider<
+        GenericStateNotifier<Map<String, dynamic>?>, Map<String, dynamic>?>(
+    (ref) => GenericStateNotifier<Map<String, dynamic>?>(null));
 
 class ListsPage extends ConsumerWidget {
   @override
@@ -35,15 +40,27 @@ class ListsPage extends ConsumerWidget {
                   Expanded(
                     child: ref.watch(activeList) == null
                         ? Container()
-                        : ListDetails(ref.watch(activeList)!),
+                        : ListDetails(
+                            ref.watch(activeList)!, selectedItem.notifier),
                   ),
                   Expanded(
                       child: Card(
-                          child: Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [Text('text1')]))))
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                        Expanded(
+                            child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: ref.watch(selectedItem) == null
+                                      ? Container()
+                                      : JsonViewer(ref.watch(selectedItem)))
+                            ],
+                          ),
+                        ))
+                      ])))
                 ])));
   }
 }
