@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:screensite/lists/list_info.dart';
 import 'package:screensite/lists/list_entitylistview.dart';
+import 'package:screensite/lists/list_indexing.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
 
 class ListDetails extends ConsumerWidget {
@@ -27,6 +28,8 @@ class ListDetails extends ConsumerWidget {
           mainAxisSize: MainAxisSize.max,
           children: [
             Flexible(flex: 1, child: ListInfo(entityId)),
+            Divider(),
+            ListIndexing(entityId),
             Divider(),
             //Timeline(entityId),
             /*Expanded(
