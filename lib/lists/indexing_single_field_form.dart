@@ -1,31 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:screensite/lists/indexing_textfield.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
-import 'dart:async';
 
-//ignore: must_be_immutable
-class IndexingSingleField extends ConsumerWidget {
+class IndexingSingleFieldForm extends ConsumerWidget {
   final QueryDocumentSnapshot<Map<String, dynamic>> document;
   final StateNotifierProvider<GenericStateNotifier<Map<String, bool>>,
       Map<String, bool>> editings;
-  final Map<String, TextSelection> textSelections;
-  final TextEditingController textEditingController = TextEditingController();
-  Timer? timer;
+  final Map<String, Map<String, TextSelection>> textSelections;
 
-  IndexingSingleField(this.document, this.editings, this.textSelections);
-
-  void onChanged(String value) {
-    textSelections[document.id] = textEditingController.selection;
-    if (timer?.isActive ?? false) {
-      timer?.cancel();
-    }
-    timer = Timer(const Duration(milliseconds: 500), () {
-      document.reference.update({
-        'entityIndexFields': [value]
-      });
-    });
-  }
+  const IndexingSingleFieldForm(
+      this.document, this.editings, this.textSelections);
 
   void editing(WidgetRef ref, bool editing) {
     Map<String, bool> map = ref.read(editings);
@@ -68,12 +54,6 @@ class IndexingSingleField extends ConsumerWidget {
 
   Widget edit(WidgetRef ref) {
     List<dynamic> entityIndexFields = document.data()['entityIndexFields'];
-    if (entityIndexFields.isNotEmpty) {
-      textEditingController.text = entityIndexFields[0];
-      if (textSelections[document.id] != null) {
-        textEditingController.selection = textSelections[document.id]!;
-      }
-    }
     return Column(children: [
       Row(children: [
         Container(
@@ -81,12 +61,7 @@ class IndexingSingleField extends ConsumerWidget {
             child: Padding(
                 padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
                 child: Text('Full Name'))),
-        Flexible(
-            flex: 1,
-            child: TextField(
-              controller: textEditingController,
-              onChanged: (value) => {onChanged(value)},
-            ))
+        Flexible(flex: 1, child: IndexingTextField(document, 0, textSelections))
       ]),
       Row(children: [
         Container(

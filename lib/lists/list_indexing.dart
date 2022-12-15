@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'indexing_single_field.dart';
 import '../providers/firestore.dart';
+import 'indexing_multiple_fields_form.dart';
+import 'indexing_single_field_form.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
 
 const List<String> indexTypes = <String>[
@@ -11,19 +12,46 @@ const List<String> indexTypes = <String>[
   'Array of values'
 ];
 
-final editings = StateNotifierProvider<GenericStateNotifier<Map<String, bool>>,
-    Map<String, bool>>((ref) => GenericStateNotifier<Map<String, bool>>({}));
-
 class ListIndexing extends ConsumerWidget {
   final String listId;
-  final Map<String, TextSelection> textSelections = {};
+  final Map<String, Map<String, TextSelection>> textSelections = {};
+  final editings = StateNotifierProvider<
+      GenericStateNotifier<Map<String, bool>>,
+      Map<String, bool>>((ref) => GenericStateNotifier<Map<String, bool>>({}));
 
   ListIndexing(this.listId);
 
-  add(WidgetRef ref) {
+  void add(WidgetRef ref) {
     FirebaseFirestore.instance
         .collection('list/$listId/index')
         .add({'type': indexTypes[0], 'entityIndexFields': []});
+  }
+
+  void changeType(
+      QueryDocumentSnapshot<Map<String, dynamic>> map, String? type) {
+    if (type == indexTypes[0]) {
+      map.reference.update({'type': type, 'entityIndexFields': []});
+    } else if (type == indexTypes[1]) {
+      map.reference
+          .update({'type': type, 'entityIndexFields': [], 'numberOfNames': 1});
+    } else {
+      map.reference.update({'type': type, 'entityIndexFields': []});
+    }
+  }
+
+  Widget edit(QueryDocumentSnapshot<Map<String, dynamic>> map) {
+    return DropdownButton<String>(
+        isExpanded: true,
+        value: map.data()['type'],
+        items: indexTypes.map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (String? value) {
+          changeType(map, value);
+        });
   }
 
   Widget inputType(QueryDocumentSnapshot<Map<String, dynamic>> map) {
@@ -32,20 +60,7 @@ class ListIndexing extends ConsumerWidget {
         width: 80,
         child: Text('Input Type'),
       ),
-      Flexible(
-          flex: 1,
-          child: DropdownButton<String>(
-              isExpanded: true,
-              value: map.data()['type'],
-              items: indexTypes.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (String? value) {
-                map.reference.update({'type': value, 'entityIndexFields': []});
-              }))
+      Flexible(flex: 1, child: edit(map))
     ]);
   }
 
@@ -53,9 +68,9 @@ class ListIndexing extends ConsumerWidget {
     String type = document.data()['type'];
     Widget widget;
     if (type == indexTypes[0]) {
-      widget = IndexingSingleField(document, editings, textSelections);
+      widget = IndexingSingleFieldForm(document, editings, textSelections);
     } else if (type == indexTypes[1]) {
-      widget = Text('BBB');
+      widget = IndexingMultipleFieldsForm(document, editings, textSelections);
     } else {
       widget = Text('CCC');
     }
