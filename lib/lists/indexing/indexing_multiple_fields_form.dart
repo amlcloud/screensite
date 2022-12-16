@@ -1,28 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:screensite/state/generic_state_notifier.dart';
 
+import '../../state/generic_state_notifier.dart';
+import 'indexing_form.dart';
 import 'indexing_textfield.dart';
 
-class IndexingMultipleFieldsForm extends ConsumerWidget {
-  final QueryDocumentSnapshot<Map<String, dynamic>> document;
-  final StateNotifierProvider<GenericStateNotifier<Map<String, bool>>,
-      Map<String, bool>> editings;
-  final Map<String, Map<String, TextSelection>> textSelections;
-
+class IndexingMultipleFieldsForm extends IndexingForm {
   const IndexingMultipleFieldsForm(
-      this.document, this.editings, this.textSelections);
+      QueryDocumentSnapshot<Map<String, dynamic>> document,
+      StateNotifierProvider<GenericStateNotifier<Map<String, bool>>,
+              Map<String, bool>>
+          editings,
+      Map<String, Map<String, TextSelection>> textSelections)
+      : super(document, editings, textSelections);
 
-  void editing(WidgetRef ref, bool editing) {
-    Map<String, bool> map = ref.read(editings);
-    map[document.id] = editing;
-    Map<String, bool> newMap = {};
-    map.forEach((key, value) => {newMap[key] = value});
-    ref.read(editings.notifier).value = newMap;
-  }
-
-  void updateNumberOfNames(int numberOfNames) {
+  void _updateNumberOfNames(int numberOfNames) {
     List<dynamic> newList = [];
     List<dynamic> entityIndexFields = document.data()['entityIndexFields'];
     for (int i = 0; i < numberOfNames; i++) {
@@ -34,7 +27,7 @@ class IndexingMultipleFieldsForm extends ConsumerWidget {
         .update({'numberOfNames': numberOfNames, 'entityIndexFields': newList});
   }
 
-  Widget preview(WidgetRef ref) {
+  Widget _preview(WidgetRef ref) {
     List<dynamic> entityIndexFields = document.data()['entityIndexFields'];
     return Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
       Container(
@@ -48,6 +41,7 @@ class IndexingMultipleFieldsForm extends ConsumerWidget {
     ]);
   }
 
+  @override
   Widget read(WidgetRef ref) {
     List<Widget> children = [];
     int numberOfNames = document.data()['numberOfNames'];
@@ -65,7 +59,7 @@ class IndexingMultipleFieldsForm extends ConsumerWidget {
                 Text(i < entityIndexFields.length ? entityIndexFields[i] : ''))
       ]));
     }
-    children.add(preview(ref));
+    children.add(_preview(ref));
     children.add(Row(children: [
       Expanded(
           child: TextButton(
@@ -74,6 +68,7 @@ class IndexingMultipleFieldsForm extends ConsumerWidget {
     return Column(children: children);
   }
 
+  @override
   Widget edit(WidgetRef ref) {
     List<Widget> children = [];
     int numberOfNames = document.data()['numberOfNames'];
@@ -96,7 +91,7 @@ class IndexingMultipleFieldsForm extends ConsumerWidget {
               }).toList(),
               onChanged: (String? value) {
                 if (value != null) {
-                  updateNumberOfNames(int.parse(value));
+                  _updateNumberOfNames(int.parse(value));
                 }
               }))
     ]));
@@ -110,7 +105,7 @@ class IndexingMultipleFieldsForm extends ConsumerWidget {
         Flexible(flex: 1, child: IndexingTextField(document, i, textSelections))
       ]));
     }
-    children.add(preview(ref));
+    children.add(_preview(ref));
     children.add(Row(children: [
       Expanded(
           child: TextButton(
@@ -121,11 +116,5 @@ class IndexingMultipleFieldsForm extends ConsumerWidget {
               child: Text('Delete')))
     ]));
     return Column(children: children);
-  }
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    bool? editing = ref.watch(editings)[document.id];
-    return editing != null && editing ? edit(ref) : read(ref);
   }
 }
