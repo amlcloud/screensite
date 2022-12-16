@@ -15,7 +15,17 @@ class IndexingTextField extends ConsumerWidget {
 
   IndexingTextField(this.document, this.selectedIndex, this.maps);
 
-  void onChanged(String value) {
+  void _update() {
+    List<dynamic> entityIndexFields = document.data()['entityIndexFields'];
+    if (selectedIndex < entityIndexFields.length) {
+      entityIndexFields[selectedIndex] = textEditingController.text;
+    } else {
+      entityIndexFields.add(textEditingController.text);
+    }
+    document.reference.update({'entityIndexFields': entityIndexFields});
+  }
+
+  void onChanged(String text) {
     Map<String, TextSelection>? map = maps[document.id];
     if (map == null) {
       map = {};
@@ -26,14 +36,17 @@ class IndexingTextField extends ConsumerWidget {
       timer?.cancel();
     }
     timer = Timer(const Duration(milliseconds: 500), () {
-      List<dynamic> entityIndexFields = document.data()['entityIndexFields'];
-      if (selectedIndex < entityIndexFields.length) {
-        entityIndexFields[selectedIndex] = value;
-      } else {
-        entityIndexFields.add(value);
-      }
-      document.reference.update({'entityIndexFields': entityIndexFields});
+      _update();
     });
+  }
+
+  void onFocusChange(bool hasFocus) {
+    if (!hasFocus) {
+      if (timer?.isActive ?? false) {
+        timer?.cancel();
+      }
+      _update();
+    }
   }
 
   @override
@@ -45,13 +58,21 @@ class IndexingTextField extends ConsumerWidget {
       if (map != null) {
         TextSelection? selection = map['$selectedIndex'];
         if (selection != null) {
-          textEditingController.selection = selection;
+          try {
+            textEditingController.selection = selection;
+          } catch (e) {
+            print(e);
+          }
         }
       }
     }
-    return TextField(
+    var textField = TextField(
       controller: textEditingController,
       onChanged: onChanged,
+    );
+    return Focus(
+      onFocusChange: onFocusChange,
+      child: textField,
     );
   }
 }
