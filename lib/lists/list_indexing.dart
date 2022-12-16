@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:screensite/lists/indexing_array_of_values_field_form.dart';
 import '../providers/firestore.dart';
 import 'indexing_multiple_fields_form.dart';
 import 'indexing_single_field_form.dart';
@@ -72,7 +73,8 @@ class ListIndexing extends ConsumerWidget {
     } else if (type == indexTypes[1]) {
       widget = IndexingMultipleFieldsForm(document, editings, textSelections);
     } else {
-      widget = Text('CCC');
+      widget =
+          IndexingArrayOfValuesFieldForm(document, editings, textSelections);
     }
     return widget;
   }

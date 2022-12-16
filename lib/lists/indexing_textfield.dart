@@ -60,9 +60,7 @@ class IndexingTextField extends ConsumerWidget {
         if (selection != null) {
           try {
             textEditingController.selection = selection;
-          } catch (e) {
-            print(e);
-          }
+          } catch (e) {}
         }
       }
     }
