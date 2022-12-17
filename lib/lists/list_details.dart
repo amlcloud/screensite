@@ -5,6 +5,8 @@ import 'package:screensite/lists/list_entitylistview.dart';
 import 'package:screensite/lists/list_indexing.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
 
+import 'list_count.dart';
+
 class ListDetails extends ConsumerWidget {
   final String entityId;
   final AlwaysAliveProviderBase<GenericStateNotifier<Map<String, dynamic>?>>
@@ -41,6 +43,8 @@ class ListDetails extends ConsumerWidget {
                 flex: 10,
                 child: SingleChildScrollView(
                   child: EntityListView(entityId, selectedItem),
-                ))
+                )),
+            Divider(),
+            ListCount(entityId),
           ]));
 }
