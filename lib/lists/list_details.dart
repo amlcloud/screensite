@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:screensite/lists/list_info.dart';
 import 'package:screensite/lists/list_entitylistview.dart';
+import 'package:screensite/lists/list_indexing.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
+
+import 'list_count.dart';
 
 class ListDetails extends ConsumerWidget {
   final String entityId;
@@ -28,6 +31,8 @@ class ListDetails extends ConsumerWidget {
           children: [
             Flexible(flex: 1, child: ListInfo(entityId)),
             Divider(),
+            ListIndexing(entityId),
+            Divider(),
             //Timeline(entityId),
             /*Expanded(
               flex: 10,
@@ -38,6 +43,8 @@ class ListDetails extends ConsumerWidget {
                 flex: 10,
                 child: SingleChildScrollView(
                   child: EntityListView(entityId, selectedItem),
-                ))
+                )),
+            Divider(),
+            ListCount(entityId),
           ]));
 }

@@ -185,3 +185,9 @@ final AutoDisposeStreamProviderFamily<QuerySnapshot<Map<String, dynamic>>,
         .family<QuerySnapshot<Map<String, dynamic>>, String>((ref, path) {
   return FirebaseFirestore.instance.collection(path).limit(100).snapshots();
 });
+
+final AutoDisposeStreamProviderFamily<AggregateQuerySnapshot, String> count =
+    StreamProvider.autoDispose
+        .family<AggregateQuerySnapshot, String>((ref, path) {
+  return FirebaseFirestore.instance.collection(path).count().get().asStream();
+});
