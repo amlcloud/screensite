@@ -15,29 +15,34 @@ const List<String> indexTypes = <String>[
 ];
 
 class ListIndexing extends ConsumerWidget {
-  final String listId;
+  final String entityId;
   final Map<String, Map<String, TextSelection>> textSelections = {};
   final editings = StateNotifierProvider<
       GenericStateNotifier<Map<String, bool>>,
       Map<String, bool>>((ref) => GenericStateNotifier<Map<String, bool>>({}));
 
-  ListIndexing(this.listId);
+  ListIndexing(this.entityId);
 
   void add(WidgetRef ref) {
-    FirebaseFirestore.instance
-        .collection('list/$listId/index')
-        .add({'type': indexTypes[0], 'entityIndexFields': []});
+    FirebaseFirestore.instance.collection('list/$entityId/index').add(
+        {'type': indexTypes[0], 'entityIndexFields': [], 'validFields': []});
   }
 
   void changeType(
       QueryDocumentSnapshot<Map<String, dynamic>> map, String? type) {
     if (type == indexTypes[0]) {
-      map.reference.update({'type': type, 'entityIndexFields': []});
-    } else if (type == indexTypes[1]) {
       map.reference
-          .update({'type': type, 'entityIndexFields': [], 'numberOfNames': 1});
+          .update({'type': type, 'entityIndexFields': [], 'validFields': []});
+    } else if (type == indexTypes[1]) {
+      map.reference.update({
+        'type': type,
+        'entityIndexFields': [],
+        'validFields': [],
+        'numberOfNames': 1
+      });
     } else {
-      map.reference.update({'type': type, 'entityIndexFields': []});
+      map.reference
+          .update({'type': type, 'entityIndexFields': [], 'validFields': []});
     }
   }
 
@@ -70,12 +75,14 @@ class ListIndexing extends ConsumerWidget {
     String type = document.data()['type'];
     Widget widget;
     if (type == indexTypes[0]) {
-      widget = IndexingSingleFieldForm(document, editings, textSelections);
-    } else if (type == indexTypes[1]) {
-      widget = IndexingMultipleFieldsForm(document, editings, textSelections);
-    } else {
       widget =
-          IndexingArrayOfValuesFieldForm(document, editings, textSelections);
+          IndexingSingleFieldForm(entityId, document, editings, textSelections);
+    } else if (type == indexTypes[1]) {
+      widget = IndexingMultipleFieldsForm(
+          entityId, document, editings, textSelections);
+    } else {
+      widget = IndexingArrayOfValuesFieldForm(
+          entityId, document, editings, textSelections);
     }
     return widget;
   }
@@ -86,7 +93,7 @@ class ListIndexing extends ConsumerWidget {
         // color: Colors.red,
         child: Column(children: [
           Column(
-              children: ref.watch(colSP('list/$listId/index')).when(
+              children: ref.watch(colSP('list/$entityId/index')).when(
                   loading: () => [Container()],
                   error: (e, s) => [ErrorWidget(e)],
                   data: (entities) => entities.docs.map((entry) {

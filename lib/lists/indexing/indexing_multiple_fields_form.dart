@@ -8,23 +8,30 @@ import 'indexing_textfield.dart';
 
 class IndexingMultipleFieldsForm extends IndexingForm {
   const IndexingMultipleFieldsForm(
+      String entityId,
       QueryDocumentSnapshot<Map<String, dynamic>> document,
       StateNotifierProvider<GenericStateNotifier<Map<String, bool>>,
               Map<String, bool>>
           editings,
       Map<String, Map<String, TextSelection>> textSelections)
-      : super(document, editings, textSelections);
+      : super(entityId, document, editings, textSelections);
 
   void _updateNumberOfNames(int numberOfNames) {
-    List<dynamic> newList = [];
+    List<dynamic> newEntityIndexFields = [];
+    List<dynamic> newValidFields = [];
     List<dynamic> entityIndexFields = document.data()['entityIndexFields'];
+    List<dynamic> validFields = document.data()['validFields'];
     for (int i = 0; i < numberOfNames; i++) {
       if (i < entityIndexFields.length) {
-        newList.add(entityIndexFields[i]);
+        newEntityIndexFields.add(entityIndexFields[i]);
+        newValidFields.add(validFields[i]);
       }
     }
-    document.reference
-        .update({'numberOfNames': numberOfNames, 'entityIndexFields': newList});
+    document.reference.update({
+      'numberOfNames': numberOfNames,
+      'entityIndexFields': newEntityIndexFields,
+      'validFields': newValidFields
+    });
   }
 
   Widget _preview(WidgetRef ref) {
@@ -102,7 +109,9 @@ class IndexingMultipleFieldsForm extends IndexingForm {
             child: Padding(
                 padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
                 child: Text('Name ${i + 1}'))),
-        Flexible(flex: 1, child: IndexingTextField(document, i, textSelections))
+        Flexible(
+            flex: 1,
+            child: IndexingTextField(entityId, document, i, textSelections))
       ]));
     }
     children.add(_preview(ref));

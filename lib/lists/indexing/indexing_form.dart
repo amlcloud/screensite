@@ -5,12 +5,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../state/generic_state_notifier.dart';
 
 abstract class IndexingForm extends ConsumerWidget {
+  final String entityId;
   final QueryDocumentSnapshot<Map<String, dynamic>> document;
   final StateNotifierProvider<GenericStateNotifier<Map<String, bool>>,
       Map<String, bool>> editings;
   final Map<String, Map<String, TextSelection>> textSelections;
 
-  const IndexingForm(this.document, this.editings, this.textSelections);
+  const IndexingForm(
+      this.entityId, this.document, this.editings, this.textSelections);
 
   void editing(WidgetRef ref, bool editing) {
     Map<String, bool> map = ref.read(editings);
