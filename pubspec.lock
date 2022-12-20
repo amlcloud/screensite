@@ -154,7 +154,7 @@ packages:
       name: firebase_auth
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.1.5"
+    version: "4.0.1"
   firebase_auth_platform_interface:
     dependency: transitive
     description:
@@ -168,7 +168,7 @@ packages:
       name: firebase_auth_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.1.3"
+    version: "5.0.1"
   firebase_core:
     dependency: "direct main"
     description:
@@ -349,17 +349,8 @@ packages:
     dependency: "direct main"
     description:
       path: login
-      ref: main_signup
-      resolved-ref: fdf0c8620ee3dd0682f7f13e039cd9e2d0887a73
-      url: "https://github.com/amlcloud/flutter-lib.git"
-    source: git
-    version: "0.0.1"
-  logo:
-    dependency: "direct main"
-    description:
-      path: logo
-      ref: main_signup
-      resolved-ref: fdf0c8620ee3dd0682f7f13e039cd9e2d0887a73
+      ref: main
+      resolved-ref: "338cf547cb7f216b6ac9826561a7a910b927b059"
       url: "https://github.com/amlcloud/flutter-lib.git"
     source: git
     version: "0.0.1"

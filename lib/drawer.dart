@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:screensite/search/search_page.dart';
 import 'package:screensite/lists/lists_page.dart';
-import 'package:logo/logo.dart';
 
 class TheDrawer {
   static Widget buildDrawer(BuildContext context) {
@@ -11,7 +10,7 @@ class TheDrawer {
         children: <Widget>[
           DrawerHeader(
               child: Container(
-            child: Logo(),
+            child: Text('Sanctions'), //Logo(),
             // Column(children: <Widget>[
             //   Material(
             //     child: Image.asset("amlcloud-lg.png", height: 50, width: 50),
