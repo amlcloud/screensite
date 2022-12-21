@@ -51,27 +51,7 @@ class IndexingMultipleFieldsForm extends IndexingForm {
   @override
   Widget read(WidgetRef ref) {
     List<Widget> children = [];
-    int numberOfNames = document.data()['numberOfNames'];
-    List<dynamic> entityIndexFields = document.data()['entityIndexFields'];
-    for (int i = 0; i < numberOfNames; i++) {
-      children.add(Row(children: [
-        Container(
-            width: 80,
-            child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
-                child: Text('Name ${i + 1}'))),
-        Padding(
-            padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
-            child:
-                Text(i < entityIndexFields.length ? entityIndexFields[i] : ''))
-      ]));
-    }
     children.add(_preview(ref));
-    children.add(Row(children: [
-      Expanded(
-          child: TextButton(
-              onPressed: () => {editing(ref, true)}, child: Text('Edit'))),
-    ]));
     return Column(children: children);
   }
 
@@ -115,15 +95,6 @@ class IndexingMultipleFieldsForm extends IndexingForm {
       ]));
     }
     children.add(_preview(ref));
-    children.add(Row(children: [
-      Expanded(
-          child: TextButton(
-              onPressed: () => {editing(ref, false)}, child: Text('Back'))),
-      Expanded(
-          child: TextButton(
-              onPressed: () => {document.reference.delete()},
-              child: Text('Delete')))
-    ]));
     return Column(children: children);
   }
 }

@@ -28,49 +28,6 @@ class ListIndexing extends ConsumerWidget {
         {'type': indexTypes[0], 'entityIndexFields': [], 'validFields': []});
   }
 
-  void changeType(
-      QueryDocumentSnapshot<Map<String, dynamic>> map, String? type) {
-    if (type == indexTypes[0]) {
-      map.reference
-          .update({'type': type, 'entityIndexFields': [], 'validFields': []});
-    } else if (type == indexTypes[1]) {
-      map.reference.update({
-        'type': type,
-        'entityIndexFields': [],
-        'validFields': [],
-        'numberOfNames': 1
-      });
-    } else {
-      map.reference
-          .update({'type': type, 'entityIndexFields': [], 'validFields': []});
-    }
-  }
-
-  Widget edit(QueryDocumentSnapshot<Map<String, dynamic>> map) {
-    return DropdownButton<String>(
-        isExpanded: true,
-        value: map.data()['type'],
-        items: indexTypes.map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-        onChanged: (String? value) {
-          changeType(map, value);
-        });
-  }
-
-  Widget inputType(QueryDocumentSnapshot<Map<String, dynamic>> map) {
-    return Row(children: [
-      Container(
-        width: 80,
-        child: Text('Input Type'),
-      ),
-      Flexible(flex: 1, child: edit(map))
-    ]);
-  }
-
   Widget content(QueryDocumentSnapshot<Map<String, dynamic>> document) {
     String type = document.data()['type'];
     Widget widget;
@@ -97,11 +54,7 @@ class ListIndexing extends ConsumerWidget {
                   loading: () => [Container()],
                   error: (e, s) => [ErrorWidget(e)],
                   data: (entities) => entities.docs.map((entry) {
-                        return Column(children: [
-                          inputType(entry),
-                          content(entry),
-                          Divider()
-                        ]);
+                        return Column(children: [content(entry), Divider()]);
                       }).toList())),
           TextButton(onPressed: () => {add(ref)}, child: Text('Add'))
         ]),

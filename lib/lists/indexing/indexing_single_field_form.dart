@@ -20,16 +20,6 @@ class IndexingSingleFieldForm extends IndexingForm {
   Widget read(WidgetRef ref) {
     List<dynamic> entityIndexFields = document.data()['entityIndexFields'];
     return Column(children: [
-      Row(children: [
-        Container(
-            width: 80,
-            child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
-                child: Text('Full Name'))),
-        Padding(
-            padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
-            child: Text(entityIndexFields.isEmpty ? '' : entityIndexFields[0]))
-      ]),
       Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
         Container(
             width: 80,
@@ -39,11 +29,6 @@ class IndexingSingleFieldForm extends IndexingForm {
         Padding(
             padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
             child: Text(entityIndexFields.isEmpty ? '' : entityIndexFields[0]))
-      ]),
-      Row(children: [
-        Expanded(
-            child: TextButton(
-                onPressed: () => {editing(ref, true)}, child: Text('Edit'))),
       ])
     ]);
   }
@@ -71,15 +56,6 @@ class IndexingSingleFieldForm extends IndexingForm {
         Padding(
             padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
             child: Text(entityIndexFields.isEmpty ? '' : entityIndexFields[0]))
-      ]),
-      Row(children: [
-        Expanded(
-            child: TextButton(
-                onPressed: () => {editing(ref, false)}, child: Text('Back'))),
-        Expanded(
-            child: TextButton(
-                onPressed: () => {document.reference.delete()},
-                child: Text('Delete')))
       ])
     ]);
   }
