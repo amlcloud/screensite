@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:screensite/controls/doc_field_text_edit.dart';
+import 'package:screensite/theme.dart';
 
 class Sandbox extends StatelessWidget {
   const Sandbox({Key? key}) : super(key: key);
@@ -8,11 +9,7 @@ class Sandbox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-            border: Border.all(
-              color: Colors.grey,
-            )),
+        decoration: RoundedCornerContainer.containerStyle,
         child: ListView(
           padding: EdgeInsets.zero,
           shrinkWrap: true,

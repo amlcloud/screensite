@@ -97,7 +97,7 @@ class PepAdminPage extends ConsumerWidget {
                           child: Container(
                               width: double.infinity,
                               padding: const EdgeInsets.all(50.0),
-                              color: Color.fromARGB(255, 225, 219, 219),
+                              color: Theme.of(context).colorScheme.surface,
                               child: Text('expected output...')),
                         ),
                       ),
@@ -114,7 +114,7 @@ class PepAdminPage extends ConsumerWidget {
                           child: Container(
                               width: double.infinity,
                               padding: const EdgeInsets.all(50.0),
-                              color: Color.fromARGB(255, 225, 219, 219),
+                              color: Theme.of(context).colorScheme.surface,
                               child: Text('actual output...')),
                         ),
                       ),
@@ -131,7 +131,7 @@ class PepAdminPage extends ConsumerWidget {
                           child: Container(
                               width: double.infinity,
                               padding: const EdgeInsets.all(50.0),
-                              color: Color.fromARGB(255, 225, 219, 219),
+                              color: Theme.of(context).colorScheme.surface,
                               child: Text('comment output...')),
                         ),
                       ),

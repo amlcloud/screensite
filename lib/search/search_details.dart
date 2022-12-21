@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:screensite/providers/firestore.dart';
 import 'package:screensite/search/search_results.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
+import 'package:screensite/theme.dart';
 
 final activeEntity =
     StateNotifierProvider<GenericStateNotifier<String?>, String?>(
@@ -24,11 +25,7 @@ class SearchDetails extends ConsumerWidget {
           loading: () => Container(),
           error: (e, s) => ErrorWidget(e),
           data: (searchDoc) => Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
-                  border: Border.all(
-                    color: Colors.grey,
-                  )),
+              decoration: RoundedCornerContainer.containerStyle,
               child: SingleChildScrollView(
                   child: Column(
                 children: [Text(searchDoc.id), SearchResults(searchDoc.id)],

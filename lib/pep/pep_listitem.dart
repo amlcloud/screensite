@@ -20,7 +20,6 @@ class PepListItem extends ConsumerWidget {
             : Expanded(
                 child: Card(
                   child: InkWell(
-                    splashColor: Colors.blue.withAlpha(30),
                     onTap: () {
                       ref.read(activePepLib.notifier).value = entityId;
                     },
@@ -46,8 +45,6 @@ class PepListItem extends ConsumerWidget {
                                         alignment: Alignment.centerRight,
                                         child: IconButton(
                                           icon: Icon(Icons.help_outline),
-                                          hoverColor:
-                                              Colors.white.withOpacity(0.3),
                                           onPressed: () {},
                                         )))
                               ]),
