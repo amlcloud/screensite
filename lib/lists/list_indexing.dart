@@ -24,8 +24,12 @@ class ListIndexing extends ConsumerWidget {
   ListIndexing(this.entityId);
 
   void add(WidgetRef ref) {
-    FirebaseFirestore.instance.collection('list/$entityId/index').add(
-        {'type': indexTypes[0], 'entityIndexFields': [], 'validFields': []});
+    FirebaseFirestore.instance.collection('list/$entityId/index').add({
+      'type': indexTypes[0],
+      'entityIndexFields': [],
+      'validFields': [],
+      'createdTimestamp': DateTime.now().millisecondsSinceEpoch
+    });
   }
 
   Widget content(QueryDocumentSnapshot<Map<String, dynamic>> document) {
@@ -50,12 +54,17 @@ class ListIndexing extends ConsumerWidget {
         // color: Colors.red,
         child: Column(children: [
           Column(
-              children: ref.watch(colSP('list/$entityId/index')).when(
-                  loading: () => [Container()],
-                  error: (e, s) => [ErrorWidget(e)],
-                  data: (entities) => entities.docs.map((entry) {
-                        return Column(children: [content(entry), Divider()]);
-                      }).toList())),
+              children: ref
+                  .watch(filteredColSP(QueryParams(
+                      path: 'list/$entityId/index',
+                      orderBy: 'createdTimestamp')))
+                  .when(
+                      loading: () => [Container()],
+                      error: (e, s) => [ErrorWidget(e)],
+                      data: (entities) => entities.docs.map((entry) {
+                            return Column(
+                                children: [content(entry), Divider()]);
+                          }).toList())),
           TextButton(onPressed: () => {add(ref)}, child: Text('Add'))
         ]),
       );
