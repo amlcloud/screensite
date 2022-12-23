@@ -16,7 +16,7 @@ class Timeline extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) => SizedBox(
       height: 100,
       child: Stack(children: [
-        ...buildGraph(ref),
+        ...buildGraph(ref, context),
         ...days
             .asMap()
             .entries
@@ -29,7 +29,7 @@ class Timeline extends ConsumerWidget {
             .toList()
       ]));
 
-  List<Widget> buildGraph(WidgetRef ref) => ref
+  List<Widget> buildGraph(WidgetRef ref, BuildContext context) => ref
       .watch(entityTrnDailyTotalsSP(
           EntityFilter(startDate.dateTime, endDate.dateTime, entityId)))
       .when(
@@ -46,7 +46,7 @@ class Timeline extends ConsumerWidget {
                   child: Container(
                     height: 2,
                     width: 2,
-                    color: Colors.grey,
+                    color: Theme.of(context).colorScheme.surface,
                   )))
               .toList());
 }
