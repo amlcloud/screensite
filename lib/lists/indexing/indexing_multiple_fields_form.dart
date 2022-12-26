@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:screensite/theme.dart';
 
 import '../../state/generic_state_notifier.dart';
 import 'indexing_form.dart';
@@ -37,14 +38,8 @@ class IndexingMultipleFieldsForm extends IndexingForm {
   Widget _preview(WidgetRef ref) {
     List<dynamic> entityIndexFields = document.data()['entityIndexFields'];
     return Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-      Container(
-          width: 80,
-          child: Padding(
-              padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
-              child: Text('Index by'))),
-      Padding(
-          padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
-          child: Text(entityIndexFields.join(' ')))
+      Container(width: 80, child: CustomPadding(child: Text('Index by'))),
+      CustomPadding(child: Text(entityIndexFields.join(' ')))
     ]);
   }
 
@@ -85,10 +80,7 @@ class IndexingMultipleFieldsForm extends IndexingForm {
     for (int i = 0; i < numberOfNames; i++) {
       children.add(Row(children: [
         Container(
-            width: 80,
-            child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
-                child: Text('Name ${i + 1}'))),
+            width: 80, child: CustomPadding(child: Text('Name ${i + 1}'))),
         Flexible(
             flex: 1,
             child: IndexingTextField(entityId, document, i, textSelections))
