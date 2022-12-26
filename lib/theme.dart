@@ -86,3 +86,18 @@ class RoundedCornerContainer {
       borderRadius: BorderRadius.all(Radius.circular(8)),
       border: Border.all(color: Colors.grey));
 }
+
+//custom padding widget for indexing
+class CustomPadding extends StatelessWidget {
+  final Widget? child;
+
+  const CustomPadding({this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
+      child: child,
+    );
+  }
+}

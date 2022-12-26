@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:screensite/theme.dart';
 
 import '../../state/generic_state_notifier.dart';
 import 'indexing_form.dart';
@@ -21,13 +22,8 @@ class IndexingSingleFieldForm extends IndexingForm {
     List<dynamic> entityIndexFields = document.data()['entityIndexFields'];
     return Column(children: [
       Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-        Container(
-            width: 80,
-            child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
-                child: Text('Index by'))),
-        Padding(
-            padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
+        Container(width: 80, child: CustomPadding(child: Text('Index by'))),
+        CustomPadding(
             child: Text(entityIndexFields.isEmpty ? '' : entityIndexFields[0]))
       ])
     ]);
@@ -38,23 +34,14 @@ class IndexingSingleFieldForm extends IndexingForm {
     List<dynamic> entityIndexFields = document.data()['entityIndexFields'];
     return Column(children: [
       Row(children: [
-        Container(
-            width: 80,
-            child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
-                child: Text('Full Name'))),
+        Container(width: 80, child: CustomPadding(child: Text('Full Name'))),
         Flexible(
             flex: 1,
             child: IndexingTextField(entityId, document, 0, textSelections))
       ]),
       Row(children: [
-        Container(
-            width: 80,
-            child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
-                child: Text('Index by'))),
-        Padding(
-            padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
+        Container(width: 80, child: CustomPadding(child: Text('Index by'))),
+        CustomPadding(
             child: Text(entityIndexFields.isEmpty ? '' : entityIndexFields[0]))
       ])
     ]);
