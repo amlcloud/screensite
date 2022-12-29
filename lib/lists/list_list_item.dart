@@ -120,7 +120,7 @@ class ListItem extends ConsumerWidget {
                                         hintText: 'Entity Name',
                                         validator: (val) {
                                           if (val == null || val.isValidName)
-                                            return 'Enter valid name';
+                                            return 'Enter valid name with chars only';
                                         },
                                       ),
                                       // TextFormField(
