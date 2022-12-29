@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // ignore: must_be_immutable
 class IndexingTextField extends ConsumerWidget {
+  final String entityId;
   final QueryDocumentSnapshot<Map<String, dynamic>> document;
   final int selectedIndex;
   final Map<String, Map<String, TextSelection>> maps;
@@ -13,19 +14,57 @@ class IndexingTextField extends ConsumerWidget {
   TextEditingController textEditingController = TextEditingController();
   Timer? timer;
 
-  IndexingTextField(this.document, this.selectedIndex, this.maps);
+  IndexingTextField(
+      this.entityId, this.document, this.selectedIndex, this.maps);
 
-  void _update() {
+  void _update(bool valid) {
     List<dynamic> entityIndexFields = document.data()['entityIndexFields'];
+    List<dynamic> validFields = document.data()['validFields'];
+    String text = textEditingController.text;
     if (selectedIndex < entityIndexFields.length) {
-      entityIndexFields[selectedIndex] = textEditingController.text;
+      entityIndexFields[selectedIndex] = text;
+      validFields[selectedIndex] = valid;
     } else {
-      entityIndexFields.add(textEditingController.text);
+      for (int i = entityIndexFields.length; i <= selectedIndex; i++) {
+        entityIndexFields.add('');
+        validFields.add(false);
+      }
+      entityIndexFields[selectedIndex] = text;
+      validFields[selectedIndex] = valid;
     }
-    document.reference.update({'entityIndexFields': entityIndexFields});
+    document.reference.update(
+        {'entityIndexFields': entityIndexFields, 'validFields': validFields});
   }
 
-  void onChanged(String text) {
+  void _validate() {
+    List<dynamic> entityIndexFields = document.data()['entityIndexFields'];
+    String text = textEditingController.text;
+    if (text.isEmpty) {
+      _update(false);
+    } else {
+      bool duplicated = false;
+      for (int i = 0; i < entityIndexFields.length; i++) {
+        if (i != selectedIndex && entityIndexFields[i] == text) {
+          duplicated = true;
+          break;
+        }
+      }
+      if (duplicated) {
+        _update(false);
+      } else {
+        FirebaseFirestore.instance
+            .collection('list/${entityId}/item')
+            .orderBy(text)
+            .limit(1)
+            .snapshots()
+            .listen((event) {
+          _update(event.docs.isNotEmpty);
+        });
+      }
+    }
+  }
+
+  void _onChanged(String text) {
     Map<String, TextSelection>? map = maps[document.id];
     if (map == null) {
       map = {};
@@ -36,17 +75,26 @@ class IndexingTextField extends ConsumerWidget {
       timer?.cancel();
     }
     timer = Timer(const Duration(milliseconds: 500), () {
-      _update();
+      _validate();
     });
   }
 
-  void onFocusChange(bool hasFocus) {
+  void _onFocusChange(bool hasFocus) {
     if (!hasFocus) {
       if (timer?.isActive ?? false) {
         timer?.cancel();
       }
-      _update();
+      _validate();
     }
+  }
+
+  bool isValid() {
+    bool valid = true;
+    List<dynamic> validFields = document.data()['validFields'];
+    if (selectedIndex < validFields.length) {
+      valid = validFields[selectedIndex];
+    }
+    return valid;
   }
 
   @override
@@ -64,13 +112,18 @@ class IndexingTextField extends ConsumerWidget {
         }
       }
     }
-    var textField = TextField(
-      controller: textEditingController,
-      onChanged: onChanged,
-    );
-    return Focus(
-      onFocusChange: onFocusChange,
-      child: textField,
-    );
+    return Container(
+        decoration: BoxDecoration(
+            border:
+                Border.all(color: isValid() ? Colors.transparent : Colors.red)),
+        child: Focus(
+          onFocusChange: _onFocusChange,
+          child: Column(children: [
+            TextField(
+              controller: textEditingController,
+              onChanged: _onChanged,
+            )
+          ]),
+        ));
   }
 }

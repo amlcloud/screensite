@@ -44,15 +44,12 @@ class MyAppBar {
                                 //     behavior: HitTestBehavior.translucent,
                                 //onTap: () => navigatePage(text, context),
                                 //child:
-                                Text(t.toUpperCase(),
-                                    overflow: TextOverflow.fade,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                        color:
-                                            // Theme.of(context).brightness == Brightness.light
-                                            //     ? Color(DARK_GREY)
-                                            //:
-                                            Colors.white))))
+                                Text(
+                              t.toUpperCase(),
+                              overflow: TextOverflow.fade,
+                              softWrap: false,
+                              style: Theme.of(context).textTheme.titleSmall,
+                            )))
                         .toList(),
                     onTap: (index) {
                       Navigator.of(context).pushNamed(_tabs[index]);

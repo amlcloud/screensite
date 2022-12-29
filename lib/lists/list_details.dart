@@ -4,6 +4,7 @@ import 'package:screensite/lists/list_info.dart';
 import 'package:screensite/lists/list_entitylistview.dart';
 import 'package:screensite/lists/list_indexing.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
+import 'package:screensite/theme.dart';
 
 import 'list_count.dart';
 
@@ -20,11 +21,7 @@ class ListDetails extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-          border: Border.all(
-            color: Colors.grey,
-          )),
+      decoration: RoundedCornerContainer.containerStyle,
       child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
