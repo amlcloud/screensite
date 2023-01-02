@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:screensite/controls/doc_field_text_edit.dart';
 import 'package:screensite/lists/lists_page.dart';
 import 'package:screensite/providers/firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -116,39 +117,30 @@ class ListItem extends ConsumerWidget {
                                   key: _formKey,
                                   child: Column(
                                     children: <Widget>[
-                                      CustomFormField(
-                                        hintText: 'Entity Name',
-                                        validator: (val) {
-                                          if (val == null || val.isValidName)
-                                            return 'Enter valid name with chars only';
-                                        },
-                                      ),
-                                      // TextFormField(
-                                      //   // controller: id_inp,
-                                      //   decoration: InputDecoration(
-                                      //       labelText: 'Entity Name'),
-                                      // ),
-                                      CustomFormField(
-                                        hintText: 'Entity address',
-                                        validator: (val) {
-                                          if (val == null || val.isEmpty)
-                                            return 'Enter Entity address';
-                                        },
-                                      ),
-                                      CustomFormField(
-                                        hintText: 'Data Source',
-                                        validator: (val) {
-                                          if (val == null || val.isEmpty)
-                                            return 'Enter url of Data Source';
-                                        },
-                                      ),
-                                      CustomFormField(
-                                        hintText: 'Website',
-                                        validator: (val) {
-                                          if (val == null || val.isEmpty)
-                                            return 'Enter URL of sanctions list';
-                                        },
-                                      ),
+                                      DocFieldTextEdit(
+                                          FirebaseFirestore.instance
+                                              .doc('list/${entityId}'),
+                                          'name',
+                                          decoration: InputDecoration(
+                                              hintText: "Entity Name")),
+                                      DocFieldTextEdit(
+                                          FirebaseFirestore.instance
+                                              .doc('list/${entityId}'),
+                                          'address',
+                                          decoration: InputDecoration(
+                                              hintText: "Entity address")),
+                                      DocFieldTextEdit(
+                                          FirebaseFirestore.instance
+                                              .doc('list/${entityId}'),
+                                          'dataSource',
+                                          decoration: InputDecoration(
+                                              hintText: "Data Source")),
+                                      DocFieldTextEdit(
+                                          FirebaseFirestore.instance
+                                              .doc('list/${entityId}'),
+                                          'website',
+                                          decoration: InputDecoration(
+                                              hintText: "Website")),
                                     ],
                                   ),
                                 ),
@@ -156,47 +148,10 @@ class ListItem extends ConsumerWidget {
                               actions: [
                                 ElevatedButton(
                                   onPressed: () {
-                                    if (_formKey.currentState!.validate()) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: const Text(
-                                              '//TODO implement save to firestore, check in dev workshop'),
-                                          action: SnackBarAction(
-                                            label: 'Action',
-                                            onPressed: () {
-                                              // Code to execute.
-                                            },
-                                          ),
-                                        ),
-                                      );
-                                    }
+                                    Navigator.of(context).pop();
                                   },
                                   child: const Text('Done'),
                                 )
-                                // TextButton(
-                                //     child: Text("Done"),
-                                //     onPressed: () {
-                                //       // FirebaseFirestore.instance
-                                //       //     .collection('batch')
-                                //       //     .add({
-                                //       //   'id': id_inp.text.toString(),
-                                //       //   'name': name_inp.text.toString(),
-                                //       //   'desc': desc_inp.text.toString(),
-                                //       //   'time Created':
-                                //       //       FieldValue.serverTimestamp(),
-                                //       //   'author': FirebaseAuth
-                                //       //       .instance.currentUser!.uid,
-                                //       // }).then((value) => {
-                                //       //           if (value != null)
-                                //       //             {
-                                //       //               FirebaseFirestore.instance
-                                //       //                   .collection('batch')
-                                //       //             }
-                                //       //         });
-
-                                //       // Navigator.of(context).pop();
-                                //     })
                               ],
                             );
                           });
