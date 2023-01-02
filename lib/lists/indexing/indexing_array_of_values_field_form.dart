@@ -35,7 +35,7 @@ class IndexingArrayOfValuesFieldForm extends IndexingForm {
     List<dynamic> entityIndexFields = document.data()['entityIndexFields'];
     return Column(children: [
       Row(children: [
-        Container(width: 80, child: CustomPadding(child: Text('Full Name'))),
+        Container(width: 80, child: CustomPadding(child: Text('Array Field'))),
         Flexible(
             flex: 1,
             child: IndexingTextField(entityId, document, 0, textSelections))
