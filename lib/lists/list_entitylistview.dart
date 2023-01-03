@@ -48,7 +48,9 @@ class EntityListView extends ConsumerWidget {
                               : 'Location: undefined'),
                           isThreeLine: true,
                           onTap: () {
-                            ref.read(selectedItem).value = entity.data();
+                            ref.read(selectedItem).value = Map.fromEntries(
+                                entity.data().entries.toList()
+                                  ..sort((e1, e2) => e1.key.compareTo(e2.key)));
                           }))
                       .toList())))
     ]);
