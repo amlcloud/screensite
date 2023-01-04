@@ -9,7 +9,6 @@ import 'package:jiffy/jiffy.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/gestures.dart';
 
-import '../controls/custom_form_field.dart';
 import '../extensions/string_validations.dart';
 import '../search/search_details.dart';
 
@@ -102,60 +101,61 @@ class ListItem extends ConsumerWidget {
                                 })))
                     ]),
                 InkWell(
-                    child: Icon(Icons.edit),
-                    onTap: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            final _formKey = GlobalKey<FormState>();
-                            return AlertDialog(
-                              scrollable: true,
-                              title: Text('Sanction list entity fields'),
-                              content: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Form(
-                                  key: _formKey,
-                                  child: Column(
-                                    children: <Widget>[
-                                      DocFieldTextEdit(
-                                          FirebaseFirestore.instance
-                                              .doc('list/${entityId}'),
-                                          'name',
-                                          decoration: InputDecoration(
-                                              hintText: "Entity Name")),
-                                      DocFieldTextEdit(
-                                          FirebaseFirestore.instance
-                                              .doc('list/${entityId}'),
-                                          'address',
-                                          decoration: InputDecoration(
-                                              hintText: "Entity address")),
-                                      DocFieldTextEdit(
-                                          FirebaseFirestore.instance
-                                              .doc('list/${entityId}'),
-                                          'dataSource',
-                                          decoration: InputDecoration(
-                                              hintText: "Data Source")),
-                                      DocFieldTextEdit(
-                                          FirebaseFirestore.instance
-                                              .doc('list/${entityId}'),
-                                          'website',
-                                          decoration: InputDecoration(
-                                              hintText: "Website")),
-                                    ],
+                    child: IconButton(
+                        icon: const Icon(Icons.edit),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                final _formKey = GlobalKey<FormState>();
+                                return AlertDialog(
+                                  scrollable: true,
+                                  title: Text('Sanction list entity fields'),
+                                  content: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Form(
+                                      key: _formKey,
+                                      child: Column(
+                                        children: <Widget>[
+                                          DocFieldTextEdit(
+                                              FirebaseFirestore.instance
+                                                  .doc('list/${entityId}'),
+                                              'name',
+                                              decoration: InputDecoration(
+                                                  hintText: "Entity Name")),
+                                          DocFieldTextEdit(
+                                              FirebaseFirestore.instance
+                                                  .doc('list/${entityId}'),
+                                              'address',
+                                              decoration: InputDecoration(
+                                                  hintText: "Entity address")),
+                                          DocFieldTextEdit(
+                                              FirebaseFirestore.instance
+                                                  .doc('list/${entityId}'),
+                                              'dataSource',
+                                              decoration: InputDecoration(
+                                                  hintText: "Data Source")),
+                                          DocFieldTextEdit(
+                                              FirebaseFirestore.instance
+                                                  .doc('list/${entityId}'),
+                                              'website',
+                                              decoration: InputDecoration(
+                                                  hintText: "Website")),
+                                        ],
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                              actions: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text('Done'),
-                                )
-                              ],
-                            );
-                          });
-                    }),
+                                  actions: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('Done'),
+                                    )
+                                  ],
+                                );
+                              });
+                        })),
               ])));
   }
 
