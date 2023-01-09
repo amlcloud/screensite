@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:screensite/lists/indexing/indexing_index_by.dart';
 
+import '../../controls/doc_field_text_edit.dart';
+import '../../providers/firestore.dart';
 import '../../state/generic_state_notifier.dart';
 import 'indexing_form.dart';
-import 'indexing_textfield.dart';
 
 class IndexingMultipleFieldsForm extends IndexingForm {
   const IndexingMultipleFieldsForm(
@@ -12,89 +14,103 @@ class IndexingMultipleFieldsForm extends IndexingForm {
       QueryDocumentSnapshot<Map<String, dynamic>> document,
       StateNotifierProvider<GenericStateNotifier<Map<String, bool>>,
               Map<String, bool>>
-          editings,
-      Map<String, Map<String, TextSelection>> textSelections)
-      : super(entityId, document, editings, textSelections);
+          editings)
+      : super(entityId, document, editings);
 
-  void _updateNumberOfNames(int numberOfNames) {
-    List<dynamic> newEntityIndexFields = [];
-    List<dynamic> newValidFields = [];
-    List<dynamic> entityIndexFields = document.data()['entityIndexFields'];
-    List<dynamic> validFields = document.data()['validFields'];
-    for (int i = 0; i < numberOfNames; i++) {
-      if (i < entityIndexFields.length) {
-        newEntityIndexFields.add(entityIndexFields[i]);
-        newValidFields.add(validFields[i]);
+  void _updateNumberOfNames(int numberOfNames, int length) {
+    CollectionReference collectionRef =
+        document.reference.collection('entityIndexFields');
+    if (length < numberOfNames) {
+      for (int i = length; i < numberOfNames; i++) {
+        collectionRef.add({
+          'value': '',
+          'createdTimestamp': DateTime.now().millisecondsSinceEpoch
+        });
       }
+    } else if (length > numberOfNames) {
+      collectionRef.orderBy('createdTimestamp').get().then((value) {
+        final List<int> indices =
+            Iterable<int>.generate(value.docs.length).toList();
+        indices.forEach((index) {
+          if (index >= numberOfNames) {
+            value.docs.elementAt(index).reference.delete();
+          }
+        });
+      });
     }
-    document.reference.update({
-      'numberOfNames': numberOfNames,
-      'entityIndexFields': newEntityIndexFields,
-      'validFields': newValidFields
-    });
   }
 
-  Widget _preview(WidgetRef ref) {
-    List<dynamic> entityIndexFields = document.data()['entityIndexFields'];
-    return Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+  Widget numberOfNames(QuerySnapshot<Map<String, dynamic>> data) {
+    return Row(children: [
       Container(
-          width: 80,
-          child: Padding(
-              padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
-              child: Text('Index by'))),
-      Padding(
-          padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
-          child: Text(entityIndexFields.join(' ')))
+        width: 128,
+        child: Text('Number of names'),
+      ),
+      data.docs.isEmpty
+          ? Container()
+          : Flexible(
+              flex: 1,
+              child: DropdownButton<String>(
+                  isExpanded: true,
+                  value: '${data.docs.length}',
+                  items: [for (int i = 1; i <= 10; i++) '$i']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (String? value) {
+                    if (value != null) {
+                      _updateNumberOfNames(int.parse(value), data.docs.length);
+                    }
+                  }))
     ]);
   }
 
   @override
   Widget read(WidgetRef ref) {
-    List<Widget> children = [];
-    children.add(_preview(ref));
-    return Column(children: children);
+    return Column(children: [IndexingIndexBy(entityId, document.id)]);
   }
 
   @override
   Widget edit(WidgetRef ref) {
     List<Widget> children = [];
-    int numberOfNames = document.data()['numberOfNames'];
-    children.add(Row(children: [
-      Container(
-        width: 128,
-        child: Text('Number of names'),
-      ),
-      Flexible(
-          flex: 1,
-          child: DropdownButton<String>(
-              isExpanded: true,
-              value: '$numberOfNames',
-              items: [for (int i = 1; i <= 10; i++) '$i']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (String? value) {
-                if (value != null) {
-                  _updateNumberOfNames(int.parse(value));
-                }
-              }))
-    ]));
-    for (int i = 0; i < numberOfNames; i++) {
-      children.add(Row(children: [
-        Container(
-            width: 80,
-            child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
-                child: Text('Name ${i + 1}'))),
-        Flexible(
-            flex: 1,
-            child: IndexingTextField(entityId, document, i, textSelections))
-      ]));
-    }
-    children.add(_preview(ref));
+    children.addAll(ref
+        .watch(filteredColSP(QueryParams(
+            path: 'list/$entityId/index/${document.id}/entityIndexFields/',
+            orderBy: 'createdTimestamp',
+            distinct: ((previous, current) {
+              for (int i = 0; i < previous.size; i++) {
+                print('${previous.docs[i].data()} ${current.docs[i].data()}');
+              }
+              print('Size: ${previous.size} ${current.size}');
+              return previous.size == current.size;
+            }))))
+        .when(
+            loading: () => [Container()],
+            error: (e, s) => [ErrorWidget(e)],
+            data: (data) {
+              List<Widget> children = [];
+              children.add(numberOfNames(data));
+              children.addAll(data.docs
+                  .asMap()
+                  .entries
+                  .map<Widget>((doc) => Row(children: [
+                        Container(
+                            width: 80,
+                            child: Padding(
+                                padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
+                                child: Text('Name ${doc.key + 1}'))),
+                        Flexible(
+                            flex: 1,
+                            child:
+                                DocFieldTextEdit(doc.value.reference, 'value'))
+                      ]))
+                  .toList());
+              return children;
+            }));
+    children.add(IndexingIndexBy(entityId, document.id));
     return Column(children: children);
   }
 }

@@ -14,14 +14,13 @@ const List<String> indexTypes = <String>[
   'Array of values'
 ];
 
+final editings = StateNotifierProvider<GenericStateNotifier<Map<String, bool>>,
+    Map<String, bool>>((ref) => GenericStateNotifier<Map<String, bool>>({}));
+
 class ListIndexing extends ConsumerWidget {
   final String entityId;
-  final Map<String, Map<String, TextSelection>> textSelections = {};
-  final editings = StateNotifierProvider<
-      GenericStateNotifier<Map<String, bool>>,
-      Map<String, bool>>((ref) => GenericStateNotifier<Map<String, bool>>({}));
 
-  ListIndexing(this.entityId);
+  const ListIndexing(this.entityId);
 
   void add(WidgetRef ref) {
     FirebaseFirestore.instance.collection('list/$entityId/index').add({
@@ -36,14 +35,11 @@ class ListIndexing extends ConsumerWidget {
     String type = document.data()['type'];
     Widget widget;
     if (type == indexTypes[0]) {
-      widget =
-          IndexingSingleFieldForm(entityId, document, editings, textSelections);
+      widget = IndexingSingleFieldForm(entityId, document, editings);
     } else if (type == indexTypes[1]) {
-      widget = IndexingMultipleFieldsForm(
-          entityId, document, editings, textSelections);
+      widget = IndexingMultipleFieldsForm(entityId, document, editings);
     } else {
-      widget = IndexingArrayOfValuesFieldForm(
-          entityId, document, editings, textSelections);
+      widget = IndexingArrayOfValuesFieldForm(entityId, document, editings);
     }
     return widget;
   }

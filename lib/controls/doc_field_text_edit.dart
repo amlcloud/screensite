@@ -9,9 +9,7 @@ class DocFieldTextEdit extends ConsumerStatefulWidget {
   final String field;
   final InputDecoration? decoration;
 
-  final TextEditingController ctrl = TextEditingController();
-
-  DocFieldTextEdit(this.docRef, this.field, {this.decoration, Key? key})
+  const DocFieldTextEdit(this.docRef, this.field, {this.decoration, Key? key})
       : super(key: key);
 
   @override
@@ -23,14 +21,16 @@ class DocFieldTextEditState extends ConsumerState<DocFieldTextEdit> {
   Timer? descSaveTimer;
   StreamSubscription? sub;
 
+  final TextEditingController ctrl = TextEditingController();
+
   @override
   void initState() {
     super.initState();
     sub = widget.docRef.snapshots().listen((event) {
       if (!event.exists) return;
       print('received ${event.data()![widget.field]}');
-      if (widget.ctrl.text != event.data()![widget.field]) {
-        widget.ctrl.text = event.data()![widget.field];
+      if (ctrl.text != event.data()![widget.field]) {
+        ctrl.text = event.data()![widget.field];
       }
     });
   }
@@ -66,7 +66,7 @@ class DocFieldTextEditState extends ConsumerState<DocFieldTextEdit> {
   Widget build(BuildContext context) {
     return TextField(
       decoration: widget.decoration,
-      controller: widget.ctrl,
+      controller: ctrl,
       onChanged: _update,
       // onSubmitted: _update,
     );
