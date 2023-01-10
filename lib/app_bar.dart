@@ -5,7 +5,7 @@ import 'package:screensite/main.dart';
 import 'package:screensite/state/theme_state_notifier.dart';
 import 'package:screensite/common.dart';
 // import 'package:userprofile/userprofile.dart';
-import 'package:logo/logo.dart';
+// import 'package:logo/logo.dart';
 
 class MyAppBar {
   static final List<String> _tabs = [
@@ -28,7 +28,7 @@ class MyAppBar {
           ? null
           : Padding(
               padding: EdgeInsets.all(10),
-              child: Logo(),
+              child: Text('Sanctions'), //Logo(),
             ),
       title: (MediaQuery.of(context).size.width < WIDE_SCREEN_WIDTH)
           ? null
@@ -44,15 +44,12 @@ class MyAppBar {
                                 //     behavior: HitTestBehavior.translucent,
                                 //onTap: () => navigatePage(text, context),
                                 //child:
-                                Text(t.toUpperCase(),
-                                    overflow: TextOverflow.fade,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                        color:
-                                            // Theme.of(context).brightness == Brightness.light
-                                            //     ? Color(DARK_GREY)
-                                            //:
-                                            Colors.white))))
+                                Text(
+                              t.toUpperCase(),
+                              overflow: TextOverflow.fade,
+                              softWrap: false,
+                              style: Theme.of(context).textTheme.titleSmall,
+                            )))
                         .toList(),
                     onTap: (index) {
                       Navigator.of(context).pushNamed(_tabs[index]);
