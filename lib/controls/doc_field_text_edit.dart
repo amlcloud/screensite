@@ -8,8 +8,16 @@ class DocFieldTextEdit extends ConsumerStatefulWidget {
   final DocumentReference<Map<String, dynamic>> docRef;
   final String field;
   final InputDecoration? decoration;
+  final void Function(String, void Function(bool))? validator;
+  final bool? valid;
+  final String? validationErrorMessage;
 
-  const DocFieldTextEdit(this.docRef, this.field, {this.decoration, Key? key})
+  const DocFieldTextEdit(this.docRef, this.field,
+      {this.decoration,
+      Key? key,
+      this.validator,
+      this.valid,
+      this.validationErrorMessage})
       : super(key: key);
 
   @override
@@ -22,6 +30,8 @@ class DocFieldTextEditState extends ConsumerState<DocFieldTextEdit> {
   StreamSubscription? sub;
 
   final TextEditingController ctrl = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  bool? valid;
 
   @override
   void initState() {
@@ -31,6 +41,10 @@ class DocFieldTextEditState extends ConsumerState<DocFieldTextEdit> {
       print('received ${event.data()![widget.field]}');
       if (ctrl.text != event.data()![widget.field]) {
         ctrl.text = event.data()![widget.field];
+        valid = widget.valid;
+        Future.delayed(Duration.zero, () {
+          _formKey.currentState?.validate();
+        });
       }
     });
   }
@@ -50,6 +64,10 @@ class DocFieldTextEditState extends ConsumerState<DocFieldTextEdit> {
       descSaveTimer!.cancel();
     }
     descSaveTimer = Timer(Duration(milliseconds: 200), () {
+      widget.validator?.call(ctrl.text, (valid) {
+        this.valid = valid;
+        _formKey.currentState?.validate();
+      });
       // if (docSnapshot.data() == null ||
       //     v != docSnapshot.data()![widget.field]) {
       Map<String, dynamic> map = {};
@@ -64,11 +82,24 @@ class DocFieldTextEditState extends ConsumerState<DocFieldTextEdit> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      decoration: widget.decoration,
-      controller: ctrl,
-      onChanged: _update,
-      // onSubmitted: _update,
-    );
+    return widget.validator == null
+        ? TextFormField(
+            decoration: widget.decoration,
+            controller: ctrl,
+            onChanged: _update,
+            // onSubmitted: _update,
+          )
+        : Form(
+            key: _formKey,
+            child: TextFormField(
+                decoration: widget.decoration,
+                controller: ctrl,
+                onChanged: _update,
+                // onSubmitted: _update,
+                validator: (value) {
+                  return valid == null || valid == true
+                      ? null
+                      : widget.validationErrorMessage ?? 'Error';
+                }));
   }
 }

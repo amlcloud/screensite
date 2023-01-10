@@ -4,18 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:screensite/controls/doc_field_text_edit.dart';
 import 'package:screensite/providers/firestore.dart';
 
-import '../../state/generic_state_notifier.dart';
 import 'indexing_form.dart';
 import 'indexing_index_by.dart';
 
 class IndexingSingleFieldForm extends IndexingForm {
   const IndexingSingleFieldForm(
-      String entityId,
-      QueryDocumentSnapshot<Map<String, dynamic>> document,
-      StateNotifierProvider<GenericStateNotifier<Map<String, bool>>,
-              Map<String, bool>>
-          editings)
-      : super(entityId, document, editings);
+      String entityId, QueryDocumentSnapshot<Map<String, dynamic>> document)
+      : super(entityId, document);
 
   @override
   Widget read(WidgetRef ref) {
@@ -49,7 +44,11 @@ class IndexingSingleFieldForm extends IndexingForm {
                             Flexible(
                                 flex: 1,
                                 child: DocFieldTextEdit(
-                                    doc.value.reference, 'value'))
+                                    doc.value.reference, 'value',
+                                    valid: doc.value['valid'],
+                                    validator: (text, callback) {
+                                  validator(doc, data, text, callback);
+                                }))
                           ]))
                       .toList());
                   children.add(IndexingIndexBy(entityId, document.id));

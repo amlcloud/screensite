@@ -5,17 +5,12 @@ import 'package:screensite/lists/indexing/indexing_index_by.dart';
 
 import '../../controls/doc_field_text_edit.dart';
 import '../../providers/firestore.dart';
-import '../../state/generic_state_notifier.dart';
 import 'indexing_form.dart';
 
 class IndexingMultipleFieldsForm extends IndexingForm {
   const IndexingMultipleFieldsForm(
-      String entityId,
-      QueryDocumentSnapshot<Map<String, dynamic>> document,
-      StateNotifierProvider<GenericStateNotifier<Map<String, bool>>,
-              Map<String, bool>>
-          editings)
-      : super(entityId, document, editings);
+      String entityId, QueryDocumentSnapshot<Map<String, dynamic>> document)
+      : super(entityId, document);
 
   void _updateNumberOfNames(int numberOfNames, int length) {
     CollectionReference collectionRef =
@@ -24,7 +19,8 @@ class IndexingMultipleFieldsForm extends IndexingForm {
       for (int i = length; i < numberOfNames; i++) {
         collectionRef.add({
           'value': '',
-          'createdTimestamp': DateTime.now().millisecondsSinceEpoch
+          'createdTimestamp': DateTime.now().millisecondsSinceEpoch,
+          'valid': null
         });
       }
     } else if (length > numberOfNames) {
@@ -104,8 +100,12 @@ class IndexingMultipleFieldsForm extends IndexingForm {
                                 child: Text('Name ${doc.key + 1}'))),
                         Flexible(
                             flex: 1,
-                            child:
-                                DocFieldTextEdit(doc.value.reference, 'value'))
+                            child: DocFieldTextEdit(
+                                doc.value.reference, 'value',
+                                valid: doc.value['valid'],
+                                validator: (text, callback) {
+                              validator(doc, data, text, callback);
+                            }))
                       ]))
                   .toList());
               return children;

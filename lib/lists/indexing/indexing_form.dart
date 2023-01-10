@@ -2,16 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../state/generic_state_notifier.dart';
 import '../list_indexing.dart';
 
 abstract class IndexingForm extends ConsumerWidget {
   final String entityId;
   final QueryDocumentSnapshot<Map<String, dynamic>> document;
-  final StateNotifierProvider<GenericStateNotifier<Map<String, bool>>,
-      Map<String, bool>> editings;
 
-  const IndexingForm(this.entityId, this.document, this.editings);
+  const IndexingForm(this.entityId, this.document);
 
   void _setEditing(WidgetRef ref, bool editing) {
     Map<String, bool> map = ref.read(editings);
@@ -29,7 +26,8 @@ abstract class IndexingForm extends ConsumerWidget {
       if (length == 0) {
         collectionRef.add({
           'value': '',
-          'createdTimestamp': DateTime.now().millisecondsSinceEpoch
+          'createdTimestamp': DateTime.now().millisecondsSinceEpoch,
+          'valid': null
         });
         document.reference.update({'type': type});
       } else {
@@ -39,7 +37,8 @@ abstract class IndexingForm extends ConsumerWidget {
             if (length == 0) {
               collectionRef.add({
                 'value': '',
-                'createdTimestamp': DateTime.now().millisecondsSinceEpoch
+                'createdTimestamp': DateTime.now().millisecondsSinceEpoch,
+                'valid': null
               });
               document.reference.update({'type': type});
             }
@@ -79,6 +78,41 @@ abstract class IndexingForm extends ConsumerWidget {
       });
     });
     document.reference.delete();
+  }
+
+  void validator(
+      MapEntry<int, QueryDocumentSnapshot<Map<String, dynamic>>> doc,
+      QuerySnapshot<Map<String, dynamic>> data,
+      String text,
+      void Function(bool) callback) {
+    if (text.isEmpty) {
+      doc.value.reference.update({'valid': false});
+      callback(false);
+    } else {
+      bool duplicated = false;
+      for (int i = 0; i < data.docs.length; i++) {
+        if (doc.value.reference != data.docs[i].reference &&
+            text == data.docs[i].data()['value']) {
+          duplicated = true;
+          break;
+        }
+      }
+      if (duplicated) {
+        doc.value.reference.update({'valid': false});
+        callback(false);
+      } else {
+        FirebaseFirestore.instance
+            .collection('list/${entityId}/item')
+            .orderBy(text)
+            .limit(1)
+            .snapshots()
+            .listen((event) {
+          bool valid = event.docs.isNotEmpty;
+          doc.value.reference.update({'valid': valid});
+          callback(valid);
+        });
+      }
+    }
   }
 
   Widget read(WidgetRef ref);

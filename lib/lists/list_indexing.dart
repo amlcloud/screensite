@@ -25,9 +25,15 @@ class ListIndexing extends ConsumerWidget {
   void add(WidgetRef ref) {
     FirebaseFirestore.instance.collection('list/$entityId/index').add({
       'type': indexTypes[0],
-      'entityIndexFields': [],
-      'validFields': [],
       'createdTimestamp': DateTime.now().millisecondsSinceEpoch
+    }).then((reference) {
+      CollectionReference collectionRef =
+          reference.collection('entityIndexFields');
+      collectionRef.add({
+        'value': '',
+        'createdTimestamp': DateTime.now().millisecondsSinceEpoch,
+        'valid': null
+      });
     });
   }
 
@@ -35,33 +41,33 @@ class ListIndexing extends ConsumerWidget {
     String type = document.data()['type'];
     Widget widget;
     if (type == indexTypes[0]) {
-      widget = IndexingSingleFieldForm(entityId, document, editings);
+      widget = IndexingSingleFieldForm(entityId, document);
     } else if (type == indexTypes[1]) {
-      widget = IndexingMultipleFieldsForm(entityId, document, editings);
+      widget = IndexingMultipleFieldsForm(entityId, document);
     } else {
-      widget = IndexingArrayOfValuesFieldForm(entityId, document, editings);
+      widget = IndexingArrayOfValuesFieldForm(entityId, document);
     }
     return widget;
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => Container(
-        width: double.infinity,
-        // color: Colors.red,
-        child: Column(children: [
-          Column(
-              children: ref
-                  .watch(filteredColSP(QueryParams(
-                      path: 'list/$entityId/index',
-                      orderBy: 'createdTimestamp')))
-                  .when(
-                      loading: () => [Container()],
-                      error: (e, s) => [ErrorWidget(e)],
-                      data: (entities) => entities.docs.map((entry) {
-                            return Column(
-                                children: [content(entry), Divider()]);
-                          }).toList())),
-          TextButton(onPressed: () => {add(ref)}, child: Text('Add'))
-        ]),
-      );
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Container(
+      width: double.infinity,
+      // color: Colors.red,
+      child: Column(children: [
+        Column(
+            children: ref
+                .watch(filteredColSP(QueryParams(
+                    path: 'list/$entityId/index', orderBy: 'createdTimestamp')))
+                .when(
+                    loading: () => [Container()],
+                    error: (e, s) => [ErrorWidget(e)],
+                    data: (entities) => entities.docs.map((entry) {
+                          return Column(children: [content(entry), Divider()]);
+                        }).toList())),
+        TextButton(onPressed: () => {add(ref)}, child: Text('Add'))
+      ]),
+    );
+  }
 }
