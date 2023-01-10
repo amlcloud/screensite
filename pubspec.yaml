@@ -79,6 +79,7 @@ dev_dependencies:
   permission_handler: ^7.1.0
   fluttertoast: ^8.0.9
   universal_html: ^2.0.8
+  clipboard: 
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

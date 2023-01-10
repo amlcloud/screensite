@@ -6,7 +6,8 @@ import 'package:screensite/lists/list_details.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
 import 'package:screensite/drawer.dart';
 import 'package:screensite/common.dart';
-import 'package:flutter_json_viewer/flutter_json_viewer.dart';
+import '../controls/custom_json_viewer.dart';
+// import 'package:flutter_json_viewer/flutter_json_viewer.dart';
 
 final activeList =
     StateNotifierProvider<GenericStateNotifier<String?>, String?>(
