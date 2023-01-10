@@ -2,18 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../state/generic_state_notifier.dart';
 import '../list_indexing.dart';
 
 abstract class IndexingForm extends ConsumerWidget {
   final String entityId;
   final QueryDocumentSnapshot<Map<String, dynamic>> document;
-  final StateNotifierProvider<GenericStateNotifier<Map<String, bool>>,
-      Map<String, bool>> editings;
-  final Map<String, Map<String, TextSelection>> textSelections;
 
-  const IndexingForm(
-      this.entityId, this.document, this.editings, this.textSelections);
+  const IndexingForm(this.entityId, this.document);
 
   void _setEditing(WidgetRef ref, bool editing) {
     Map<String, bool> map = ref.read(editings);
@@ -24,20 +19,33 @@ abstract class IndexingForm extends ConsumerWidget {
   }
 
   void changeType(String? type) {
-    if (type == indexTypes[0]) {
-      document.reference
-          .update({'type': type, 'entityIndexFields': [], 'validFields': []});
-    } else if (type == indexTypes[1]) {
-      document.reference.update({
-        'type': type,
-        'entityIndexFields': [],
-        'validFields': [],
-        'numberOfNames': 1
-      });
-    } else {
-      document.reference
-          .update({'type': type, 'entityIndexFields': [], 'validFields': []});
-    }
+    CollectionReference collectionRef =
+        document.reference.collection('entityIndexFields');
+    collectionRef.get().then((x) {
+      int length = x.docs.length;
+      if (length == 0) {
+        collectionRef.add({
+          'value': '',
+          'createdTimestamp': DateTime.now().millisecondsSinceEpoch,
+          'valid': null
+        });
+        document.reference.update({'type': type});
+      } else {
+        x.docs.forEach((y) {
+          y.reference.delete().then((_) {
+            length = length - 1;
+            if (length == 0) {
+              collectionRef.add({
+                'value': '',
+                'createdTimestamp': DateTime.now().millisecondsSinceEpoch,
+                'valid': null
+              });
+              document.reference.update({'type': type});
+            }
+          });
+        });
+      }
+    });
   }
 
   Widget inputType() {
@@ -63,6 +71,50 @@ abstract class IndexingForm extends ConsumerWidget {
     ]);
   }
 
+  void _delete() {
+    document.reference.collection('entityIndexFields').get().then((value) {
+      value.docs.forEach((element) {
+        element.reference.delete();
+      });
+    });
+    document.reference.delete();
+  }
+
+  void validator(
+      MapEntry<int, QueryDocumentSnapshot<Map<String, dynamic>>> doc,
+      QuerySnapshot<Map<String, dynamic>> data,
+      String text,
+      void Function(bool) callback) {
+    if (text.isEmpty) {
+      doc.value.reference.update({'valid': false});
+      callback(false);
+    } else {
+      bool duplicated = false;
+      for (int i = 0; i < data.docs.length; i++) {
+        if (doc.value.reference != data.docs[i].reference &&
+            text == data.docs[i].data()['value']) {
+          duplicated = true;
+          break;
+        }
+      }
+      if (duplicated) {
+        doc.value.reference.update({'valid': false});
+        callback(false);
+      } else {
+        FirebaseFirestore.instance
+            .collection('list/${entityId}/item')
+            .orderBy(text)
+            .limit(1)
+            .snapshots()
+            .listen((event) {
+          bool valid = event.docs.isNotEmpty;
+          doc.value.reference.update({'valid': valid});
+          callback(valid);
+        });
+      }
+    }
+  }
+
   Widget read(WidgetRef ref);
   Widget edit(WidgetRef ref);
 
@@ -79,9 +131,7 @@ abstract class IndexingForm extends ConsumerWidget {
                       onPressed: () => {_setEditing(ref, false)},
                       child: Text('Done'))),
               Expanded(
-                  child: TextButton(
-                      onPressed: () => {document.reference.delete()},
-                      child: Text('Delete')))
+                  child: TextButton(onPressed: _delete, child: Text('Delete')))
             ])
           ])
         : Column(children: [

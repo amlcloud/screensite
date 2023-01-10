@@ -186,6 +186,7 @@ final AutoDisposeStreamProviderFamily<QuerySnapshot<Map<String, dynamic>>,
   return FirebaseFirestore.instance.collection(path).limit(100).snapshots();
 });
 
+// To get the count of a collection
 final AutoDisposeStreamProviderFamily<AggregateQuerySnapshot, String> count =
     StreamProvider.autoDispose
         .family<AggregateQuerySnapshot, String>((ref, path) {
