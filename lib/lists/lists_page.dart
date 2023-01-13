@@ -6,7 +6,7 @@ import 'package:screensite/lists/list_details.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
 import 'package:screensite/drawer.dart';
 import 'package:screensite/common.dart';
-import '../controls/custom_json_viewer.dart';
+import 'jsonview_switch.dart';
 // import 'package:flutter_json_viewer/flutter_json_viewer.dart';
 
 import 'indexing/indexing_item_list.dart';
@@ -59,7 +59,7 @@ class ListsPage extends ConsumerWidget {
                                   padding: EdgeInsets.all(10),
                                   child: ref.watch(selectedItem) == null
                                       ? Container()
-                                      : JsonViewer(ref.watch(selectedItem))),
+                                      : SwitchJSON(ref.watch(selectedItem))),
                               ref.watch(activeList) == null ||
                                       ref.watch(selectedItem) == null
                                   ? Container()
