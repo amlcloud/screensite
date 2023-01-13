@@ -84,6 +84,7 @@ abstract class IndexingForm extends ConsumerWidget {
       MapEntry<int, QueryDocumentSnapshot<Map<String, dynamic>>> doc,
       QuerySnapshot<Map<String, dynamic>> data,
       String text,
+      bool needArray,
       void Function(bool) callback) {
     if (text.isEmpty) {
       doc.value.reference.update({'valid': false});
@@ -108,6 +109,18 @@ abstract class IndexingForm extends ConsumerWidget {
             .snapshots()
             .listen((event) {
           bool valid = event.docs.isNotEmpty;
+          if (valid) {
+            try {
+              List _ = event.docs.first.data()[text];
+              if (!needArray) {
+                valid = false;
+              }
+            } catch (e) {
+              if (needArray) {
+                valid = false;
+              }
+            }
+          }
           doc.value.reference.update({'valid': valid});
           callback(valid);
         });
