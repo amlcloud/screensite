@@ -57,11 +57,67 @@ class ListsPage extends ConsumerWidget {
                                   padding: EdgeInsets.all(10),
                                   child: ref.watch(selectedItem) == null
                                       ? Container()
-                                      : JsonViewer(ref.watch(selectedItem)))
+                                      // Calling SwitchJSON widget and passing selectedItem to display
+                                      : SwitchJSON(
+                                          passed_ref: ref.watch(selectedItem)))
                             ],
                           ),
                         ))
                       ])))
                 ])));
+  }
+}
+
+// Statefull widget for JSON Viewer, shows data in JSON format of Userfriendly format depending on users choice
+class SwitchJSON extends StatefulWidget {
+  const SwitchJSON({Key? key, required this.passed_ref}) : super(key: key);
+  // Declaring variable with passed data
+  final dynamic passed_ref;
+
+  @override
+  State<SwitchJSON> createState() => _SwitchJSON();
+}
+
+// Switch's state
+class _SwitchJSON extends State<SwitchJSON> {
+  bool isSwitched = false;
+
+  void toggleSwitch(bool value) {
+    if (isSwitched == false) {
+      setState(() {
+        isSwitched = true;
+      });
+    } else {
+      setState(() {
+        isSwitched = false;
+      });
+    }
+  }
+
+// JSON viewer
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'JSON data',
+              style: TextStyle(color: Colors.black),
+            ),
+            Switch(
+              onChanged: toggleSwitch,
+              value: isSwitched,
+            )
+          ],
+        ),
+        Container(
+            child: (isSwitched == true)
+                ? JsonViewer(widget.passed_ref)
+                // Widget with prittier data should go here
+                : Text('Hello')),
+      ],
+    );
   }
 }
