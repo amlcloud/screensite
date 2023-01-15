@@ -6,6 +6,7 @@ import 'package:screensite/lists/lists_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
 
+//creating new Widget of ConsumerStatefulWidget which takes two args
 class EntityListView extends ConsumerStatefulWidget {
   const EntityListView(this.entityId, this.selectedItem);
   final String entityId;
@@ -22,8 +23,19 @@ class _EntityListViewState extends ConsumerState<EntityListView> {
   void isSelected(dynamic key) {
     selected = key;
   }
+  @override
+  ConsumerState<EntityListView> createState() => _EntityListViewState();
+}
+
+class _EntityListViewState extends ConsumerState<EntityListView> {
+  //creating int to keep information about selected item and function to write index of selected item
+  int? selected;
+  void isSelected(dynamic key) {
+    selected = key;
+  }
 
   @override
+  Widget build(BuildContext context) {
   Widget build(BuildContext context) {
     return Column(children: [
       ListView(
@@ -41,9 +53,9 @@ class _EntityListViewState extends ConsumerState<EntityListView> {
                           .asMap()
                           .entries
                           .map((entity) => ListTile(
-                              selected: selected == entity.key ? true : false,
-                              selectedTileColor:
-                                  Theme.of(context).colorScheme.secondary,
+                              tileColor: selected == entity.key
+                                  ? Theme.of(context).colorScheme.secondary
+                                  : Colors.black12,
                               title: Text((entityDoc.data()!['entitiesName1'] == null
                                       ? ''
                                       : entity.value.get(
