@@ -11,18 +11,19 @@ class IndexingItemList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-        children: ref
-            .watch(filteredColSP(QueryParams(path: 'index/', queries: [
-              // QueryParam('ref', {Symbol('isEqualTo'): _ref}),
-              QueryParam('he', {Symbol('isEqualTo'): true})
-            ])))
-            .when(
-                loading: () => [Container()],
-                error: (e, s) => [ErrorWidget(e)],
-                data: (data) => [
-                      Text('Reference: $_ref'),
-                      Text('Count: ${data.docs.length}')
-                    ]));
+    return Text(''):
+    // return Column(
+    //     children: ref
+    //         .watch(filteredColSP(QueryParams(path: 'index/', queries: [
+    //           // QueryParam('ref', {Symbol('isEqualTo'): _ref}),
+    //           QueryParam('he', {Symbol('isEqualTo'): true})
+    //         ])))
+    //         .when(
+    //             loading: () => [Container()],
+    //             error: (e, s) => [ErrorWidget(e)],
+    //             data: (data) => [
+    //                   Text('Reference: $_ref'),
+    //                   Text('Count: ${data.docs.length}')
+    //                 ]));
   }
 }
