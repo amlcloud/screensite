@@ -15,7 +15,7 @@ jobs:
           channel: 'stable'
       - run: flutter pub get
   #     - run: flutter test
-      - run: flutter build web --web-renderer html   
+      - run: flutter build web
       - name: Archive Production Artifact
         uses: actions/upload-artifact@master
         with:
