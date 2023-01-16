@@ -11,7 +11,7 @@ class IndexingItemList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Text(''):
+    return Text('');
     // return Column(
     //     children: ref
     //         .watch(filteredColSP(QueryParams(path: 'index/', queries: [
