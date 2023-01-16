@@ -19,7 +19,7 @@ final lightTheme = ThemeData(
       onError: Colors.white),
   textTheme: TextTheme(
       titleSmall: TextStyle(
-        color: Color.fromARGB(255, 255, 255, 255), //for text widget in appbar
+        color: Color.fromARGB(255, 28, 27, 27), //for text widget in appbar
       ),
       bodyMedium: TextStyle(
         color: Color.fromARGB(255, 255, 153, 10), //change link color to orange
