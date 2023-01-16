@@ -74,7 +74,8 @@ class IndexingMultipleFieldsForm extends IndexingForm {
     List<Widget> children = [];
     children.addAll(ref
         .watch(filteredColSP(QueryParams(
-            path: 'list/$entityId/index/${document.id}/entityIndexFields/',
+            path:
+                'list/$entityId/indexConfigs/${document.id}/entityIndexFields/',
             orderBy: 'createdTimestamp',
             distinct: ((previous, current) {
               for (int i = 0; i < previous.size; i++) {
@@ -104,7 +105,7 @@ class IndexingMultipleFieldsForm extends IndexingForm {
                                 doc.value.reference, 'value',
                                 valid: doc.value['valid'],
                                 validator: (text, callback) {
-                              validator(doc, data, text, callback);
+                              validator(doc, data, text, false, callback);
                             }))
                       ]))
                   .toList());
