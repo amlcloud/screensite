@@ -9,6 +9,8 @@ import 'package:screensite/common.dart';
 import '../controls/custom_json_viewer.dart';
 // import 'package:flutter_json_viewer/flutter_json_viewer.dart';
 
+import 'indexing/indexing_item_list.dart';
+
 final activeList =
     StateNotifierProvider<GenericStateNotifier<String?>, String?>(
         (ref) => GenericStateNotifier<String?>(null));
@@ -16,6 +18,10 @@ final activeList =
 final selectedItem = StateNotifierProvider<
         GenericStateNotifier<Map<String, dynamic>?>, Map<String, dynamic>?>(
     (ref) => GenericStateNotifier<Map<String, dynamic>?>(null));
+
+final selectedItemId =
+    StateNotifierProvider<GenericStateNotifier<String?>, String?>(
+        (ref) => GenericStateNotifier<String?>(null));
 
 class ListsPage extends ConsumerWidget {
   @override
@@ -41,8 +47,8 @@ class ListsPage extends ConsumerWidget {
                   Expanded(
                     child: ref.watch(activeList) == null
                         ? Container()
-                        : ListDetails(
-                            ref.watch(activeList)!, selectedItem.notifier),
+                        : ListDetails(ref.watch(activeList)!,
+                            selectedItem.notifier, selectedItemId.notifier),
                   ),
                   Expanded(
                       child: Card(
@@ -57,7 +63,15 @@ class ListsPage extends ConsumerWidget {
                                   padding: EdgeInsets.all(10),
                                   child: ref.watch(selectedItem) == null
                                       ? Container()
-                                      : JsonViewer(ref.watch(selectedItem)))
+                                      : JsonViewer(ref.watch(selectedItem))),
+                              Divider(),
+                              Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: ref.watch(activeList) == null ||
+                                          ref.watch(selectedItemId) == null
+                                      ? Container()
+                                      : IndexingItemList(
+                                          '/list/${ref.watch(activeList)}/item/${ref.watch(selectedItemId)}'))
                             ],
                           ),
                         ))
