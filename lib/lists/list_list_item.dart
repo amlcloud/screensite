@@ -8,9 +8,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/gestures.dart';
-
 import '../extensions/string_validations.dart';
 import '../search/search_details.dart';
+
+final indexProvider = StateProvider<String>((ref) {
+  return "";
+});
 
 class ListItem extends ConsumerWidget {
   final String entityId;
@@ -46,7 +49,11 @@ class ListItem extends ConsumerWidget {
                               : entityDoc.data()!['lastUpdateTime'].toDate())
                           .format()),
                   isThreeLine: true,
+                  tileColor: ref.watch(indexProvider) == entityId
+                      ? Colors.blue[200]
+                      : null,
                   onTap: () {
+                    ref.read(indexProvider.state).update((_) => entityId);
                     ref.read(activeList.notifier).value = entityId;
                   },
                 ),

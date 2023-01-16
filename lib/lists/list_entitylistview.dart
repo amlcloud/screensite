@@ -6,6 +6,10 @@ import 'package:screensite/lists/lists_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
 
+final indexProvider = StateProvider<Map<String, dynamic>>((ref) {
+  return {};
+});
+
 class EntityListView extends ConsumerWidget {
   final String entityId;
   final AlwaysAliveProviderBase<GenericStateNotifier<Map<String, dynamic>?>>
@@ -39,15 +43,21 @@ class EntityListView extends ConsumerWidget {
                                   ? ''
                                   : entity.get(
                                       entityDoc.data()!['entitiesName3']))),
-                          subtitle: Text((entity.data()[
-                                      entityDoc.data()!['entitiesAddress']] !=
-                                  null)
-                              ? 'Location: ' +
-                                  entity.data()[
-                                      entityDoc.data()!['entitiesAddress']]
-                              : 'Location: undefined'),
+                          subtitle: Text(
+                              (entity.data()[entityDoc.data()!['entitiesAddress']] != null)
+                                  ? 'Location: ' +
+                                      entity.data()[
+                                          entityDoc.data()!['entitiesAddress']]
+                                  : 'Location: undefined'),
                           isThreeLine: true,
+                          tileColor: ref.watch(indexProvider).toString() ==
+                                  entity.data().toString()
+                              ? Colors.blue[200]
+                              : null,
                           onTap: () {
+                            ref
+                                .read(indexProvider.state)
+                                .update((_) => entity.data());
                             ref.read(selectedItem).value = Map.fromEntries(
                                 entity.data().entries.toList()
                                   ..sort((e1, e2) => e1.key.compareTo(e2.key)));
