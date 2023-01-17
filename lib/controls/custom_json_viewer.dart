@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../extensions/string_validations.dart';
 
 class JsonViewer extends StatefulWidget {
   final dynamic jsonObj;
@@ -51,11 +52,71 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
         crossAxisAlignment: CrossAxisAlignment.start, children: _getList());
   }
 
+  // Check if there is any kind of data
+  String CheckType(String inputString) {
+    var breakString = inputString.characters;
+    // If we have that type, return true
+    // c for capital
+
+    if (inputString.contains('_')) {
+      return '_';
+    } else {
+      for (var char in breakString) {
+        if (char.toUpperCase() == char) {
+          return "c";
+        } else {
+          continue;
+        }
+      }
+    }
+    return '';
+  }
+
+  // Replace a character and Uppercase First Letter
+  String ReplaceCharacter(String inputString, String char) {
+    // split by char
+    String result = "";
+    List<String> listChar = [];
+    // c is capital, if there is no capital letter in the initial string, we split by the special keywords
+    if (char != "c") {
+      listChar = inputString.split(char);
+    } else {
+      // We will split by capital letter with the RegExp for capital
+      final beforeCapitalLetter = RegExp(r"(?=[A-Z])");
+
+      listChar = inputString.split(beforeCapitalLetter);
+    }
+
+    listChar.forEach((element) {
+      if (result.length > 1) {
+        result = result + " " + element.capitalize();
+      } else {
+        result = result + element.capitalize();
+      }
+    });
+
+    return result;
+  }
+
+  // Convert Entry data to better UI
+  String ConvertEntryData(String inputString) {
+    var result = "";
+    // First, find whether we have "_"
+    if (CheckType(inputString) != "") {
+      result = ReplaceCharacter(inputString, CheckType(inputString));
+    } else {
+      result = inputString.capitalize();
+    }
+
+    return result;
+  }
+
   _getList() {
     List<Widget> list = [];
     for (MapEntry entry in widget.jsonObj.entries) {
       bool ex = isExtensible(entry.value);
       bool ink = isInkWell(entry.value);
+
       list.add(Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -71,14 +132,20 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
                 ),
           (ex && ink)
               ? InkWell(
-                  child: Text(entry.key,
+                  child: Text(
+                      entry.key.runtimeType == String
+                          ? ConvertEntryData(entry.key)
+                          : entry.key,
                       style: TextStyle(color: Colors.purple[900])),
                   onTap: () {
                     setState(() {
                       openFlag[entry.key] = !(openFlag[entry.key] ?? false);
                     });
                   })
-              : Text(entry.key,
+              : Text(
+                  entry.key.runtimeType == String
+                      ? ConvertEntryData(entry.key)
+                      : entry.key,
                   style: TextStyle(
                       color: entry.value == null
                           ? Colors.grey
