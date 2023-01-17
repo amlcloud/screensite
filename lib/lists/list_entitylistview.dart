@@ -10,9 +10,8 @@ class EntityListView extends ConsumerWidget {
   final String entityId;
   final AlwaysAliveProviderBase<GenericStateNotifier<Map<String, dynamic>?>>
       selectedItem;
-  final AlwaysAliveProviderBase<GenericStateNotifier<String?>> selectedItemId;
 
-  const EntityListView(this.entityId, this.selectedItem, this.selectedItemId);
+  const EntityListView(this.entityId, this.selectedItem);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -52,7 +51,6 @@ class EntityListView extends ConsumerWidget {
                             ref.read(selectedItem).value = Map.fromEntries(
                                 entity.data().entries.toList()
                                   ..sort((e1, e2) => e1.key.compareTo(e2.key)));
-                            ref.read(selectedItemId).value = entity.id;
                           }))
                       .toList())))
     ]);

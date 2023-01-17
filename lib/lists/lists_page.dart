@@ -18,10 +18,6 @@ final selectedItem = StateNotifierProvider<
         GenericStateNotifier<Map<String, dynamic>?>, Map<String, dynamic>?>(
     (ref) => GenericStateNotifier<Map<String, dynamic>?>(null));
 
-final selectedItemId =
-    StateNotifierProvider<GenericStateNotifier<String?>, String?>(
-        (ref) => GenericStateNotifier<String?>(null));
-
 class ListsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -46,8 +42,8 @@ class ListsPage extends ConsumerWidget {
                   Expanded(
                     child: ref.watch(activeList) == null
                         ? Container()
-                        : ListDetails(ref.watch(activeList)!,
-                            selectedItem.notifier, selectedItemId.notifier),
+                        : ListDetails(
+                            ref.watch(activeList)!, selectedItem.notifier),
                   ),
                   Expanded(
                       child: Card(
@@ -63,14 +59,11 @@ class ListsPage extends ConsumerWidget {
                                   child: ref.watch(selectedItem) == null
                                       ? Container()
                                       : JsonViewer(ref.watch(selectedItem))),
-                              Divider(),
-                              Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: ref.watch(activeList) == null ||
-                                          ref.watch(selectedItemId) == null
-                                      ? Container()
-                                      : IndexingItemList(
-                                          '/list/${ref.watch(activeList)}/item/${ref.watch(selectedItemId)}'))
+                              ref.watch(activeList) == null ||
+                                      ref.watch(selectedItem) == null
+                                  ? Container()
+                                  : IndexingItemList(ref.watch(activeList)!,
+                                      ref.watch(selectedItem)!)
                             ],
                           ),
                         ))

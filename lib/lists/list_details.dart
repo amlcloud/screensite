@@ -12,13 +12,12 @@ class ListDetails extends ConsumerWidget {
   final String entityId;
   final AlwaysAliveProviderBase<GenericStateNotifier<Map<String, dynamic>?>>
       selectedItem;
-  final AlwaysAliveProviderBase<GenericStateNotifier<String?>> selectedItemId;
 
   final TextEditingController idCtrl = TextEditingController(),
       nameCtrl = TextEditingController(),
       descCtrl = TextEditingController();
 
-  ListDetails(this.entityId, this.selectedItem, this.selectedItemId);
+  ListDetails(this.entityId, this.selectedItem);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => Container(
@@ -40,7 +39,7 @@ class ListDetails extends ConsumerWidget {
             Expanded(
                 flex: 10,
                 child: SingleChildScrollView(
-                  child: EntityListView(entityId, selectedItem, selectedItemId),
+                  child: EntityListView(entityId, selectedItem),
                 )),
             Divider(),
             ListCount(entityId),
