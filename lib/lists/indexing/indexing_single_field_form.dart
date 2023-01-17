@@ -22,7 +22,8 @@ class IndexingSingleFieldForm extends IndexingForm {
     return Column(
         children: ref
             .watch(filteredColSP(QueryParams(
-                path: 'list/$entityId/index/${document.id}/entityIndexFields/',
+                path:
+                    'list/$entityId/indexConfigs/${document.id}/entityIndexFields/',
                 orderBy: 'createdTimestamp',
                 distinct: ((previous, current) {
                   return previous.size == current.size;
@@ -47,7 +48,7 @@ class IndexingSingleFieldForm extends IndexingForm {
                                     doc.value.reference, 'value',
                                     valid: doc.value['valid'],
                                     validator: (text, callback) {
-                                  validator(doc, data, text, callback);
+                                  validator(doc, data, text, false, callback);
                                 }))
                           ]))
                       .toList());

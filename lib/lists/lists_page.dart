@@ -9,6 +9,8 @@ import 'package:screensite/common.dart';
 import '../controls/custom_json_viewer.dart';
 // import 'package:flutter_json_viewer/flutter_json_viewer.dart';
 
+import 'indexing/indexing_item_list.dart';
+
 final activeList =
     StateNotifierProvider<GenericStateNotifier<String?>, String?>(
         (ref) => GenericStateNotifier<String?>(null));
@@ -57,7 +59,12 @@ class ListsPage extends ConsumerWidget {
                                   padding: EdgeInsets.all(10),
                                   child: ref.watch(selectedItem) == null
                                       ? Container()
-                                      : JsonViewer(ref.watch(selectedItem)))
+                                      : JsonViewer(ref.watch(selectedItem))),
+                              ref.watch(activeList) == null ||
+                                      ref.watch(selectedItem) == null
+                                  ? Container()
+                                  : IndexingItemList(ref.watch(activeList)!,
+                                      ref.watch(selectedItem)!)
                             ],
                           ),
                         ))
