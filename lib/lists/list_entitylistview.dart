@@ -6,6 +6,10 @@ import 'package:screensite/lists/lists_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
 
+final selectedEntity = StateNotifierProvider<
+        GenericStateNotifier<Map<String, dynamic>?>, Map<String, dynamic>?>(
+    (ref) => GenericStateNotifier<Map<String, dynamic>?>(null));
+
 class EntityListView extends ConsumerWidget {
   final String entityId;
   final AlwaysAliveProviderBase<GenericStateNotifier<Map<String, dynamic>?>>
@@ -47,7 +51,12 @@ class EntityListView extends ConsumerWidget {
                                       entityDoc.data()!['entitiesAddress']]
                               : 'Location: undefined'),
                           isThreeLine: true,
+                          tileColor: ref.watch(selectedEntity).toString() ==
+                                  entity.data().toString()
+                              ? Colors.blue[200]
+                              : null,
                           onTap: () {
+                            ref.read(selectedEntity.notifier).value = entity.data();
                             ref.read(selectedItem).value = Map.fromEntries(
                                 entity.data().entries.toList()
                                   ..sort((e1, e2) => e1.key.compareTo(e2.key)));

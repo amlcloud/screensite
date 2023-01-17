@@ -9,6 +9,11 @@ import 'package:jiffy/jiffy.dart';
 import 'package:flutter/gestures.dart';
 import '../extensions/string_validations.dart';
 import '../search/search_details.dart';
+import 'package:screensite/state/generic_state_notifier.dart';
+
+final selectedList =
+    StateNotifierProvider<GenericStateNotifier<String?>, String?>(
+        (ref) => GenericStateNotifier<String?>(null));
 
 class ListItem extends ConsumerWidget {
   final String entityId;
@@ -44,7 +49,11 @@ class ListItem extends ConsumerWidget {
                               : entityDoc.data()!['lastUpdateTime'].toDate())
                           .format()),
                   isThreeLine: true,
+                  tileColor: ref.watch(selectedList) == entityId
+                      ? Colors.blue[200]
+                      : null,
                   onTap: () {
+                    ref.read(selectedList.notifier).value = entityId;
                     ref.read(activeList.notifier).value = entityId;
                   },
                 ),
