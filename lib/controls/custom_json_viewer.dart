@@ -3,6 +3,13 @@ import 'package:flutter/services.dart';
 import '../extensions/string_validations.dart';
 import 'package:screensite/theme.dart';
 
+// Make an enum to check for type
+enum SplittingType { UNDERSCORE, CAPITAL, NONE }
+
+var SplittingTypeDict = {
+  SplittingType.UNDERSCORE: "_",
+};
+
 class JsonViewer extends StatefulWidget {
   final dynamic jsonObj;
   JsonViewer(this.jsonObj);
@@ -54,37 +61,48 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
   }
 
   // Check if there is any kind of data
-  String CheckType(String inputString) {
+  SplittingType CheckType(String inputString) {
     var breakString = inputString.characters;
+    bool checkUpperCase = false;
+    bool checkLowerCase = false;
     // If we have that type, return true
     // c for capital
 
     if (inputString.contains('_')) {
-      return '_';
+      return SplittingType.UNDERSCORE;
     } else {
+      // Check if there is an uppercase and lowercase but no _, which mean Uppercase might be the connector
+      // However, What happen if we have PARENT which have upper case, but no _
       for (var char in breakString) {
         if (char.toUpperCase() == char) {
-          return "c";
+          checkUpperCase = true;
         } else {
-          continue;
+          checkLowerCase = true;
         }
       }
+      // if we have both upper and lower
+      if (checkUpperCase && checkLowerCase) {
+        return SplittingType.CAPITAL;
+      } else {
+        // In this one, we have no upper case or no lower case, and no _
+        return SplittingType.NONE;
+      }
     }
-    return '';
   }
 
   // Replace a character and Uppercase First Letter
-  String ReplaceCharacter(String inputString, String char) {
+  String ReplaceCharacter(String inputString, SplittingType type) {
     // split by char
     String result = "";
     List<String> listChar = [];
     // c is capital, if there is no capital letter in the initial string, we split by the special keywords
-    if (char != "c") {
-      listChar = inputString.split(char);
+    if (type == SplittingType.UNDERSCORE) {
+      // _ is the connector so we split it with _
+      listChar = inputString
+          .split(SplittingTypeDict[SplittingType.UNDERSCORE] as String);
     } else {
       // We will split by capital letter with the RegExp for capital
       final beforeCapitalLetter = RegExp(r"(?=[A-Z])");
-
       listChar = inputString.split(beforeCapitalLetter);
     }
 
@@ -101,15 +119,12 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
 
   // Convert Entry data to better UI
   String ConvertEntryData(String inputString) {
-    var result = "";
     // First, find whether we have "_"
-    if (CheckType(inputString) != "") {
-      result = ReplaceCharacter(inputString, CheckType(inputString));
+    if (CheckType(inputString) != SplittingType.NONE) {
+      return ReplaceCharacter(inputString, CheckType(inputString));
     } else {
-      result = inputString.capitalize();
+      return inputString.capitalize();
     }
-
-    return result;
   }
 
   _getList() {
