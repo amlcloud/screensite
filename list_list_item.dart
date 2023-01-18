@@ -9,8 +9,8 @@ import 'package:jiffy/jiffy.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/gestures.dart';
 
-import '../extensions/string_validations.dart';
-import '../search/search_details.dart';
+// import '../extensions/string_validations.dart';
+// import '../search/search_details.dart';
 
 class ListItem extends ConsumerWidget {
   final String entityId;
