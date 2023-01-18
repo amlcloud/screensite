@@ -53,9 +53,9 @@ class _EntityListViewState extends ConsumerState<EntityListView> {
                           .asMap()
                           .entries
                           .map((entity) => ListTile(
-                              tileColor: selected == entity.key
-                                  ? Theme.of(context).colorScheme.secondary
-                                  : Colors.black12,
+                              selected: selected == entity.key ? true : false,
+                              selectedTileColor:
+                                  Theme.of(context).colorScheme.secondary,
                               title: Text((entityDoc.data()!['entitiesName1'] == null
                                       ? ''
                                       : entity.value.get(
