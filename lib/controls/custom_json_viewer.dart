@@ -6,10 +6,6 @@ import 'package:screensite/theme.dart';
 // Make an enum to check for type
 enum SplittingType { UNDERSCORE, CAPITAL, NONE }
 
-var SplittingTypeDict = {
-  SplittingType.UNDERSCORE: "_",
-};
-
 class JsonViewer extends StatefulWidget {
   final dynamic jsonObj;
   JsonViewer(this.jsonObj);
@@ -98,8 +94,7 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
     // c is capital, if there is no capital letter in the initial string, we split by the special keywords
     if (type == SplittingType.UNDERSCORE) {
       // _ is the connector so we split it with _
-      listChar = inputString
-          .split(SplittingTypeDict[SplittingType.UNDERSCORE] as String);
+      listChar = inputString.split('_');
     } else {
       // We will split by capital letter with the RegExp for capital
       final beforeCapitalLetter = RegExp(r"(?=[A-Z])");
