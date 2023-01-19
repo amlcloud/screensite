@@ -11,6 +11,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/gestures.dart';
 
+import 'indexing/indexing_progress.dart';
 import 'list_count.dart';
 
 class ListDetails extends ConsumerWidget {
@@ -44,6 +45,9 @@ class ListDetails extends ConsumerWidget {
                             child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
+                                Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [IndexingProgress(entityId)]),
                                 Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: <Widget>[
