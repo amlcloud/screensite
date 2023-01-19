@@ -23,7 +23,7 @@ class ListIndexing extends ConsumerWidget {
   const ListIndexing(this.entityId);
 
   void add(WidgetRef ref) {
-    FirebaseFirestore.instance.collection('list/$entityId/index').add({
+    FirebaseFirestore.instance.collection('list/$entityId/indexConfigs').add({
       'type': indexTypes[0],
       'createdTimestamp': DateTime.now().millisecondsSinceEpoch
     }).then((reference) {
@@ -59,7 +59,8 @@ class ListIndexing extends ConsumerWidget {
         Column(
             children: ref
                 .watch(filteredColSP(QueryParams(
-                    path: 'list/$entityId/index', orderBy: 'createdTimestamp')))
+                    path: 'list/$entityId/indexConfigs',
+                    orderBy: 'createdTimestamp')))
                 .when(
                     loading: () => [Container()],
                     error: (e, s) => [ErrorWidget(e)],
