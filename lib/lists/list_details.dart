@@ -32,9 +32,8 @@ class ListDetails extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: [
-            Flexible(flex: 1, child: ListInfo(entityId)),
+            ListInfo(entityId),
             Divider(),
-
             Container(
                 child: ref.watch(docSP('list/' + entityId)).when(
                     loading: () => Container(),

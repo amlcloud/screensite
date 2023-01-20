@@ -17,11 +17,10 @@ class IndexingProgress extends ConsumerWidget {
             .when(
                 loading: () => Container(),
                 error: (e, s) => ErrorWidget(e),
-                data: (data) => data.docs.isEmpty
-                    ? Container()
-                    : Container(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text(
-                            '${data.docs.first.data()['count']} / ${data.docs.first.data()['total']} indexed'))));
+                data: (data) => Container(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(data.docs.isEmpty
+                        ? 'Reindexing...'
+                        : '${data.docs.first.data()['count']} / ${data.docs.first.data()['total']} indexed'))));
   }
 }
