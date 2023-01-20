@@ -4,9 +4,13 @@ import 'package:jiffy/jiffy.dart';
 import 'package:screensite/providers/firestore.dart';
 import 'package:http/http.dart' as http;
 
+import '../state/generic_state_notifier.dart';
+
 class ListInfo extends ConsumerWidget {
   final String entityId;
-  const ListInfo(this.entityId);
+  final AlwaysAliveProviderBase<GenericStateNotifier<bool?>>
+      _indexButtonClicked;
+  const ListInfo(this.entityId, this._indexButtonClicked);
   @override
   Widget build(BuildContext context, WidgetRef ref) =>
       ref.watch(docSP('list/${entityId}')).when(
@@ -48,6 +52,7 @@ class ListInfo extends ConsumerWidget {
                               String path =
                                   'https://us-central1-screener-9631e.cloudfunctions.net/index_list2?list=$entityId';
                               http.get(Uri.parse(path));
+                              ref.read(_indexButtonClicked).value = true;
                             },
                             child: Text('Reindex')),
                       )

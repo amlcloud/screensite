@@ -19,6 +19,10 @@ class ListDetails extends ConsumerWidget {
   final AlwaysAliveProviderBase<GenericStateNotifier<Map<String, dynamic>?>>
       selectedItem;
 
+  final _indexButtonClicked =
+      StateNotifierProvider<GenericStateNotifier<bool?>, bool?>(
+          (ref) => GenericStateNotifier<bool?>(null));
+
   final TextEditingController idCtrl = TextEditingController(),
       nameCtrl = TextEditingController(),
       descCtrl = TextEditingController();
@@ -32,7 +36,7 @@ class ListDetails extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: [
-            ListInfo(entityId),
+            ListInfo(entityId, _indexButtonClicked.notifier),
             Divider(),
             Container(
                 child: ref.watch(docSP('list/' + entityId)).when(
@@ -46,7 +50,10 @@ class ListDetails extends ConsumerWidget {
                                 children: <Widget>[
                                 Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [IndexingProgress(entityId)]),
+                                    children: [
+                                      IndexingProgress(entityId,
+                                          _indexButtonClicked.notifier)
+                                    ]),
                                 Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: <Widget>[
