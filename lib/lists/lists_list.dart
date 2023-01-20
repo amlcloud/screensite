@@ -56,7 +56,7 @@ class Lists extends ConsumerWidget {
                       // ..sort((a, b) => a[ref.watch(activeSort) ?? 'id']
                       //     .compareTo(b[ref.watch(activeSort) ?? 'id']))
                       )
-                      .map((entity) => ListItem(entity.id))
+                      .map((entity) => ListItemView(entity.id))
                       .toList()))
         ],
       );

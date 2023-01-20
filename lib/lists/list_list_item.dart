@@ -9,14 +9,25 @@ import 'package:jiffy/jiffy.dart';
 import 'package:flutter/gestures.dart';
 import '../extensions/string_validations.dart';
 import '../search/search_details.dart';
+import 'package:screensite/state/generic_state_notifier.dart';
+import 'package:screensite/lists/list_entitylistview.dart';
 
-class ListItem extends ConsumerWidget {
+final selectedListItem =
+    StateNotifierProvider<GenericStateNotifier<String?>, String?>(
+        (ref) => GenericStateNotifier<String?>(null));
+
+class ListItemView extends ConsumerStatefulWidget {
+  const ListItemView(this.entityId);
   final String entityId;
-  const ListItem(this.entityId);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(docSP('list/' + entityId)).when(
+  ConsumerState<ListItemView> createState() => _ListItemState();
+}
+
+class _ListItemState extends ConsumerState<ListItemView> {
+  @override
+  Widget build(BuildContext context) {
+    return ref.watch(docSP('list/${widget.entityId}')).when(
         loading: () => Container(),
         error: (e, s) => ErrorWidget(e),
         data: (entityDoc) => entityDoc.exists == false
@@ -25,6 +36,10 @@ class ListItem extends ConsumerWidget {
                 child:
                     Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
                 ListTile(
+                  selected: ref.watch(selectedListItem) == widget.entityId
+                      ? true
+                      : false,
+                  selectedTileColor: Theme.of(context).colorScheme.secondary,
                   title: Text(
                     (entityDoc.data()!['uiName'] != null)
                         ? entityDoc.data()!['uiName']
@@ -45,7 +60,9 @@ class ListItem extends ConsumerWidget {
                           .format()),
                   isThreeLine: true,
                   onTap: () {
-                    ref.read(activeList.notifier).value = entityId;
+                    ref.read(selectedEntityList.notifier).value = null;
+                    ref.read(selectedListItem.notifier).value = widget.entityId;
+                    ref.read(activeList.notifier).value = widget.entityId;
                   },
                 ),
               ])));
@@ -58,7 +75,7 @@ class ListItem extends ConsumerWidget {
           .collection('batch')
           .doc(element.id)
           .collection('SelectedEntity')
-          .doc(entityId)
+          .doc(widget.entityId)
           .get();
       if (selectList.exists) {
         print("sample data temp1: ${selectList.exists}");
