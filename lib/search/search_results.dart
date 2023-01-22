@@ -12,6 +12,8 @@ class SearchResults extends ConsumerWidget {
 
   SearchResults(this.searchId, this._selectedItemNotifier);
 
+  //Sort List of results
+  //Parameter: unsorted list and fieldname to sort
   List<QueryDocumentSnapshot<Map<String, dynamic>>> sortedMapbyFieldName(
       List<QueryDocumentSnapshot<Map<String, dynamic>>> dataList,
       String fieldName) {
@@ -38,21 +40,4 @@ class SearchResults extends ConsumerWidget {
                           "Levscore: " + res.data()['levScore'].toString()),
                     ));
               }).toList()));
-
-  // @override
-  // Widget build(BuildContext context, WidgetRef ref) => Column(
-  //     children: ref.watch(colSP('search/$searchId/res')).when(
-  //         loading: () => [],
-  //         error: (e, s) => [ErrorWidget(e)],
-  //         data: (results) => results.docs.map((res) {
-  //               return GestureDetector(
-  //                   onTap: () {
-  //                     ref.read(_selectedItemNotifier).value = res.data()['ref'];
-  //                   },
-  //                   child: ListTile(
-  //                     title: Text("Name: " + res.data()['target']),
-  //                     subtitle: Text(
-  //                         "Levscore: " + res.data()['levScore'].toString()),
-  //                   ));
-  //             }).toList()));
 }
