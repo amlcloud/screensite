@@ -6,7 +6,10 @@ import 'package:screensite/lists/lists_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
 
-//creating new Widget of ConsumerStatefulWidget which takes two args
+final selectedEntityList =
+    StateNotifierProvider<GenericStateNotifier<int?>, int?>(
+        (ref) => GenericStateNotifier<int?>(null));
+
 //creating new Widget of ConsumerStatefulWidget which takes two args
 class EntityListView extends ConsumerStatefulWidget {
   const EntityListView(this.entityId, this.selectedItem);
@@ -20,11 +23,6 @@ class EntityListView extends ConsumerStatefulWidget {
 
 class _EntityListViewState extends ConsumerState<EntityListView> {
   //creating int to keep information about selected item and function to write index of selected item
-  int? selected;
-  void isSelected(dynamic key) {
-    selected = key;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(children: [
@@ -43,7 +41,11 @@ class _EntityListViewState extends ConsumerState<EntityListView> {
                           .asMap()
                           .entries
                           .map((entity) => ListTile(
-                              selected: selected == entity.key ? true : false,
+                              selected:
+                                  ref.read(selectedEntityList.notifier).value ==
+                                          entity.key
+                                      ? true
+                                      : false,
                               selectedTileColor:
                                   Theme.of(context).colorScheme.secondary,
                               title: Text((entityDoc.data()!['entitiesName1'] == null
@@ -56,15 +58,13 @@ class _EntityListViewState extends ConsumerState<EntityListView> {
                                           entityDoc.data()!['entitiesName2'])) +
                                   (entityDoc.data()!['entitiesName3'] == null
                                       ? ''
-                                      : entity.value.get(
-                                          entityDoc.data()!['entitiesName3']))),
-                              subtitle: Text((entity.value.data()[entityDoc.data()!['entitiesAddress']] != null)
-                                  ? 'Location: ' +
-                                      entity.value.data()[entityDoc.data()!['entitiesAddress']]
-                                  : 'Location: undefined'),
+                                      : entity.value
+                                          .get(entityDoc.data()!['entitiesName3']))),
+                              subtitle: Text((entity.value.data()[entityDoc.data()!['entitiesAddress']] != null) ? 'Location: ' + entity.value.data()[entityDoc.data()!['entitiesAddress']] : 'Location: undefined'),
                               isThreeLine: true,
                               onTap: () {
-                                isSelected(entity.key);
+                                ref.read(selectedEntityList.notifier).value =
+                                    entity.key;
                                 ref.read(widget.selectedItem).value =
                                     Map.fromEntries(
                                         entity.value.data().entries.toList()
