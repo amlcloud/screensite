@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../extensions/string_validations.dart';
 import 'package:screensite/theme.dart';
+
+// Make an enum to check for type
+enum SplittingType { UNDERSCORE, CAPITAL, NONE }
 
 class JsonViewer extends StatefulWidget {
   final dynamic jsonObj;
@@ -52,11 +56,78 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
         crossAxisAlignment: CrossAxisAlignment.start, children: _getList());
   }
 
+  // Check if there is any kind of data
+  SplittingType CheckType(String inputString) {
+    var breakString = inputString.characters;
+    bool checkUpperCase = false;
+    bool checkLowerCase = false;
+    // If we have that type, return true
+    // c for capital
+
+    if (inputString.contains('_')) {
+      return SplittingType.UNDERSCORE;
+    } else {
+      // Check if there is an uppercase and lowercase but no _, which mean Uppercase might be the connector
+      // However, What happen if we have PARENT which have upper case, but no _
+      for (var char in breakString) {
+        if (char.toUpperCase() == char) {
+          checkUpperCase = true;
+        } else {
+          checkLowerCase = true;
+        }
+      }
+      // if we have both upper and lower
+      if (checkUpperCase && checkLowerCase) {
+        return SplittingType.CAPITAL;
+      } else {
+        // In this one, we have no upper case or no lower case, and no _
+        return SplittingType.NONE;
+      }
+    }
+  }
+
+  // Replace a character and Uppercase First Letter
+  String ReplaceCharacter(String inputString, SplittingType type) {
+    // split by char
+    String result = "";
+    List<String> listChar = [];
+    // c is capital, if there is no capital letter in the initial string, we split by the special keywords
+    if (type == SplittingType.UNDERSCORE) {
+      // _ is the connector so we split it with _
+      listChar = inputString.split('_');
+    } else {
+      // We will split by capital letter with the RegExp for capital
+      final beforeCapitalLetter = RegExp(r"(?=[A-Z])");
+      listChar = inputString.split(beforeCapitalLetter);
+    }
+
+    listChar.forEach((element) {
+      if (result.length > 1) {
+        result = result + " " + element.capitalize();
+      } else {
+        result = result + element.capitalize();
+      }
+    });
+
+    return result;
+  }
+
+  // Convert Entry data to better UI
+  String ConvertEntryData(String inputString) {
+    // First, find whether we have "_"
+    if (CheckType(inputString) != SplittingType.NONE) {
+      return ReplaceCharacter(inputString, CheckType(inputString));
+    } else {
+      return inputString.capitalize();
+    }
+  }
+
   _getList() {
     List<Widget> list = [];
     for (MapEntry entry in widget.jsonObj.entries) {
       bool ex = isExtensible(entry.value);
       bool ink = isInkWell(entry.value);
+
       list.add(Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -73,7 +144,10 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
                 ),
           (ex && ink)
               ? InkWell(
-                  child: Text(entry.key,
+                  child: Text(
+                      entry.key.runtimeType == String
+                          ? ConvertEntryData(entry.key)
+                          : entry.key,
                       style: Theme.of(context).textTheme.titleSmall),
                   // style: TextStyle(color: Colors.purple[900])),
                   onTap: () {
@@ -81,7 +155,11 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
                       openFlag[entry.key] = !(openFlag[entry.key] ?? false);
                     });
                   })
-              : Text(entry.key, style: Theme.of(context).textTheme.titleSmall),
+              : Text(
+                  entry.key.runtimeType == String
+                      ? ConvertEntryData(entry.key)
+                      : entry.key,
+                  style: Theme.of(context).textTheme.titleSmall),
           Text(
             ':',
             style: Theme.of(context).textTheme.titleSmall,

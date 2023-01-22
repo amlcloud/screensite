@@ -24,4 +24,14 @@ extension extString on String {
     final phoneRegExp = RegExp(r"^\+?0[0-9]{10}$");
     return phoneRegExp.hasMatch(this);
   }
+
+  // Uppercase for first letter
+  String capitalize() {
+    // but only Uppercase if it is not null
+    if (this == "") {
+      return "";
+    } else {
+      return "${this[0].toUpperCase()}${this.substring(1).toLowerCase()}";
+    }
+  }
 }
