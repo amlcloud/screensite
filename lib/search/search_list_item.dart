@@ -4,9 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:screensite/providers/firestore.dart';
 import 'package:screensite/search/search_page.dart';
 
+import '../state/generic_state_notifier.dart';
+
 class SearchListItem extends ConsumerWidget {
   final DocumentReference searchRef;
-  const SearchListItem(this.searchRef);
+  final AlwaysAliveProviderBase<GenericStateNotifier<DocumentReference?>>
+      _selectedItemNotifier;
+
+  const SearchListItem(this.searchRef, this._selectedItemNotifier);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -33,6 +38,7 @@ class SearchListItem extends ConsumerWidget {
                   // ]),
                   onTap: () {
                     ref.read(activeBatch.notifier).value = searchRef.id;
+                    ref.read(_selectedItemNotifier).value = null;
                   },
                 )
               ],

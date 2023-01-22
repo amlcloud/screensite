@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,6 +11,11 @@ final sortStateNotifierProvider =
         (ref) => GenericStateNotifier<String?>(null));
 
 class SearchHistory extends ConsumerWidget {
+  final AlwaysAliveProviderBase<GenericStateNotifier<DocumentReference?>>
+      _selectedItemNotifier;
+
+  const SearchHistory(this._selectedItemNotifier);
+
   @override
   Widget build(BuildContext context, WidgetRef ref) => ListView(
       padding: EdgeInsets.zero,
@@ -38,7 +44,8 @@ class SearchHistory extends ConsumerWidget {
                 //     return a[sortedBy].compareTo(b[sortedBy]);
                 //   });
                 return data.docs
-                    .map((e) => SearchListItem(e.reference))
+                    .map((e) =>
+                        SearchListItem(e.reference, _selectedItemNotifier))
                     .toList();
               }));
 }
