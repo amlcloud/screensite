@@ -12,26 +12,47 @@ class SearchResults extends ConsumerWidget {
 
   SearchResults(this.searchId, this._selectedItemNotifier);
 
+  List<QueryDocumentSnapshot<Map<String, dynamic>>> sortedMapbyFieldName(
+      List<QueryDocumentSnapshot<Map<String, dynamic>>> dataList,
+      String fieldName) {
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> sortedDataList = dataList
+        .toList()
+      ..sort((a, b) => b.data()[fieldName].compareTo(a.data()[fieldName]));
+    return sortedDataList;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) => Column(
       children: ref.watch(colSP('search/$searchId/res')).when(
           loading: () => [],
           error: (e, s) => [ErrorWidget(e)],
-<<<<<<< HEAD
-          data: (results) => results.docs
-              .map((res) => ListTile(
-                    title: Text("Name: " + res.data()['target']),
-                    subtitle:
-                        Text("Levscore: " + res.data()['levScore'].toString()),
-                  ))
-              .toList()));
-=======
-          data: (results) => results.docs.map((res) {
+          data: (results) =>
+              sortedMapbyFieldName(results.docs, 'levScore').map((res) {
                 return GestureDetector(
                     onTap: () {
                       ref.read(_selectedItemNotifier).value = res.data()['ref'];
                     },
-                    child: ListTile(title: Text(res.data()['target'])));
+                    child: ListTile(
+                      title: Text("Name: " + res.data()['target']),
+                      subtitle: Text(
+                          "Levscore: " + res.data()['levScore'].toString()),
+                    ));
               }).toList()));
->>>>>>> 250f58bbabfa447b301bda26e5a7edd2059659f5
+
+  // @override
+  // Widget build(BuildContext context, WidgetRef ref) => Column(
+  //     children: ref.watch(colSP('search/$searchId/res')).when(
+  //         loading: () => [],
+  //         error: (e, s) => [ErrorWidget(e)],
+  //         data: (results) => results.docs.map((res) {
+  //               return GestureDetector(
+  //                   onTap: () {
+  //                     ref.read(_selectedItemNotifier).value = res.data()['ref'];
+  //                   },
+  //                   child: ListTile(
+  //                     title: Text("Name: " + res.data()['target']),
+  //                     subtitle: Text(
+  //                         "Levscore: " + res.data()['levScore'].toString()),
+  //                   ));
+  //             }).toList()));
 }
