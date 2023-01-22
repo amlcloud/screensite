@@ -13,6 +13,10 @@ class SearchResults extends ConsumerWidget {
           loading: () => [],
           error: (e, s) => [ErrorWidget(e)],
           data: (results) => results.docs
-              .map((res) => ListTile(title: Text(res.data()['target'])))
+              .map((res) => ListTile(
+                    title: Text("Name: " + res.data()['target']),
+                    subtitle:
+                        Text("Levscore: " + res.data()['levScore'].toString()),
+                  ))
               .toList()));
 }
