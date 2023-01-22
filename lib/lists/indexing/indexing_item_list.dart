@@ -27,8 +27,7 @@ class IndexingItemList extends ConsumerWidget {
                       child: Text('Type: ${config.data()['type']}')));
                   indices.addAll(ref
                       .watch(filteredColSP(QueryParams(
-                          path:
-                              'list/$_entityId/indexConfigs/${config.id}/entityIndexFields/',
+                          'list/$_entityId/indexConfigs/${config.id}/entityIndexFields/',
                           orderBy: 'createdTimestamp')))
                       .when(
                           loading: () => [Container()],
