@@ -5,6 +5,7 @@ import 'package:screensite/providers/firestore.dart';
 import 'package:http/http.dart' as http;
 
 import '../state/generic_state_notifier.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 
 class ListInfo extends ConsumerWidget {
   final String entityId;
@@ -49,9 +50,10 @@ class ListInfo extends ConsumerWidget {
                       Flexible(
                         child: TextButton(
                             onPressed: () {
-                              String path =
-                                  'https://us-central1-screener-9631e.cloudfunctions.net/index_list2?list=$entityId';
-                              http.get(Uri.parse(path));
+                              HttpsCallable callable = FirebaseFunctions
+                                  .instance
+                                  .httpsCallable('index_list2?list=$entityId');
+                              callable();
                               ref.read(_indexButtonClicked).value = true;
                             },
                             child: Text('Reindex')),
