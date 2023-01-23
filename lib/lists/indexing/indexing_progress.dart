@@ -14,7 +14,7 @@ class IndexingProgress extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
         child: ref
-            .watch(filteredColSP(QueryParams(path: 'indexStatus/', queries: [
+            .watch(filteredColSP(QueryParams('indexStatus/', queries: [
               QueryParam('listId', {Symbol('isEqualTo'): _entityId})
             ])))
             .when(
