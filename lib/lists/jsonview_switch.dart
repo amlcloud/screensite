@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:screensite/lists/lists_page.dart';
 import '../controls/custom_json_viewer.dart';
 import '../controls/json_viewer.dart';
 
@@ -12,7 +11,9 @@ final SwitchJsonStateProvider = StateProvider<bool>((ref) {
 });
 
 class SwitchJSON extends ConsumerWidget {
-  const SwitchJSON(Map<String, dynamic>? watch);
+  final Map<String, dynamic>? selectedItem;
+
+  const SwitchJSON(this.selectedItem);
 // JSON viewer
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -36,9 +37,9 @@ class SwitchJSON extends ConsumerWidget {
         ),
         Container(
             child: (isSwitched == false)
-                ? CustomJsonViewer(ref.watch(selectedItem))
+                ? CustomJsonViewer(selectedItem)
                 // Widget with prittier data should go here, so its a placeholder for now
-                : JsonViewer(ref.watch(selectedItem))),
+                : JsonViewer(selectedItem)),
       ],
     );
   }
