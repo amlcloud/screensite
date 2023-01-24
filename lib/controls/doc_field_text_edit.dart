@@ -38,6 +38,8 @@ class DocFieldTextEditState extends ConsumerState<DocFieldTextEdit> {
     super.initState();
     sub = widget.docRef.snapshots().listen((event) {
       if (!event.exists) return;
+      ctrl.text = event.data()![widget.field];
+      ctrl.selection = TextSelection.collapsed(offset: ctrl.text.length);
       print('received ${event.data()![widget.field]}');
       if (ctrl.text != event.data()![widget.field]) {
         ctrl.text = event.data()![widget.field];
