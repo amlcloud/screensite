@@ -58,8 +58,7 @@ class ListIndexing extends ConsumerWidget {
       child: Column(children: [
         Column(
             children: ref
-                .watch(filteredColSP(QueryParams(
-                    path: 'list/$entityId/indexConfigs',
+                .watch(filteredColSP(QueryParams('list/$entityId/indexConfigs',
                     orderBy: 'createdTimestamp')))
                 .when(
                     loading: () => [Container()],

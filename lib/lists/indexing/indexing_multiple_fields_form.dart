@@ -74,16 +74,14 @@ class IndexingMultipleFieldsForm extends IndexingForm {
     List<Widget> children = [];
     children.addAll(ref
         .watch(filteredColSP(QueryParams(
-            path:
-                'list/$entityId/indexConfigs/${document.id}/entityIndexFields/',
-            orderBy: 'createdTimestamp',
-            distinct: ((previous, current) {
-              for (int i = 0; i < previous.size; i++) {
-                print('${previous.docs[i].data()} ${current.docs[i].data()}');
-              }
-              print('Size: ${previous.size} ${current.size}');
-              return previous.size == current.size;
-            }))))
+            'list/$entityId/indexConfigs/${document.id}/entityIndexFields/',
+            orderBy: 'createdTimestamp', distinct: ((previous, current) {
+          for (int i = 0; i < previous.size; i++) {
+            print('${previous.docs[i].data()} ${current.docs[i].data()}');
+          }
+          print('Size: ${previous.size} ${current.size}');
+          return previous.size == current.size;
+        }))))
         .when(
             loading: () => [Container()],
             error: (e, s) => [ErrorWidget(e)],

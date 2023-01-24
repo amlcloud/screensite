@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../extensions/string_validations.dart';
-import 'package:screensite/theme.dart';
 
-// Make an enum to check for type
-enum SplittingType { UNDERSCORE, CAPITAL, NONE }
-
-class CustomJsonViewer extends StatefulWidget {
+class JsonViewer extends StatefulWidget {
   final dynamic jsonObj;
-  CustomJsonViewer(this.jsonObj);
+  JsonViewer(this.jsonObj);
   @override
-  _CustomJsonViewerState createState() => _CustomJsonViewerState();
+  _JsonViewerState createState() => _JsonViewerState();
 }
 
-class _CustomJsonViewerState extends State<CustomJsonViewer> {
+class _JsonViewerState extends State<JsonViewer> {
   @override
   Widget build(BuildContext context) {
     return getContentWidget(widget.jsonObj);
@@ -33,16 +28,13 @@ class _CustomJsonViewerState extends State<CustomJsonViewer> {
 class JsonObjectViewer extends StatefulWidget {
   final Map<String, dynamic> jsonObj;
   final bool notRoot;
-
   JsonObjectViewer(this.jsonObj, {this.notRoot: false});
-
   @override
   JsonObjectViewerState createState() => new JsonObjectViewerState();
 }
 
 class JsonObjectViewerState extends State<JsonObjectViewer> {
   Map<String, bool> openFlag = Map();
-
   @override
   Widget build(BuildContext context) {
     if (widget.notRoot) {
@@ -56,113 +48,41 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
         crossAxisAlignment: CrossAxisAlignment.start, children: _getList());
   }
 
-  // Check if there is any kind of data
-  SplittingType CheckType(String inputString) {
-    var breakString = inputString.characters;
-    bool checkUpperCase = false;
-    bool checkLowerCase = false;
-    // If we have that type, return true
-    // c for capital
-
-    if (inputString.contains('_')) {
-      return SplittingType.UNDERSCORE;
-    } else {
-      // Check if there is an uppercase and lowercase but no _, which mean Uppercase might be the connector
-      // However, What happen if we have PARENT which have upper case, but no _
-      for (var char in breakString) {
-        if (char.toUpperCase() == char) {
-          checkUpperCase = true;
-        } else {
-          checkLowerCase = true;
-        }
-      }
-      // if we have both upper and lower
-      if (checkUpperCase && checkLowerCase) {
-        return SplittingType.CAPITAL;
-      } else {
-        // In this one, we have no upper case or no lower case, and no _
-        return SplittingType.NONE;
-      }
-    }
-  }
-
-  // Replace a character and Uppercase First Letter
-  String ReplaceCharacter(String inputString, SplittingType type) {
-    // split by char
-    String result = "";
-    List<String> listChar = [];
-    // c is capital, if there is no capital letter in the initial string, we split by the special keywords
-    if (type == SplittingType.UNDERSCORE) {
-      // _ is the connector so we split it with _
-      listChar = inputString.split('_');
-    } else {
-      // We will split by capital letter with the RegExp for capital
-      final beforeCapitalLetter = RegExp(r"(?=[A-Z])");
-      listChar = inputString.split(beforeCapitalLetter);
-    }
-
-    listChar.forEach((element) {
-      if (result.length > 1) {
-        result = result + " " + element.capitalize();
-      } else {
-        result = result + element.capitalize();
-      }
-    });
-
-    return result;
-  }
-
-  // Convert Entry data to better UI
-  String ConvertEntryData(String inputString) {
-    // First, find whether we have "_"
-    if (CheckType(inputString) != SplittingType.NONE) {
-      return ReplaceCharacter(inputString, CheckType(inputString));
-    } else {
-      return inputString.capitalize();
-    }
-  }
-
   _getList() {
     List<Widget> list = [];
     for (MapEntry entry in widget.jsonObj.entries) {
       bool ex = isExtensible(entry.value);
       bool ink = isInkWell(entry.value);
-
       list.add(Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           ex
               ? ((openFlag[entry.key] ?? false)
                   ? Icon(Icons.arrow_drop_down,
-                      size: 14) //, color: Color.fromARGB(255, 13, 13, 13))
-                  : Icon(Icons.arrow_right,
-                      size: 14)) //, color: Color.fromARGB(255, 10, 10, 10)))
+                      size: 14, color: Colors.grey[700])
+                  : Icon(Icons.arrow_right, size: 14, color: Colors.grey[700]))
               : const Icon(
                   Icons.arrow_right,
-                  // color: Color.fromARGB(0, 0, 0, 0),
+                  color: Color.fromARGB(0, 0, 0, 0),
                   size: 14,
                 ),
           (ex && ink)
               ? InkWell(
-                  child: Text(
-                      entry.key.runtimeType == String
-                          ? ConvertEntryData(entry.key)
-                          : entry.key,
-                      style: Theme.of(context).textTheme.titleSmall),
-                  // style: TextStyle(color: Colors.purple[900])),
+                  child: Text(entry.key,
+                      style: TextStyle(color: Colors.purple[900])),
                   onTap: () {
                     setState(() {
                       openFlag[entry.key] = !(openFlag[entry.key] ?? false);
                     });
                   })
-              : Text(
-                  entry.key.runtimeType == String
-                      ? ConvertEntryData(entry.key)
-                      : entry.key,
-                  style: Theme.of(context).textTheme.titleSmall),
+              : Text(entry.key,
+                  style: TextStyle(
+                      color: entry.value == null
+                          ? Colors.grey
+                          : Colors.purple[900])),
           Text(
             ':',
-            style: Theme.of(context).textTheme.titleSmall,
+            style: TextStyle(color: Colors.grey),
           ),
           const SizedBox(width: 3),
           getValueWidget(entry)
@@ -209,8 +129,8 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
     if (entry.value == null) {
       return Expanded(
           child: Text(
-        '',
-        // style: TextStyle(color: Color.fromARGB(255, 13, 13, 13)),
+        'undefined',
+        style: TextStyle(color: Colors.grey),
       ));
     } else if (entry.value is int) {
       return Expanded(
@@ -223,7 +143,7 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
               },
               child: Text(
                 entry.value.toString(),
-                style: Theme.of(context).textTheme.subtitle2,
+                style: TextStyle(color: Colors.teal),
               )));
     } else if (entry.value is String) {
       return Expanded(
@@ -236,7 +156,7 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
               },
               child: Text(
                 '\"' + entry.value + '\"',
-                style: Theme.of(context).textTheme.subtitle2,
+                style: TextStyle(color: Colors.redAccent),
               )));
     } else if (entry.value is bool) {
       return Expanded(
@@ -249,7 +169,7 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
               },
               child: Text(
                 entry.value.toString(),
-                style: Theme.of(context).textTheme.subtitle2,
+                style: TextStyle(color: Colors.purple),
               )));
     } else if (entry.value is double) {
       return Expanded(
@@ -262,36 +182,35 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
               },
               child: Text(
                 entry.value.toString(),
-                style: Theme.of(context).textTheme.subtitle2,
+                style: TextStyle(color: Colors.teal),
               )));
     } else if (entry.value is List) {
       if (entry.value.isEmpty) {
         return GestureDetector(
             onTap: () {
-              Clipboard.setData(ClipboardData(text: ""));
+              Clipboard.setData(ClipboardData(text: 'Array[0]'));
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text('Text copied to clipboard'),
               ));
             },
             child: Text(
-              'Empty',
-              style: Theme.of(context).textTheme.subtitle2,
+              'Array[0]',
+              style: TextStyle(color: Colors.grey),
             ));
       } else {
         return InkWell(
             child: GestureDetector(
                 onTap: () {
-                  // Clipboard.setData(ClipboardData(
-                  //     text:
-                  //         'Array<${getTypeName(entry.value[0])}>[${entry.value.length}]'));
-                  // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  //   content: Text('Text copied to clipboard'),
-                  // ));
+                  Clipboard.setData(ClipboardData(
+                      text:
+                          'Array<${getTypeName(entry.value[0])}>[${entry.value.length}]'));
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('Text copied to clipboard'),
+                  ));
                 },
                 child: Text(
-                  // 'Array<${getTypeName(entry.value[0])}>[${entry.value.length}]',
-                  " ",
-                  style: Theme.of(context).textTheme.subtitle2,
+                  'Array<${getTypeName(entry.value[0])}>[${entry.value.length}]',
+                  style: TextStyle(color: Colors.grey),
                 )),
             onTap: () {
               setState(() {
@@ -303,14 +222,14 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
     return InkWell(
         child: GestureDetector(
             onTap: () {
-              // Clipboard.setData(ClipboardData(text: 'Object'));
-              // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              //   content: Text('Text copied to clipboard'),
-              // ));
+              Clipboard.setData(ClipboardData(text: 'Object'));
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text('Text copied to clipboard'),
+              ));
             },
             child: Text(
-              '',
-              // style: TextStyle(color: Colors.grey),
+              'Object',
+              style: TextStyle(color: Colors.grey),
             )),
         onTap: () {
           setState(() {
@@ -352,18 +271,14 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
 
 class JsonArrayViewer extends StatefulWidget {
   final List<dynamic> jsonArray;
-
   final bool notRoot;
-
   JsonArrayViewer(this.jsonArray, {this.notRoot: false});
-
   @override
   _JsonArrayViewerState createState() => new _JsonArrayViewerState();
 }
 
 class _JsonArrayViewerState extends State<JsonArrayViewer> {
   late List<bool> openFlag;
-
   @override
   Widget build(BuildContext context) {
     if (widget.notRoot) {
@@ -394,20 +309,23 @@ class _JsonArrayViewerState extends State<JsonArrayViewer> {
         children: <Widget>[
           ex
               ? ((openFlag[i])
-                  ? Icon(Icons.arrow_drop_down, size: 14)
-                  // color: Colors.grey[700])
-                  : Icon(Icons.arrow_right, size: 14))
-              //  color: Colors.grey[700]))
+                  ? Icon(Icons.arrow_drop_down,
+                      size: 14, color: Colors.grey[700])
+                  : Icon(Icons.arrow_right, size: 14, color: Colors.grey[700]))
               : const Icon(
-                  Icons.arrow_right, //color: Color.fromARGB(0, 0, 0, 0)
-                  // size: 14,
+                  Icons.arrow_right,
+                  color: Color.fromARGB(0, 0, 0, 0),
+                  size: 14,
                 ),
           (ex && ink)
               ? getInkWell(i)
-              : Text('[$i]', style: Theme.of(context).textTheme.subtitle2),
+              : Text('[$i]',
+                  style: TextStyle(
+                      color:
+                          content == null ? Colors.grey : Colors.purple[900])),
           Text(
             ':',
-            style: Theme.of(context).textTheme.subtitle2,
+            style: TextStyle(color: Colors.grey),
           ),
           const SizedBox(width: 3),
           getValueWidget(content, i)
@@ -424,7 +342,7 @@ class _JsonArrayViewerState extends State<JsonArrayViewer> {
 
   getInkWell(int index) {
     return InkWell(
-        child: Text('[$index]', style: Theme.of(context).textTheme.subtitle2),
+        child: Text('[$index]', style: TextStyle(color: Colors.purple[900])),
         onTap: () {
           setState(() {
             openFlag[index] = !(openFlag[index]);
@@ -436,44 +354,44 @@ class _JsonArrayViewerState extends State<JsonArrayViewer> {
     if (content == null) {
       return Expanded(
           child: Text(
-        'Empty',
-        style: Theme.of(context).textTheme.subtitle2,
+        'undefined',
+        style: TextStyle(color: Colors.grey),
       ));
     } else if (content is int) {
       return Expanded(
           child: Text(
         content.toString(),
-        style: Theme.of(context).textTheme.subtitle2,
+        style: TextStyle(color: Colors.teal),
       ));
     } else if (content is String) {
       return Expanded(
           child: Text(
         '\"' + content + '\"',
-        style: Theme.of(context).textTheme.subtitle2,
+        style: TextStyle(color: Colors.redAccent),
       ));
     } else if (content is bool) {
       return Expanded(
           child: Text(
         content.toString(),
-        style: Theme.of(context).textTheme.subtitle2,
+        style: TextStyle(color: Colors.purple),
       ));
     } else if (content is double) {
       return Expanded(
           child: Text(
         content.toString(),
-        style: Theme.of(context).textTheme.subtitle2,
+        style: TextStyle(color: Colors.teal),
       ));
     } else if (content is List) {
       if (content.isEmpty) {
         return Text(
-          '',
-          style: Theme.of(context).textTheme.subtitle2,
+          'Array[0]',
+          style: TextStyle(color: Colors.grey),
         );
       } else {
         return InkWell(
             child: Text(
               'Array<${JsonObjectViewerState.getTypeName(content)}>[${content.length}]',
-              style: Theme.of(context).textTheme.subtitle2,
+              style: TextStyle(color: Colors.grey),
             ),
             onTap: () {
               setState(() {
@@ -484,8 +402,8 @@ class _JsonArrayViewerState extends State<JsonArrayViewer> {
     }
     return InkWell(
         child: Text(
-          '',
-          style: Theme.of(context).textTheme.subtitle2,
+          'Object',
+          style: TextStyle(color: Colors.grey),
         ),
         onTap: () {
           setState(() {

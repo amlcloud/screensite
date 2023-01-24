@@ -23,12 +23,10 @@ class IndexingArrayOfValuesFieldForm extends IndexingForm {
     return Column(
         children: ref
             .watch(filteredColSP(QueryParams(
-                path:
-                    'list/$entityId/indexConfigs/${document.id}/entityIndexFields/',
-                orderBy: 'createdTimestamp',
-                distinct: ((previous, current) {
-                  return previous.size == current.size;
-                }))))
+                'list/$entityId/indexConfigs/${document.id}/entityIndexFields/',
+                orderBy: 'createdTimestamp', distinct: ((previous, current) {
+              return previous.size == current.size;
+            }))))
             .when(
                 loading: () => [Container()],
                 error: (e, s) => [ErrorWidget(e)],
