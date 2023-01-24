@@ -22,11 +22,11 @@ class IndexingArrayOfValuesFieldForm extends IndexingForm {
   Widget edit(WidgetRef ref) {
     return Column(
         children: ref
-            .watch(filteredColSP(QueryParams(
+            .watch(colSPfiltered(
                 'list/$entityId/indexConfigs/${document.id}/entityIndexFields/',
                 orderBy: 'createdTimestamp', distinct: ((previous, current) {
               return previous.size == current.size;
-            }))))
+            })))
             .when(
                 loading: () => [Container()],
                 error: (e, s) => [ErrorWidget(e)],

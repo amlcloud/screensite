@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers/firestore.dart';
+import '../../state/generic_state_notifier.dart';
 
 class IndexingItemList extends ConsumerWidget {
   final String _entityId;
   final Map<String, dynamic> _item;
+  final StateNotifierProvider<GenericStateNotifier<String?>, String?>
+      activeList;
 
-  const IndexingItemList(this._entityId, this._item);
+  const IndexingItemList(this._entityId, this._item, this.activeList);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,9 +29,9 @@ class IndexingItemList extends ConsumerWidget {
                       width: double.infinity,
                       child: Text('Type: ${config.data()['type']}')));
                   indices.addAll(ref
-                      .watch(filteredColSP(QueryParams(
+                      .watch(colSPfiltered(
                           'list/$_entityId/indexConfigs/${config.id}/entityIndexFields/',
-                          orderBy: 'createdTimestamp')))
+                          orderBy: 'createdTimestamp'))
                       .when(
                           loading: () => [Container()],
                           error: (e, s) => [ErrorWidget(e)],

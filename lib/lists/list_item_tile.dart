@@ -16,15 +16,19 @@ final selectedListItem =
     StateNotifierProvider<GenericStateNotifier<String?>, String?>(
         (ref) => GenericStateNotifier<String?>(null));
 
-class ListItemView extends ConsumerStatefulWidget {
-  const ListItemView(this.entityId);
+class ListItemTile extends ConsumerStatefulWidget {
   final String entityId;
 
+  final StateNotifierProvider<GenericStateNotifier<String?>, String?>
+      activeList;
+
+  const ListItemTile(this.entityId, this.activeList);
+
   @override
-  ConsumerState<ListItemView> createState() => _ListItemState();
+  ConsumerState<ListItemTile> createState() => _ListItemState();
 }
 
-class _ListItemState extends ConsumerState<ListItemView> {
+class _ListItemState extends ConsumerState<ListItemTile> {
   @override
   Widget build(BuildContext context) {
     return ref.watch(docSP('list/${widget.entityId}')).when(
@@ -62,7 +66,8 @@ class _ListItemState extends ConsumerState<ListItemView> {
                   onTap: () {
                     ref.read(selectedEntityList.notifier).value = null;
                     ref.read(selectedListItem.notifier).value = widget.entityId;
-                    ref.read(activeList.notifier).value = widget.entityId;
+                    ref.read(widget.activeList.notifier).value =
+                        widget.entityId;
                   },
                 ),
               ])));
