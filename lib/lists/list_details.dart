@@ -36,6 +36,21 @@ class ListDetails extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: [
+            Container(
+              padding: EdgeInsets.all(10.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    "List id: " + entityId,
+                    textAlign: TextAlign.center,
+                  )
+                ],
+              ),
+            ),
+            Divider(),
             ListInfo(entityId, _indexButtonClicked.notifier),
             Divider(),
             Container(
