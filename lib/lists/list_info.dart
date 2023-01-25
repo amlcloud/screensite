@@ -29,21 +29,21 @@ class ListInfo extends ConsumerWidget {
                                 : 'undefined list name',
                       )),
                       Flexible(
-                          child: Text('Last updated: ' +
+                          child: Text('Last updated on ' +
                               Jiffy(entityDoc.data()!['lastUpdateTime'] == null
-                                      ? DateTime(0001, 1, 1, 00, 00)
+                                      ? DateTime(0001, 1, 1)
                                       : entityDoc
                                           .data()!['lastUpdateTime']
                                           .toDate())
-                                  .format())),
+                                  .format('MMM d, y'))),
                       Flexible(
-                          child: Text('Last changed: ' +
+                          child: Text('Last changed on ' +
                               Jiffy(entityDoc.data()!['lastUpdateTime'] == null
-                                      ? DateTime(0001, 1, 1, 00, 00)
+                                      ? DateTime(0001, 1, 1)
                                       : entityDoc
                                           .data()!['lastUpdateTime']
                                           .toDate())
-                                  .format())),
+                                  .format('MMM d, y'))),
                     ]),
               ]));
 }
