@@ -19,7 +19,7 @@ class SearchResults extends ConsumerWidget {
       String fieldName) {
     List<QueryDocumentSnapshot<Map<String, dynamic>>> sortedDataList = dataList
         .toList()
-      ..sort((a, b) => b.data()[fieldName].compareTo(a.data()[fieldName]));
+      ..sort((a, b) => a.data()[fieldName].compareTo(b.data()[fieldName]));
     return sortedDataList;
   }
 

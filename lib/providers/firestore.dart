@@ -83,24 +83,21 @@ class QueryParams extends Equatable {
       ];
 }
 
-// AutoDisposeStreamProviderFamily<QuerySnapshot<Map<String, dynamic>>,
-//         QueryParams>
-//     colSPfiltered(String path,
-//         {List<QueryParam>? queries,
-//         String? orderBy,
-//         bool? isOrderDesc,
-//         int? limit,
-//         bool? Function(
-//                 QuerySnapshot<Object?>, QuerySnapshot<Map<String, dynamic>>)?
-//             distinct}) {
-//   return filteredColSP(QueryParams(
-//       path: path,
-//       queries: queries,
-//       orderBy: orderBy,
-//       distinct: ((previous, current) {
-//         return previous.size == current.size;
-//       })));
-// }
+AutoDisposeStreamProvider<QuerySnapshot<Map<String, dynamic>>> colSPfiltered(
+        String path,
+        {List<QueryParam>? queries,
+        String? orderBy,
+        bool? isOrderDesc,
+        int? limit,
+        bool Function(
+                QuerySnapshot<Object?>, QuerySnapshot<Map<String, dynamic>>)?
+            distinct}) =>
+    filteredColSP(QueryParams(path,
+        limit: limit,
+        queries: queries,
+        orderBy: orderBy,
+        isOrderDesc: isOrderDesc,
+        distinct: distinct));
 
 /// Riverpod Stream Provider that listens to a collection with specific query criteria
 /// (see [QueryParams]) and [equals] function that is used by [Stream.distinct] to

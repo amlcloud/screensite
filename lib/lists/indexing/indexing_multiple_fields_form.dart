@@ -73,7 +73,7 @@ class IndexingMultipleFieldsForm extends IndexingForm {
   Widget edit(WidgetRef ref) {
     List<Widget> children = [];
     children.addAll(ref
-        .watch(filteredColSP(QueryParams(
+        .watch(colSPfiltered(
             'list/$entityId/indexConfigs/${document.id}/entityIndexFields/',
             orderBy: 'createdTimestamp', distinct: ((previous, current) {
           for (int i = 0; i < previous.size; i++) {
@@ -81,7 +81,7 @@ class IndexingMultipleFieldsForm extends IndexingForm {
           }
           print('Size: ${previous.size} ${current.size}');
           return previous.size == current.size;
-        }))))
+        })))
         .when(
             loading: () => [Container()],
             error: (e, s) => [ErrorWidget(e)],

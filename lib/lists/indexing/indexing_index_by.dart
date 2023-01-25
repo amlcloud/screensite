@@ -12,9 +12,9 @@ class IndexingIndexBy extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ref
-        .watch(filteredColSP(QueryParams(
+        .watch(colSPfiltered(
             'list/$entityId/indexConfigs/$indexId/entityIndexFields/',
-            orderBy: 'createdTimestamp')))
+            orderBy: 'createdTimestamp'))
         .when(
             loading: () => Container(),
             error: (e, s) => ErrorWidget(e),

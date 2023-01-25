@@ -12,15 +12,15 @@ import 'jsonview_switch.dart';
 
 import 'indexing/indexing_item_list.dart';
 
-final activeList =
-    StateNotifierProvider<GenericStateNotifier<String?>, String?>(
-        (ref) => GenericStateNotifier<String?>(null));
-
-final selectedItem = StateNotifierProvider<
-        GenericStateNotifier<Map<String, dynamic>?>, Map<String, dynamic>?>(
-    (ref) => GenericStateNotifier<Map<String, dynamic>?>(null));
-
 class ListsPage extends ConsumerWidget {
+  final activeList =
+      StateNotifierProvider<GenericStateNotifier<String?>, String?>(
+          (ref) => GenericStateNotifier<String?>(null));
+
+  final selectedItem = StateNotifierProvider<
+          GenericStateNotifier<Map<String, dynamic>?>, Map<String, dynamic>?>(
+      (ref) => GenericStateNotifier<Map<String, dynamic>?>(null));
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
@@ -38,7 +38,7 @@ class ListsPage extends ConsumerWidget {
                       child: SingleChildScrollView(
                           child: Column(
                     children: [
-                      Lists(),
+                      Lists(activeList),
                     ],
                   ))),
                   Expanded(
@@ -65,7 +65,7 @@ class ListsPage extends ConsumerWidget {
                                       ref.watch(selectedItem) == null
                                   ? Container()
                                   : IndexingItemList(ref.watch(activeList)!,
-                                      ref.watch(selectedItem)!)
+                                      ref.watch(selectedItem)!, activeList)
                             ],
                           ),
                         ))
