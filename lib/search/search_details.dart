@@ -19,6 +19,7 @@ class SearchDetails extends ConsumerWidget {
       nameCtrl = TextEditingController(),
       descCtrl = TextEditingController();
 
+  var time = DateTime.now(); //kk
   SearchDetails(this.entityId, this._selectedItemNotifier);
 
   @override
@@ -32,6 +33,7 @@ class SearchDetails extends ConsumerWidget {
                   child: Column(
                 children: [
                   Text(searchDoc.id),
+                  Text('Search Time:$time'),
                   SearchResults(searchDoc.id, _selectedItemNotifier)
                 ],
               ))));
