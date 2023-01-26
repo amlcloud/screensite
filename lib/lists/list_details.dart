@@ -11,12 +11,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/gestures.dart';
 
+import 'indexing/indexing_progress.dart';
 import 'list_count.dart';
 
 class ListDetails extends ConsumerWidget {
   final String entityId;
   final AlwaysAliveProviderBase<GenericStateNotifier<Map<String, dynamic>?>>
       selectedItem;
+
+  final _indexButtonClicked =
+      StateNotifierProvider<GenericStateNotifier<bool?>, bool?>(
+          (ref) => GenericStateNotifier<bool?>(null));
 
   final TextEditingController idCtrl = TextEditingController(),
       nameCtrl = TextEditingController(),
@@ -31,9 +36,23 @@ class ListDetails extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: [
-            Flexible(flex: 1, child: ListInfo(entityId)),
+            Container(
+              padding: EdgeInsets.all(10.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    "List id: " + entityId,
+                    textAlign: TextAlign.center,
+                  )
+                ],
+              ),
+            ),
             Divider(),
-
+            ListInfo(entityId, _indexButtonClicked.notifier),
+            Divider(),
             Container(
                 child: ref.watch(docSP('list/' + entityId)).when(
                     loading: () => Container(),
@@ -44,6 +63,12 @@ class ListDetails extends ConsumerWidget {
                             child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
+                                Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      IndexingProgress(entityId,
+                                          _indexButtonClicked.notifier)
+                                    ]),
                                 Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: <Widget>[

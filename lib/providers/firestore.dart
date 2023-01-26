@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:quiver/core.dart';
+//import 'package:quiver/core.dart';
 
 /// Query parameter for [WhereFilter] used in [filteredColSP]
 ///
@@ -59,9 +59,8 @@ class QueryParam extends Equatable {
 ///       Map<Symbol, dynamic>.from(
 ///           {Symbol('isEqualTo'): caseDoc.get('entity')}))
 class QueryParams extends Equatable {
-  const QueryParams(
-      {this.path,
-      this.queries,
+  const QueryParams(this.path,
+      {this.queries,
       this.orderBy,
       this.isOrderDesc,
       this.limit,
@@ -83,6 +82,22 @@ class QueryParams extends Equatable {
         limit
       ];
 }
+
+AutoDisposeStreamProvider<QuerySnapshot<Map<String, dynamic>>> colSPfiltered(
+        String path,
+        {List<QueryParam>? queries,
+        String? orderBy,
+        bool? isOrderDesc,
+        int? limit,
+        bool Function(
+                QuerySnapshot<Object?>, QuerySnapshot<Map<String, dynamic>>)?
+            distinct}) =>
+    filteredColSP(QueryParams(path,
+        limit: limit,
+        queries: queries,
+        orderBy: orderBy,
+        isOrderDesc: isOrderDesc,
+        distinct: distinct));
 
 /// Riverpod Stream Provider that listens to a collection with specific query criteria
 /// (see [QueryParams]) and [equals] function that is used by [Stream.distinct] to
@@ -130,14 +145,12 @@ class DocParam {
 
   @override
   int get hashCode {
-    //print('path: ${path}, hash: ${hashObjects([path])}');
-    return hashObjects([path]);
+    return Object.hashAll([path]);
   }
 
   @override
   bool operator ==(Object other) {
-    // print(' ${path}==${(other as DocParam).path}');
-    return path == (other as DocParam).path; // && equals == other.equals;
+    return path == (other as DocParam).path;
   }
 }
 
@@ -183,7 +196,7 @@ final AutoDisposeStreamProviderFamily<QuerySnapshot<Map<String, dynamic>>,
         String> colSP =
     StreamProvider.autoDispose
         .family<QuerySnapshot<Map<String, dynamic>>, String>((ref, path) {
-  return FirebaseFirestore.instance.collection(path).limit(100).snapshots();
+  return FirebaseFirestore.instance.collection(path).snapshots();
 });
 
 // To get the count of a collection

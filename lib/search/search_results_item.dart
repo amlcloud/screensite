@@ -3,7 +3,7 @@ import 'dart:html';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:screensite/controls/custom_json_viewer.dart';
+import 'package:screensite/lists/jsonview_switch.dart';
 
 class SearchResultsItem extends ConsumerWidget {
   final DocumentReference _documentReference;
@@ -21,7 +21,7 @@ class SearchResultsItem extends ConsumerWidget {
           } else {
             DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
                 snapshot.data as DocumentSnapshot<Map<String, dynamic>>;
-            widget = JsonViewer(documentSnapshot.data());
+            widget = SwitchJSON(documentSnapshot.data());
           }
           return widget;
         });

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:screensite/lists/list_list_item.dart';
+import 'package:screensite/lists/list_item_tile.dart';
 import 'package:screensite/lists/filter_my_entities.dart';
 import 'package:screensite/providers/firestore.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
@@ -11,6 +11,11 @@ final activeSort =
         (ref) => GenericStateNotifier<String?>(null));
 
 class Lists extends ConsumerWidget {
+  final StateNotifierProvider<GenericStateNotifier<String?>, String?>
+      activeList;
+
+  const Lists(this.activeList);
+
   @override
   Widget build(BuildContext context, WidgetRef ref) => Column(
         children: [
@@ -56,7 +61,7 @@ class Lists extends ConsumerWidget {
                       // ..sort((a, b) => a[ref.watch(activeSort) ?? 'id']
                       //     .compareTo(b[ref.watch(activeSort) ?? 'id']))
                       )
-                      .map((entity) => ListItem(entity.id))
+                      .map((entity) => ListItemTile(entity.id, activeList))
                       .toList()))
         ],
       );
