@@ -46,7 +46,6 @@ class DocFieldTextEditState extends ConsumerState<DocFieldTextEdit> {
           _formKey.currentState?.validate();
         });
       }
-      ctrl.selection = TextSelection.collapsed(offset: ctrl.text.length);
     });
   }
 
