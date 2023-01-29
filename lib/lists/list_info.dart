@@ -95,7 +95,7 @@ class ListInfo extends ConsumerWidget {
                                                         Expanded(
                                                           child: Container(
                                                             child: Text(
-                                                                "${dotenv.env['API_URL']}"),
+                                                                "${dotenv.env['API_URL']}/GetSanctionListEntities"),
                                                           ),
                                                         ),
                                                         SizedBox(
@@ -117,7 +117,7 @@ class ListInfo extends ConsumerWidget {
                                                         Expanded(
                                                           child: Container(
                                                             child: Text(
-                                                                "${dotenv.env['API_URL']}"),
+                                                                "${dotenv.env['API_URL']}/GetSanctionListEntities"),
                                                           ),
                                                         ),
                                                         ElevatedButton(
