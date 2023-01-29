@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../extensions/string_validations.dart';
 import 'package:screensite/theme.dart';
+import 'dart:convert';
 
 // Make an enum to check for type
 enum SplittingType { UNDERSCORE, CAPITAL, NONE }
@@ -49,11 +50,25 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
       return Container(
         padding: EdgeInsets.only(left: 14.0),
         child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start, children: _getList()),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: _getList(),
+        ),
       );
     }
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.start, children: _getList());
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: _getList(),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            copyToClipboard(jsonEncode(widget.jsonObj));
+          },
+          child: Text("Copy Details"),
+        ),
+      ],
+    );
   }
 
   // Check if there is any kind of data
@@ -216,10 +231,7 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
       return Expanded(
           child: GestureDetector(
               onTap: () {
-                Clipboard.setData(ClipboardData(text: entry.value.toString()));
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Text copied to clipboard'),
-                ));
+                copyToClipboard(entry.value.toString());
               },
               child: Text(
                 entry.value.toString(),
@@ -229,10 +241,7 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
       return Expanded(
           child: GestureDetector(
               onTap: () {
-                Clipboard.setData(ClipboardData(text: entry.value.toString()));
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Text copied to clipboard'),
-                ));
+                copyToClipboard(entry.value.toString());
               },
               child: Text(
                 '\"' + entry.value + '\"',
@@ -242,10 +251,7 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
       return Expanded(
           child: GestureDetector(
               onTap: () {
-                Clipboard.setData(ClipboardData(text: entry.value.toString()));
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Text copied to clipboard'),
-                ));
+                copyToClipboard(entry.value.toString());
               },
               child: Text(
                 entry.value.toString(),
@@ -255,10 +261,7 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
       return Expanded(
           child: GestureDetector(
               onTap: () {
-                Clipboard.setData(ClipboardData(text: entry.value.toString()));
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Text copied to clipboard'),
-                ));
+                copyToClipboard(entry.value.toString());
               },
               child: Text(
                 entry.value.toString(),
@@ -268,10 +271,7 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
       if (entry.value.isEmpty) {
         return GestureDetector(
             onTap: () {
-              Clipboard.setData(ClipboardData(text: ""));
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text('Text copied to clipboard'),
-              ));
+              copyToClipboard("");
             },
             child: Text(
               'Empty',
@@ -347,6 +347,14 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
       return 'List';
     }
     return 'Object';
+  }
+
+  void copyToClipboard(String text) {
+    Clipboard.setData(ClipboardData(text: text)).then((value) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Text copied to clipboard'),
+      ));
+    });
   }
 }
 
