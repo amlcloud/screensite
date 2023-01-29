@@ -106,14 +106,10 @@ class IndexingItemList extends ConsumerWidget {
                                               return setEquals(
                                                       subset.intersection(set),
                                                       subset)
-                                                  ? Text('Y',
-                                                      style: TextStyle(
-                                                          color: Colors.green,
-                                                          fontSize: 24))
-                                                  : Text('N',
-                                                      style: TextStyle(
-                                                          color: Colors.red,
-                                                          fontSize: 24));
+                                                  ? Icon(Icons.check,
+                                                      color: Colors.green)
+                                                  : Icon(Icons.close,
+                                                      color: Colors.red);
                                             });
                                   })
                         ]))
