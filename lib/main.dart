@@ -12,6 +12,7 @@ import 'package:screensite/state/generic_state_notifier.dart';
 import 'package:screensite/state/theme_state_notifier.dart';
 import 'package:screensite/theme.dart';
 import 'firebase_options.dart';
+import 'package:jiffy/jiffy.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
