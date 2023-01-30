@@ -73,31 +73,49 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
         children: <Widget>[
           ex
               ? ((openFlag[entry.key] ?? false)
-                  ? Icon(Icons.arrow_drop_down,
-                      size: 14, color: Colors.grey[700])
-                  : Icon(Icons.arrow_right, size: 14, color: Colors.grey[700]))
+                  ? Icon(
+                      Icons.arrow_drop_down,
+                      size: 14,
+                      color: Colors.grey, // Colors.grey[700]
+                    )
+                  : Icon(
+                      Icons.arrow_right,
+                      size: 14,
+                      color: Colors.grey, // Colors.grey
+                    ))
               : const Icon(
                   Icons.arrow_right,
-                  color: Color.fromARGB(0, 0, 0, 0),
+                  color: Colors.grey, // Color.fromARGB(0, 0, 0, 0)
                   size: 14,
                 ),
           (ex && ink)
               ? InkWell(
-                  child: Text(entry.key,
-                      style: TextStyle(color: Colors.purple[900])),
+                  child: Text(
+                    entry.key,
+                    style: TextStyle(
+                      color: Color.fromARGB(
+                          255, 85, 157, 207), // Colors.purple[900]
+                    ),
+                  ),
                   onTap: () {
                     setState(() {
                       openFlag[entry.key] = !(openFlag[entry.key] ?? false);
                     });
-                  })
-              : Text(entry.key,
+                  },
+                )
+              : Text(
+                  entry.key,
                   style: TextStyle(
-                      color: entry.value == null
-                          ? Colors.grey
-                          : Colors.purple[900])),
+                    color: Color.fromARGB(255, 85, 157,
+                        207), // entry.value == null ? Colors.grey : Colors.purple[900]
+                  ),
+                ),
           Text(
             ':',
-            style: TextStyle(color: Colors.grey),
+            style: TextStyle(
+              color: Colors.grey,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(width: 3),
           getValueWidget(entry)
@@ -143,92 +161,120 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
   getValueWidget(MapEntry entry) {
     if (entry.value == null) {
       return Expanded(
-          child: Text(
-        'undefined',
-        style: TextStyle(color: Colors.grey),
-      ));
+        child: Text(
+          'undefined',
+          style: TextStyle(
+            color: Color.fromARGB(255, 197, 101, 95), // Colors.grey
+          ),
+        ),
+      );
     } else if (entry.value is int) {
       return Expanded(
-          child: GestureDetector(
-              onTap: () {
-                copyToClipboard(entry.value.toString());
-              },
-              child: Text(
-                entry.value.toString(),
-                style: TextStyle(color: Colors.teal),
-              )));
+        child: GestureDetector(
+          onTap: () {
+            copyToClipboard(entry.value.toString());
+          },
+          child: Text(
+            entry.value.toString(),
+            style: TextStyle(
+              color: Color.fromARGB(255, 170, 101, 181), // Colors.teal
+            ),
+          ),
+        ),
+      );
     } else if (entry.value is String) {
       return Expanded(
-          child: GestureDetector(
-              onTap: () {
-                copyToClipboard(entry.value.toString());
-              },
-              child: Text(
-                '\"' + entry.value + '\"',
-                style: TextStyle(color: Colors.redAccent),
-              )));
+        child: GestureDetector(
+          onTap: () {
+            copyToClipboard(entry.value.toString());
+          },
+          child: Text(
+            '\"' + entry.value + '\"',
+            style: TextStyle(
+                color: Color.fromARGB(255, 97, 168, 100)), // Colors.redAccent
+          ),
+        ),
+      );
     } else if (entry.value is bool) {
       return Expanded(
-          child: GestureDetector(
-              onTap: () {
-                copyToClipboard(entry.value.toString());
-              },
-              child: Text(
-                entry.value.toString(),
-                style: TextStyle(color: Colors.purple),
-              )));
+        child: GestureDetector(
+          onTap: () {
+            copyToClipboard(entry.value.toString());
+          },
+          child: Text(
+            entry.value.toString(),
+            style: TextStyle(
+                color: Color.fromARGB(255, 196, 93, 132)), // Colors.purple
+          ),
+        ),
+      );
     } else if (entry.value is double) {
       return Expanded(
-          child: GestureDetector(
-              onTap: () {
-                copyToClipboard(entry.value.toString());
-              },
-              child: Text(
-                entry.value.toString(),
-                style: TextStyle(color: Colors.teal),
-              )));
+        child: GestureDetector(
+          onTap: () {
+            copyToClipboard(entry.value.toString());
+          },
+          child: Text(
+            entry.value.toString(),
+            style: TextStyle(
+              color: Color.fromARGB(255, 154, 125, 192), // Colors.teal
+            ),
+          ),
+        ),
+      );
     } else if (entry.value is List) {
       if (entry.value.isEmpty) {
         return GestureDetector(
-            onTap: () {
-              copyToClipboard('Array[0]');
-            },
-            child: Text(
-              'Array[0]',
-              style: TextStyle(color: Colors.grey),
-            ));
+          onTap: () {
+            copyToClipboard('Array[0]');
+          },
+          child: Text(
+            'Array[0]',
+            style: TextStyle(
+              color: Colors.grey,
+            ),
+          ),
+        );
       } else {
         return InkWell(
-            child: GestureDetector(
-                onTap: () {
-                  copyToClipboard(
-                      'Array<${getTypeName(entry.value[0])}>[${entry.value.length}]');
-                },
-                child: Text(
-                  'Array<${getTypeName(entry.value[0])}>[${entry.value.length}]',
-                  style: TextStyle(color: Colors.grey),
-                )),
+          child: GestureDetector(
             onTap: () {
-              setState(() {
-                openFlag[entry.key] = !(openFlag[entry.key] ?? false);
-              });
+              copyToClipboard(
+                  'Array<${getTypeName(entry.value[0])}>[${entry.value.length}]');
+            },
+            child: Text(
+              'Array<${getTypeName(entry.value[0])}>[${entry.value.length}]',
+              style: TextStyle(
+                color: Colors.grey,
+              ),
+            ),
+          ),
+          onTap: () {
+            setState(() {
+              openFlag[entry.key] = !(openFlag[entry.key] ?? false);
             });
+          },
+        );
       }
     }
     return InkWell(
-        child: GestureDetector(
-            onTap: () {
-              copyToClipboard('Object');
-            },
-            child: Text(
-              'Object',
-              style: TextStyle(color: Colors.grey),
-            )),
+      child: GestureDetector(
         onTap: () {
-          setState(() {
-            openFlag[entry.key] = !(openFlag[entry.key] ?? false);
-          });
+          copyToClipboard('Object');
+        },
+        child: Text(
+          'Object',
+          style: TextStyle(
+            color: Colors.grey,
+          ),
+        ),
+      ),
+      onTap: () {
+        setState(() {
+          openFlag[entry.key] = !(openFlag[entry.key] ?? false);
         });
+      },
+    );
   }
 
   static isExtensible(dynamic content) {
@@ -284,13 +330,27 @@ class _JsonArrayViewerState extends State<JsonArrayViewer> {
   Widget build(BuildContext context) {
     if (widget.notRoot) {
       return Container(
-          padding: EdgeInsets.only(left: 14.0),
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: _getList()));
+        padding: EdgeInsets.only(left: 14.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: _getList(),
+        ),
+      );
     }
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.start, children: _getList());
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: _getList(),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            copyToClipboard(jsonEncode(widget.jsonArray));
+          },
+          child: Text("Copy Details"),
+        ),
+      ],
+    );
   }
 
   @override
@@ -310,23 +370,36 @@ class _JsonArrayViewerState extends State<JsonArrayViewer> {
         children: <Widget>[
           ex
               ? ((openFlag[i])
-                  ? Icon(Icons.arrow_drop_down,
-                      size: 14, color: Colors.grey[700])
-                  : Icon(Icons.arrow_right, size: 14, color: Colors.grey[700]))
+                  ? Icon(
+                      Icons.arrow_drop_down,
+                      size: 14,
+                      color: Colors.grey, // Colors.grey[700]
+                    )
+                  : Icon(
+                      Icons.arrow_right,
+                      size: 14,
+                      color: Colors.grey, // Colors.grey[700]
+                    ))
               : const Icon(
                   Icons.arrow_right,
-                  color: Color.fromARGB(0, 0, 0, 0),
+                  color: Colors.grey, // Color.fromARGB(0, 0, 0, 0)
                   size: 14,
                 ),
           (ex && ink)
               ? getInkWell(i)
-              : Text('[$i]',
+              : Text(
+                  '[$i]',
                   style: TextStyle(
-                      color:
-                          content == null ? Colors.grey : Colors.purple[900])),
+                    color: Color.fromARGB(255, 85, 157,
+                        207), // content == null ? Colors.grey : Colors.purple[900]
+                  ),
+                ),
           Text(
             ':',
-            style: TextStyle(color: Colors.grey),
+            style: TextStyle(
+              color: Colors.grey,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(width: 3),
           getValueWidget(content, i)
@@ -343,73 +416,110 @@ class _JsonArrayViewerState extends State<JsonArrayViewer> {
 
   getInkWell(int index) {
     return InkWell(
-        child: Text('[$index]', style: TextStyle(color: Colors.purple[900])),
-        onTap: () {
-          setState(() {
-            openFlag[index] = !(openFlag[index]);
-          });
+      child: Text(
+        '[$index]',
+        style: TextStyle(
+          color: Color.fromARGB(255, 85, 147, 207), // Colors.purple[900]
+        ),
+      ),
+      onTap: () {
+        setState(() {
+          openFlag[index] = !(openFlag[index]);
         });
+      },
+    );
   }
 
   getValueWidget(dynamic content, int index) {
     if (content == null) {
       return Expanded(
-          child: Text(
-        'undefined',
-        style: TextStyle(color: Colors.grey),
-      ));
+        child: Text(
+          'undefined',
+          style: TextStyle(
+            color: Color.fromARGB(255, 197, 101, 95), // Colors.grey
+          ),
+        ),
+      );
     } else if (content is int) {
       return Expanded(
-          child: Text(
-        content.toString(),
-        style: TextStyle(color: Colors.teal),
-      ));
+        child: Text(
+          content.toString(),
+          style: TextStyle(
+            color: Color.fromARGB(255, 143, 76, 154), // Colors.teal
+          ),
+        ),
+      );
     } else if (content is String) {
       return Expanded(
-          child: Text(
-        '\"' + content + '\"',
-        style: TextStyle(color: Colors.redAccent),
-      ));
+        child: Text(
+          '\"' + content + '\"',
+          style: TextStyle(
+            color: Color.fromARGB(255, 97, 168, 100), // Colors.redAccent
+          ),
+        ),
+      );
     } else if (content is bool) {
       return Expanded(
-          child: Text(
-        content.toString(),
-        style: TextStyle(color: Colors.purple),
-      ));
+        child: Text(
+          content.toString(),
+          style: TextStyle(
+            color: Color.fromARGB(255, 196, 93, 132), // Colors.purple
+          ),
+        ),
+      );
     } else if (content is double) {
       return Expanded(
-          child: Text(
-        content.toString(),
-        style: TextStyle(color: Colors.teal),
-      ));
+        child: Text(
+          content.toString(),
+          style: TextStyle(
+            color: Color.fromARGB(255, 127, 100, 165), // Colors.teal
+          ),
+        ),
+      );
     } else if (content is List) {
       if (content.isEmpty) {
         return Text(
           'Array[0]',
-          style: TextStyle(color: Colors.grey),
+          style: TextStyle(
+            color: Colors.grey,
+          ),
         );
       } else {
         return InkWell(
-            child: Text(
-              'Array<${JsonObjectViewerState.getTypeName(content)}>[${content.length}]',
-              style: TextStyle(color: Colors.grey),
+          child: Text(
+            'Array<${JsonObjectViewerState.getTypeName(content)}>[${content.length}]',
+            style: TextStyle(
+              color: Colors.grey,
             ),
-            onTap: () {
-              setState(() {
-                openFlag[index] = !(openFlag[index]);
-              });
+          ),
+          onTap: () {
+            setState(() {
+              openFlag[index] = !(openFlag[index]);
             });
+          },
+        );
       }
     }
     return InkWell(
-        child: Text(
-          'Object',
-          style: TextStyle(color: Colors.grey),
+      child: Text(
+        'Object',
+        style: TextStyle(
+          color: Colors.grey,
         ),
-        onTap: () {
-          setState(() {
-            openFlag[index] = !(openFlag[index]);
-          });
+      ),
+      onTap: () {
+        setState(() {
+          openFlag[index] = !(openFlag[index]);
         });
+      },
+    );
+  }
+
+  void copyToClipboard(String text) {
+    Clipboard.setData(ClipboardData(text: text)).then((value) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Text copied to clipboard'),
+      ));
+    });
   }
 }

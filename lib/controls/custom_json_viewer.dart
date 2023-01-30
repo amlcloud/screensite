@@ -376,13 +376,27 @@ class _JsonArrayViewerState extends State<JsonArrayViewer> {
   Widget build(BuildContext context) {
     if (widget.notRoot) {
       return Container(
-          padding: EdgeInsets.only(left: 14.0),
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: _getList()));
+        padding: EdgeInsets.only(left: 14.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: _getList(),
+        ),
+      );
     }
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.start, children: _getList());
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: _getList(),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            copyToClipboard(jsonEncode(widget.jsonArray));
+          },
+          child: Text("Copy Details"),
+        ),
+      ],
+    );
   }
 
   @override
@@ -500,5 +514,13 @@ class _JsonArrayViewerState extends State<JsonArrayViewer> {
             openFlag[index] = !(openFlag[index]);
           });
         });
+  }
+
+  void copyToClipboard(String text) {
+    Clipboard.setData(ClipboardData(text: text)).then((value) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Text copied to clipboard'),
+      ));
+    });
   }
 }
