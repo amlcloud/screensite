@@ -91,19 +91,31 @@ class ListInfo extends ConsumerWidget {
                                                             10.0),
                                                     child: Row(
                                                       children: <Widget>[
-                                                        Text("curl: "),
+                                                        Text("curl: ",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold)),
                                                         Expanded(
                                                           child: Container(
-                                                            child: Text(
-                                                                "${dotenv.env['API_URL']}/GetSanctionListEntities"),
-                                                          ),
+                                                              child: Text(
+                                                                  generateCurlUrl(
+                                                                      "GET",
+                                                                      entityId))),
                                                         ),
                                                         SizedBox(
                                                           width: 5,
                                                         ),
                                                         ElevatedButton(
                                                           child: Text("copy"),
-                                                          onPressed: () => {},
+                                                          onPressed: () async =>
+                                                              {
+                                                            await Clipboard.setData(
+                                                                ClipboardData(
+                                                                    text: generateCurlUrl(
+                                                                        "GET",
+                                                                        entityId)))
+                                                          },
                                                         ),
                                                       ],
                                                     )),
@@ -113,16 +125,27 @@ class ListInfo extends ConsumerWidget {
                                                             10.0),
                                                     child: Row(
                                                       children: <Widget>[
-                                                        Text("url: "),
+                                                        Text("url: ",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold)),
                                                         Expanded(
                                                           child: Container(
                                                             child: Text(
-                                                                "${dotenv.env['API_URL']}/GetSanctionListEntities"),
+                                                                generateUrl(
+                                                                    entityId)),
                                                           ),
                                                         ),
                                                         ElevatedButton(
                                                           child: Text("copy"),
-                                                          onPressed: () => {},
+                                                          onPressed: () async =>
+                                                              {
+                                                            await Clipboard.setData(
+                                                                ClipboardData(
+                                                                    text: generateUrl(
+                                                                        entityId)))
+                                                          },
                                                         ),
                                                       ],
                                                     )),
@@ -147,4 +170,12 @@ class ListInfo extends ConsumerWidget {
                   ],
                 )
               ]));
+}
+
+String generateCurlUrl(String action, String resource) {
+  return "curl -X ${action} -H 'Content-Type:application/json' '${dotenv.env['API_URL']}/GetSanctionListEntities?list=${resource}' ";
+}
+
+String generateUrl(String resource) {
+  return "${dotenv.env['API_URL']}/GetSanctionListEntities?list=${resource}";
 }
