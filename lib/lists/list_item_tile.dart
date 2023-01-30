@@ -11,6 +11,7 @@ import '../extensions/string_validations.dart';
 import '../search/search_details.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
 import 'package:screensite/lists/list_entitylistview.dart';
+import '../common.dart';
 
 final selectedListItem =
     StateNotifierProvider<GenericStateNotifier<String?>, String?>(
@@ -52,16 +53,12 @@ class _ListItemState extends ConsumerState<ListItemTile> {
                             : 'undefined list name',
                   ),
                   subtitle: Text('Last changed: ' +
-                      Jiffy(entityDoc.data()!['lastUpdateTime'] == null
-                              ? DateTime(0001, 1, 1, 00, 00)
-                              : entityDoc.data()!['lastUpdateTime'].toDate())
-                          .format() +
+                      displayNeatTimestamp(
+                          entityDoc.data()!['lastUpdateTime']?.toDate()) +
                       '\n' +
                       'Last updated: ' +
-                      Jiffy(entityDoc.data()!['lastUpdateTime'] == null
-                              ? DateTime(0001, 1, 1, 00, 00)
-                              : entityDoc.data()!['lastUpdateTime'].toDate())
-                          .format()),
+                      displayNeatTimestamp(
+                          entityDoc.data()!['lastUpdateTime']?.toDate())),
                   isThreeLine: true,
                   onTap: () {
                     ref.read(selectedEntityList.notifier).value = null;
