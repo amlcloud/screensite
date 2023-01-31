@@ -52,13 +52,9 @@ class _ListItemState extends ConsumerState<ListItemTile> {
                             ? entityDoc.data()!['name']
                             : 'undefined list name',
                   ),
-                  subtitle: Text('Last changed: ' +
-                      displayNeatTimestamp(
-                          entityDoc.data()!['lastUpdateTime']?.toDate()) +
-                      '\n' +
-                      'Last updated: ' +
-                      displayNeatTimestamp(
-                          entityDoc.data()!['lastUpdateTime']?.toDate())),
+                  subtitle: Text(
+                      '''Last changed on ${displayNeatTimestamp(entityDoc.data()!['lastUpdateTime'].toDate())}
+Last updated on ${displayNeatTimestamp(entityDoc.data()!['lastUpdateTime'].toDate())}'''),
                   isThreeLine: true,
                   onTap: () {
                     ref.read(selectedEntityList.notifier).value = null;

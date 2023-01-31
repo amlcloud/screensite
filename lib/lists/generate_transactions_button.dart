@@ -24,7 +24,8 @@ class GenerateTransactionsButton extends ConsumerWidget {
             'reference': "Example Transaction",
             'rem_name': "Remitter",
             't': Jiffy().add(days: -25).add(days: i).dateTime,
-            'day': Jiffy().add(days: -25).add(days: i).format(DATE_FORMAT),
+            'day':
+                Jiffy().add(days: -25).add(days: i).format(DISPLAY_DATE_FORMAT),
           });
         }
       },
