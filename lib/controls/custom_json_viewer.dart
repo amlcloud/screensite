@@ -242,9 +242,6 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
       return Expanded(
         child: Text(
           '',
-          style: TextStyle(
-            color: Color.fromARGB(255, 239, 71, 111),
-          ),
           // style: TextStyle(color: Color.fromARGB(255, 13, 13, 13)),
         ),
       );
@@ -335,7 +332,7 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
             },
             child: Text(
               // 'Array<${getTypeName(entry.value[0])}>[${entry.value.length}]',
-              "",
+              " ",
               // style: Theme.of(context).textTheme.subtitle2,
             ),
           ),
