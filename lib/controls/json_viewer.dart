@@ -164,7 +164,7 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
         child: Text(
           'undefined',
           style: TextStyle(
-            color: Color.fromARGB(255, 197, 101, 95), // Colors.grey
+            color: Color.fromARGB(255, 239, 71, 111), // Colors.grey
           ),
         ),
       );
@@ -177,7 +177,7 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
           child: Text(
             entry.value.toString(),
             style: TextStyle(
-              color: Color.fromARGB(255, 170, 101, 181), // Colors.teal
+              color: Color.fromARGB(255, 232, 149, 63), // Colors.teal
             ),
           ),
         ),
@@ -191,7 +191,8 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
           child: Text(
             '\"' + entry.value + '\"',
             style: TextStyle(
-                color: Color.fromARGB(255, 97, 168, 100)), // Colors.redAccent
+              color: Color.fromARGB(255, 97, 168, 100), // Colors.redAccent
+            ),
           ),
         ),
       );
@@ -204,7 +205,8 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
           child: Text(
             entry.value.toString(),
             style: TextStyle(
-                color: Color.fromARGB(255, 196, 93, 132)), // Colors.purple
+              color: Color.fromARGB(255, 150, 63, 232), // Colors.purple
+            ),
           ),
         ),
       );
@@ -217,7 +219,7 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
           child: Text(
             entry.value.toString(),
             style: TextStyle(
-              color: Color.fromARGB(255, 154, 125, 192), // Colors.teal
+              color: Color.fromARGB(255, 242, 126, 26), // Colors.teal
             ),
           ),
         ),
@@ -436,7 +438,7 @@ class _JsonArrayViewerState extends State<JsonArrayViewer> {
         child: Text(
           'undefined',
           style: TextStyle(
-            color: Color.fromARGB(255, 197, 101, 95), // Colors.grey
+            color: Color.fromARGB(255, 239, 71, 111), // Colors.grey
           ),
         ),
       );
@@ -445,7 +447,7 @@ class _JsonArrayViewerState extends State<JsonArrayViewer> {
         child: Text(
           content.toString(),
           style: TextStyle(
-            color: Color.fromARGB(255, 143, 76, 154), // Colors.teal
+            color: Color.fromARGB(255, 232, 149, 63), // Colors.teal
           ),
         ),
       );
@@ -463,7 +465,7 @@ class _JsonArrayViewerState extends State<JsonArrayViewer> {
         child: Text(
           content.toString(),
           style: TextStyle(
-            color: Color.fromARGB(255, 196, 93, 132), // Colors.purple
+            color: Color.fromARGB(255, 150, 63, 232), // Colors.purple
           ),
         ),
       );
@@ -472,7 +474,7 @@ class _JsonArrayViewerState extends State<JsonArrayViewer> {
         child: Text(
           content.toString(),
           style: TextStyle(
-            color: Color.fromARGB(255, 127, 100, 165), // Colors.teal
+            color: Color.fromARGB(255, 242, 126, 26), // Colors.teal
           ),
         ),
       );
