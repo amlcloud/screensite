@@ -6,11 +6,6 @@ const DISPLAY_DATE_FORMAT = 'yyyy-MM-dd';
 const DISPLAY_TIME_FORMAT = 'HH:mm:ss'; // 24-hour time format
 const DISPLAY_DATE_TIME_FORMAT = 'yyyy-MM-dd HH:mm:ss'; // 24-hour time format
 
-String displayNeatTimestamp(DateTime dateTime) {
-  // Set DateTime argument to the format of yyyy-MM-dd HH:mm:ss (24-hour time)
-  return Jiffy(dateTime).format(DISPLAY_DATE_TIME_FORMAT);
-}
-
 List<Jiffy> generateWeeks(Jiffy start, Jiffy end) {
   List<Jiffy> list = [];
   Jiffy current = start;
