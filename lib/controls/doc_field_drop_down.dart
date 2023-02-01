@@ -21,6 +21,7 @@ class DocFieldDropDown extends ConsumerWidget {
           loading: () => Container(),
           error: (e, s) => ErrorWidget(e),
           data: (doc) => DropdownButton<String>(
+                isExpanded: true,
                 value: doc.data()![field], //ref.watch(valueNP),
                 onChanged: (String? newValue) {
                   docRef.update({field: newValue});
