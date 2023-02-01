@@ -153,7 +153,7 @@ abstract class IndexingForm extends ConsumerWidget {
               Expanded(
                   child: Align(
                       alignment:
-                          Alignment.centerLeft, //Edit text alignment by kk
+                          Alignment.centerRight, //Edit text alignment by kk
                       child: TextButton(
                           onPressed: () => {_setEditing(ref, true)},
                           child: Text('Edit')))),

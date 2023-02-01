@@ -131,7 +131,7 @@ class ListDetails extends ConsumerWidget {
                                 InkWell(
                                     child: Align(
                                         alignment: Alignment
-                                            .centerLeft, //Alignment of Edit Pen icon by kk
+                                            .centerRight, //Alignment of Edit Pen icon by kk
                                         child: IconButton(
                                             icon: const Icon(Icons.edit),
                                             onPressed: () {
