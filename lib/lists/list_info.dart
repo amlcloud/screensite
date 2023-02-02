@@ -133,7 +133,7 @@ class ListInfo extends ConsumerWidget {
                                                         Expanded(
                                                           child: Container(
                                                             child: Text(
-                                                                generateUrl(
+                                                                generateBrowserUrl(
                                                                     entityId)),
                                                           ),
                                                         ),
@@ -143,7 +143,7 @@ class ListInfo extends ConsumerWidget {
                                                               {
                                                             await Clipboard.setData(
                                                                 ClipboardData(
-                                                                    text: generateUrl(
+                                                                    text: generateBrowserUrl(
                                                                         entityId)))
                                                           },
                                                         ),
@@ -173,9 +173,9 @@ class ListInfo extends ConsumerWidget {
 }
 
 String generateCurlUrl(String action, String resource) {
-  return "curl -X ${action} -H 'Content-Type:application/json' '${dotenv.env['API_URL']}/GetSanctionListEntities?list=${resource}' ";
+  return "curl -X ${action} -H 'Content-Type:application/json' '${dotenv.env['API_URL']}/${dotenv.env['SANCTION_LIST_RESOURCE']}?list=${resource}' ";
 }
 
-String generateUrl(String resource) {
-  return "${dotenv.env['API_URL']}/GetSanctionListEntities?list=${resource}";
+String generateBrowserUrl(String resource) {
+  return "${dotenv.env['API_URL']}/${dotenv.env['SANCTION_LIST_RESOURCE']}?list=${resource}";
 }
