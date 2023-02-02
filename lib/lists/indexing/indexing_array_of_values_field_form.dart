@@ -1,15 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:screensite/theme.dart';
 
-import '../../controls/doc_field_text_edit.dart';
+import '../../controls/doc_field_drop_down.dart';
 import '../../providers/firestore.dart';
+import '../../state/generic_state_notifier.dart';
 import 'indexing_form.dart';
 import 'indexing_index_by_array.dart';
 
 class IndexingArrayOfValuesFieldForm extends IndexingForm {
-  const IndexingArrayOfValuesFieldForm(
+  final StateNotifierProvider<GenericStateNotifier<String?>, String?>
+      stateNotifierProvider =
+      StateNotifierProvider<GenericStateNotifier<String?>, String?>(
+          (ref) => GenericStateNotifier<String?>(null));
+
+  IndexingArrayOfValuesFieldForm(
       String entityId, QueryDocumentSnapshot<Map<String, dynamic>> document)
       : super(entityId, document);
 
@@ -43,12 +48,24 @@ class IndexingArrayOfValuesFieldForm extends IndexingForm {
                                     child: Text('Full Name'))),
                             Flexible(
                                 flex: 1,
-                                child: DocFieldTextEdit(
-                                    doc.value.reference, 'value',
-                                    valid: doc.value['valid'],
-                                    validator: (text, callback) {
-                                  validator(doc, data, text, true, callback);
-                                }))
+                                child: DocFieldDropDown(
+                                    doc.value.reference,
+                                    'value',
+                                    stateNotifierProvider,
+                                    ref
+                                        .watch(colSPfiltered(
+                                            'list/$entityId/fields/',
+                                            queries: [
+                                              QueryParam('type', {
+                                                Symbol('isEqualTo'): 'array'
+                                              })
+                                            ]))
+                                        .when(
+                                            loading: () => [],
+                                            error: (e, s) => [],
+                                            data: (data) => data.docs
+                                                .map((e) => e.id)
+                                                .toList())))
                           ]))
                       .toList());
                   children.add(IndexingIndexByArray(entityId, document.id));
