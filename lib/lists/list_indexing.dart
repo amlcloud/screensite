@@ -22,18 +22,27 @@ class ListIndexing extends ConsumerWidget {
 
   const ListIndexing(this.entityId);
 
-  void add(WidgetRef ref) {
-    FirebaseFirestore.instance.collection('list/$entityId/indexConfigs').add({
-      'type': indexTypes[0],
-      'createdTimestamp': DateTime.now().millisecondsSinceEpoch
-    }).then((reference) {
-      CollectionReference collectionRef =
-          reference.collection('entityIndexFields');
-      collectionRef.add({
-        'value': '',
-        'createdTimestamp': DateTime.now().millisecondsSinceEpoch,
-        'valid': null
-      });
+  void add() {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    db
+        .collection('list/$entityId/fields/')
+        .where('type', isNotEqualTo: 'array')
+        .get()
+        .then((data) {
+      if (data.docs.isNotEmpty) {
+        db.collection('list/$entityId/indexConfigs').add({
+          'type': indexTypes[0],
+          'createdTimestamp': DateTime.now().millisecondsSinceEpoch
+        }).then((reference) {
+          CollectionReference collectionRef =
+              reference.collection('entityIndexFields');
+          collectionRef.add({
+            'value': data.docs[0].id,
+            'createdTimestamp': DateTime.now().millisecondsSinceEpoch,
+            'valid': true
+          });
+        });
+      }
     });
   }
 
@@ -66,7 +75,7 @@ class ListIndexing extends ConsumerWidget {
                     data: (entities) => entities.docs.map((entry) {
                           return Column(children: [content(entry), Divider()]);
                         }).toList())),
-        TextButton(onPressed: () => {add(ref)}, child: Text('Add'))
+        TextButton(onPressed: () => {add()}, child: Text('Add'))
       ]),
     );
   }
