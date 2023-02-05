@@ -10,7 +10,6 @@ import 'package:screensite/controls/doc_field_text_edit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/gestures.dart';
-
 import 'indexing/indexing_progress.dart';
 import 'list_count.dart';
 
@@ -40,8 +39,8 @@ class ListDetails extends ConsumerWidget {
               padding: EdgeInsets.all(10.0),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
                     "List id: " + entityId,
@@ -130,82 +129,89 @@ class ListDetails extends ConsumerWidget {
                                                 })))
                                     ]),
                                 InkWell(
-                                    child: IconButton(
-                                        icon: const Icon(Icons.edit),
-                                        onPressed: () {
-                                          showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                final _formKey =
-                                                    GlobalKey<FormState>();
-                                                return AlertDialog(
-                                                  scrollable: true,
-                                                  title: Text(
-                                                      'Sanction list entity fields'),
-                                                  content: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Form(
-                                                      key: _formKey,
-                                                      child: Column(
-                                                        children: <Widget>[
-                                                          DocFieldTextEdit(
-                                                              FirebaseFirestore
-                                                                  .instance
-                                                                  .doc(
-                                                                      'list/${entityId}'),
-                                                              'name',
-                                                              decoration:
-                                                                  InputDecoration(
-                                                                      hintText:
-                                                                          "Entity Name")),
-                                                          DocFieldTextEdit(
-                                                              FirebaseFirestore
-                                                                  .instance
-                                                                  .doc(
-                                                                      'list/${entityId}'),
-                                                              'address',
-                                                              decoration:
-                                                                  InputDecoration(
-                                                                      hintText:
-                                                                          "Entity address")),
-                                                          DocFieldTextEdit(
-                                                              FirebaseFirestore
-                                                                  .instance
-                                                                  .doc(
-                                                                      'list/${entityId}'),
-                                                              'dataSource',
-                                                              decoration:
-                                                                  InputDecoration(
-                                                                      hintText:
-                                                                          "Data Source")),
-                                                          DocFieldTextEdit(
-                                                              FirebaseFirestore
-                                                                  .instance
-                                                                  .doc(
-                                                                      'list/${entityId}'),
-                                                              'website',
-                                                              decoration:
-                                                                  InputDecoration(
-                                                                      hintText:
-                                                                          "Website")),
-                                                        ],
+                                    child: Align(
+                                        alignment: Alignment
+                                            .centerLeft, //Alignment of Edit Pen icon by kk
+                                        child: IconButton(
+                                            icon: const Icon(Icons.edit),
+                                            onPressed: () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    final _formKey =
+                                                        GlobalKey<FormState>();
+                                                    return AlertDialog(
+                                                      scrollable: true,
+                                                      title: Text(
+                                                          'Sanction list entity fields'),
+                                                      content: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Form(
+                                                          key: _formKey,
+                                                          child: Column(
+                                                            children: <Widget>[
+                                                              DocFieldTextEdit(
+                                                                  FirebaseFirestore
+                                                                      .instance
+                                                                      .doc(
+                                                                          'list/${entityId}'),
+                                                                  'name',
+                                                                  decoration:
+                                                                      InputDecoration(
+                                                                          hintText:
+                                                                              "Entity Name")),
+                                                              DocFieldTextEdit(
+                                                                  FirebaseFirestore
+                                                                      .instance
+                                                                      .doc(
+                                                                          'list/${entityId}'),
+                                                                  'address',
+                                                                  decoration:
+                                                                      InputDecoration(
+                                                                          hintText:
+                                                                              "Entity address")),
+                                                              DocFieldTextEdit(
+                                                                  FirebaseFirestore
+                                                                      .instance
+                                                                      .doc(
+                                                                          'list/${entityId}'),
+                                                                  'dataSource',
+                                                                  decoration:
+                                                                      InputDecoration(
+                                                                          hintText:
+                                                                              "Data Source")),
+                                                              DocFieldTextEdit(
+                                                                  FirebaseFirestore
+                                                                      .instance
+                                                                      .doc(
+                                                                          'list/${entityId}'),
+                                                                  'website',
+                                                                  decoration:
+                                                                      InputDecoration(
+                                                                          hintText:
+                                                                              "Website")),
+                                                            ],
+                                                          ),
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ),
-                                                  actions: [
-                                                    ElevatedButton(
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      child: const Text('Done'),
-                                                    )
-                                                  ],
-                                                );
-                                              });
-                                        })),
+                                                      actions: [
+                                                        ElevatedButton(
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          child: const Text(
+                                                              'Done'),
+                                                        )
+                                                      ], //actions
+                                                    );
+                                                  } // Builder Widget
+                                                  ); //show dialog
+                                            }))),
                               ])))),
 
             Divider(),

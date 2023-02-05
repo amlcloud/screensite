@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:jiffy/jiffy.dart';
 
-const DATE_FORMAT = 'yyyy-MM-dd';
+// The date at time formats to use for Jiffy DateTime formatting
+const DISPLAY_DATE_FORMAT = 'yyyy-MM-dd';
+const DISPLAY_TIME_FORMAT = 'HH:mm:ss'; // 24-hour time format
+const DISPLAY_DATE_TIME_FORMAT = 'yyyy-MM-dd HH:mm:ss'; // 24-hour time format
 
 List<Jiffy> generateWeeks(Jiffy start, Jiffy end) {
   List<Jiffy> list = [];

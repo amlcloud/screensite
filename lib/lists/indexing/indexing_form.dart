@@ -18,28 +18,40 @@ abstract class IndexingForm extends ConsumerWidget {
     ref.read(editings.notifier).value = newMap;
   }
 
+  void _add(String? type, CollectionReference collectionRef) {
+    Query query;
+    CollectionReference ref =
+        FirebaseFirestore.instance.collection('list/$entityId/fields/');
+    if (type == 'Array of values') {
+      query = ref.where('type', isEqualTo: 'array');
+    } else {
+      query = ref.where('type', isNotEqualTo: 'array');
+    }
+    query.get().then((data) {
+      if (data.docs.isNotEmpty) {
+        collectionRef.add({
+          'value': data.docs[0].id,
+          'createdTimestamp': DateTime.now().millisecondsSinceEpoch,
+          'valid': true
+        });
+      }
+    });
+  }
+
   void changeType(String? type) {
     CollectionReference collectionRef =
         document.reference.collection('entityIndexFields');
     collectionRef.get().then((x) {
       int length = x.docs.length;
       if (length == 0) {
-        collectionRef.add({
-          'value': '',
-          'createdTimestamp': DateTime.now().millisecondsSinceEpoch,
-          'valid': null
-        });
+        _add(type, collectionRef);
         document.reference.update({'type': type});
       } else {
         x.docs.forEach((y) {
           y.reference.delete().then((_) {
             length = length - 1;
             if (length == 0) {
-              collectionRef.add({
-                'value': '',
-                'createdTimestamp': DateTime.now().millisecondsSinceEpoch,
-                'valid': null
-              });
+              _add(type, collectionRef);
               document.reference.update({'type': type});
             }
           });
@@ -151,9 +163,12 @@ abstract class IndexingForm extends ConsumerWidget {
             read(ref),
             Row(children: [
               Expanded(
-                  child: TextButton(
-                      onPressed: () => {_setEditing(ref, true)},
-                      child: Text('Edit'))),
+                  child: Align(
+                      alignment:
+                          Alignment.centerLeft, //Edit text alignment by kk
+                      child: TextButton(
+                          onPressed: () => {_setEditing(ref, true)},
+                          child: Text('Edit')))),
             ])
           ]);
   }
