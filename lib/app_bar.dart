@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:screensite/main.dart';
 import 'package:screensite/state/theme_state_notifier.dart';
 import 'package:screensite/common.dart';
@@ -28,11 +29,15 @@ class MyAppBar {
           ? null
           : Padding(
               padding: EdgeInsets.all(10),
-              child: Image.asset('assets/amlcloud-lg.png',
-                  height: 180,
-                  width: 180,
-                  colorBlendMode: BlendMode.srcIn) //Logo(),
-            ),
+              child: SvgPicture.asset(
+                'assets/Logo_Dark.svg',
+              )),
+      // Image.asset('assets/Logo_Dark.svg',
+      //     //'assets/amlcloud-lg.png',
+      //     height: 180,
+      //     width: 180,
+      //     colorBlendMode: BlendMode.srcIn) //Logo(),
+      // ),
       title: (MediaQuery.of(context).size.width < WIDE_SCREEN_WIDTH)
           ? null
           : Align(
