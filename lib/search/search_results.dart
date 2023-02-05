@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:screensite/providers/firestore.dart';
@@ -25,19 +26,23 @@ class SearchResults extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => Column(
-      children: ref.watch(colSP('search/$searchId/res')).when(
-          loading: () => [],
-          error: (e, s) => [ErrorWidget(e)],
-          data: (results) =>
-              sortedMapbyFieldName(results.docs, 'levScore').map((res) {
-                return GestureDetector(
-                    onTap: () {
-                      ref.read(_selectedItemNotifier).value = res.data()['ref'];
-                    },
-                    child: ListTile(
-                      title: Text("Name: " + res.data()['target']),
-                      subtitle: Text(
-                          "Levscore: " + res.data()['levScore'].toString()),
-                    ));
-              }).toList()));
+      children: ref
+          .watch(colSP(
+              'user/${FirebaseAuth.instance.currentUser!.uid}/search/$searchId/res'))
+          .when(
+              loading: () => [],
+              error: (e, s) => [ErrorWidget(e)],
+              data: (results) =>
+                  sortedMapbyFieldName(results.docs, 'levScore').map((res) {
+                    return GestureDetector(
+                        onTap: () {
+                          ref.read(_selectedItemNotifier).value =
+                              res.data()['ref'];
+                        },
+                        child: ListTile(
+                          title: Text("Name: " + res.data()['target']),
+                          subtitle: Text(
+                              "Levscore: " + res.data()['levScore'].toString()),
+                        ));
+                  }).toList()));
 }
