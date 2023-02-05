@@ -31,7 +31,7 @@ class ListInfo extends ConsumerWidget {
                       Flexible(
                           child: Text('Last updated on ' +
                               Jiffy(entityDoc.data()!['lastUpdateTime'] == null
-                                      ? DateTime(0001, 1, 1)
+                                      ? Text('N/A')
                                       : entityDoc
                                           .data()!['lastUpdateTime']
                                           .toDate())
@@ -39,7 +39,7 @@ class ListInfo extends ConsumerWidget {
                       Flexible(
                           child: Text('Last changed on ' +
                               Jiffy(entityDoc.data()!['lastUpdateTime'] == null
-                                      ? DateTime(0001, 1, 1)
+                                      ? Text('N/A')
                                       : entityDoc
                                           .data()!['lastUpdateTime']
                                           .toDate())
