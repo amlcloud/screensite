@@ -34,7 +34,7 @@ class SearchDetails extends ConsumerWidget {
                   children: [
                     Text('Searched Target:${searchDoc.id}'), //kk
                     Text(
-                        'Search Time:${Jiffy(searchDoc.data()!['timeCreated'].toDate()).format("h:mm a, do MMM, yyyy")}'),
+                        'Search Time:${Jiffy(searchDoc.data()!['t'].toDate()).format("h:mm a, do MMM, yyyy")}'),
                     //     'Search Time:${Jiffy(
                     //               ).format("h:mm a, do MMM, yyyy")}'), // datetime format using jiffy                 SearchResults(searchDoc.id, _selectedItemNotifier)
                   ],
