@@ -7,7 +7,7 @@ import 'package:screensite/state/generic_state_notifier.dart';
 import 'package:screensite/drawer.dart';
 import 'package:screensite/common.dart';
 import 'jsonview_switch.dart';
-import 'jsonview_switch.dart';
+//import 'jsonview_switch.dart';
 // import 'package:flutter_json_viewer/flutter_json_viewer.dart';
 
 import 'indexing/indexing_item_list.dart';
@@ -35,15 +35,16 @@ class ListsPage extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Expanded(
+                      flex: 3, //
                       child: SingleChildScrollView(
                           child: Column(
-                    children: [
-                      Lists(activeList),
-                    ],
-                  ))),
+                        children: [
+                          Lists(activeList),
+                        ],
+                      ))),
                   Expanded(
                     child: ref.watch(activeList) == null
-                        ? Container()
+                        ? Container(color: Colors.red)
                         : ListDetails(
                             ref.watch(activeList)!, selectedItem.notifier),
                   ),
@@ -53,22 +54,24 @@ class ListsPage extends ConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                         Expanded(
+                            flex: 5,
                             child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: ref.watch(selectedItem) == null
+                              child: Column(
+                                children: [
+                                  Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: ref.watch(selectedItem) == null
+                                          ? Container(color: Colors.blue)
+                                          : SwitchJSON(
+                                              ref.watch(selectedItem))),
+                                  ref.watch(activeList) == null ||
+                                          ref.watch(selectedItem) == null
                                       ? Container()
-                                      : SwitchJSON(ref.watch(selectedItem))),
-                              ref.watch(activeList) == null ||
-                                      ref.watch(selectedItem) == null
-                                  ? Container()
-                                  : IndexingItemList(ref.watch(activeList)!,
-                                      ref.watch(selectedItem)!, activeList)
-                            ],
-                          ),
-                        ))
+                                      : IndexingItemList(ref.watch(activeList)!,
+                                          ref.watch(selectedItem)!, activeList)
+                                ],
+                              ),
+                            ))
                       ])))
                 ])));
   }

@@ -3,12 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:screensite/lists/indexing/indexing_index_by.dart';
 
-import '../../controls/doc_field_text_edit.dart';
+import '../../controls/doc_field_drop_down.dart';
 import '../../providers/firestore.dart';
+import '../../state/generic_state_notifier.dart';
 import 'indexing_form.dart';
 
 class IndexingMultipleFieldsForm extends IndexingForm {
-  const IndexingMultipleFieldsForm(
+  final StateNotifierProvider<GenericStateNotifier<String?>, String?>
+      stateNotifierProvider =
+      StateNotifierProvider<GenericStateNotifier<String?>, String?>(
+          (ref) => GenericStateNotifier<String?>(null));
+
+  IndexingMultipleFieldsForm(
       String entityId, QueryDocumentSnapshot<Map<String, dynamic>> document)
       : super(entityId, document);
 
@@ -16,13 +22,22 @@ class IndexingMultipleFieldsForm extends IndexingForm {
     CollectionReference collectionRef =
         document.reference.collection('entityIndexFields');
     if (length < numberOfNames) {
-      for (int i = length; i < numberOfNames; i++) {
-        collectionRef.add({
-          'value': '',
-          'createdTimestamp': DateTime.now().millisecondsSinceEpoch,
-          'valid': null
-        });
-      }
+      FirebaseFirestore db = FirebaseFirestore.instance;
+      db
+          .collection('list/$entityId/fields/')
+          .where('type', isNotEqualTo: 'array')
+          .get()
+          .then((data) {
+        if (data.docs.isNotEmpty) {
+          for (int i = length; i < numberOfNames; i++) {
+            collectionRef.add({
+              'value': data.docs[0].id,
+              'createdTimestamp': DateTime.now().millisecondsSinceEpoch,
+              'valid': true
+            });
+          }
+        }
+      });
     } else if (length > numberOfNames) {
       collectionRef.orderBy('createdTimestamp').get().then((value) {
         final List<int> indices =
@@ -99,12 +114,23 @@ class IndexingMultipleFieldsForm extends IndexingForm {
                                 child: Text('Name ${doc.key + 1}'))),
                         Flexible(
                             flex: 1,
-                            child: DocFieldTextEdit(
-                                doc.value.reference, 'value',
-                                valid: doc.value['valid'],
-                                validator: (text, callback) {
-                              validator(doc, data, text, false, callback);
-                            }))
+                            child: DocFieldDropDown(
+                                doc.value.reference,
+                                'value',
+                                stateNotifierProvider,
+                                ref
+                                    .watch(colSPfiltered(
+                                        'list/$entityId/fields/',
+                                        queries: [
+                                          QueryParam('type',
+                                              {Symbol('isNotEqualTo'): 'array'})
+                                        ]))
+                                    .when(
+                                        loading: () => [],
+                                        error: (e, s) => [],
+                                        data: (data) => data.docs
+                                            .map((e) => e.id)
+                                            .toList())))
                       ]))
                   .toList());
               return children;

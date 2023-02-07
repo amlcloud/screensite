@@ -21,6 +21,8 @@ final selectedRef = StateNotifierProvider<
 class SearchPage extends ConsumerWidget {
   final TextEditingController searchCtrl = TextEditingController();
 
+  final now = DateTime.now(); //
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
@@ -51,7 +53,6 @@ class SearchPage extends ConsumerWidget {
                               child: Text("Search"),
                               onPressed: () async {
                                 if (searchCtrl.text.isEmpty) return;
-
                                 // var url = Uri.parse(
                                 //     'https://screen-od6zwjoy2a-an.a.run.app/?name=${searchCtrl.text.toLowerCase()}');
                                 // var response = await http.post(url, body: {
