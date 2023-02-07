@@ -18,6 +18,20 @@ final selectedRef = StateNotifierProvider<
         GenericStateNotifier<DocumentReference?>, DocumentReference?>(
     (ref) => GenericStateNotifier<DocumentReference?>(null));
 
+void setSearchValue(searchCtrl) {
+  if (searchCtrl.text.isEmpty) return;
+  FirebaseFirestore.instance
+      .collection('user')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection('search')
+      .doc(searchCtrl.text)
+      .set({
+    'target': searchCtrl.text,
+    'timeCreated': FieldValue.serverTimestamp(),
+    'author': FirebaseAuth.instance.currentUser!.uid,
+  });
+}
+
 class SearchPage extends ConsumerWidget {
   final TextEditingController searchCtrl = TextEditingController();
 
@@ -50,20 +64,8 @@ class SearchPage extends ConsumerWidget {
                               child: TextField(
                             onChanged: (v) {},
                             controller: searchCtrl,
-                            onSubmitted: (value) {
-                              if (searchCtrl.text.isEmpty) return;
-                              FirebaseFirestore.instance
-                                  .collection('user')
-                                  .doc(FirebaseAuth.instance.currentUser!.uid)
-                                  .collection('search')
-                                  .doc(searchCtrl.text)
-                                  .set({
-                                'target': searchCtrl.text,
-                                'timeCreated': FieldValue.serverTimestamp(),
-                                'author':
-                                    FirebaseAuth.instance.currentUser!.uid,
-                              });
-                            },
+                            onSubmitted: (value) async =>
+                                setSearchValue(searchCtrl),
                           )),
                           ElevatedButton(
                               child: Text("Search"),
@@ -90,17 +92,7 @@ class SearchPage extends ConsumerWidget {
                                 //       .instance.currentUser!.uid,
                                 // });
 
-                                FirebaseFirestore.instance
-                                    .collection('user')
-                                    .doc(FirebaseAuth.instance.currentUser!.uid)
-                                    .collection('search')
-                                    .doc(searchCtrl.text)
-                                    .set({
-                                  'target': searchCtrl.text,
-                                  'timeCreated': FieldValue.serverTimestamp(),
-                                  'author':
-                                      FirebaseAuth.instance.currentUser!.uid,
-                                });
+                                setSearchValue(searchCtrl);
                               })
                         ],
                       ),
