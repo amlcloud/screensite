@@ -18,24 +18,24 @@ final selectedRef = StateNotifierProvider<
         GenericStateNotifier<DocumentReference?>, DocumentReference?>(
     (ref) => GenericStateNotifier<DocumentReference?>(null));
 
-void setSearchValue(searchCtrl) {
-  if (searchCtrl.text.isEmpty) return;
-  FirebaseFirestore.instance
-      .collection('user')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection('search')
-      .doc(searchCtrl.text)
-      .set({
-    'target': searchCtrl.text,
-    'timeCreated': FieldValue.serverTimestamp(),
-    'author': FirebaseAuth.instance.currentUser!.uid,
-  });
-}
-
 class SearchPage extends ConsumerWidget {
   final TextEditingController searchCtrl = TextEditingController();
 
   final now = DateTime.now(); //
+
+  void setSearchValue() {
+    if (searchCtrl.text.isEmpty) return;
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('search')
+        .doc(searchCtrl.text)
+        .set({
+      'target': searchCtrl.text,
+      'timeCreated': FieldValue.serverTimestamp(),
+      'author': FirebaseAuth.instance.currentUser!.uid,
+    });
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -64,8 +64,7 @@ class SearchPage extends ConsumerWidget {
                               child: TextField(
                             onChanged: (v) {},
                             controller: searchCtrl,
-                            onSubmitted: (value) async =>
-                                setSearchValue(searchCtrl),
+                            onSubmitted: (value) async => setSearchValue(),
                           )),
                           ElevatedButton(
                               child: Text("Search"),
@@ -92,7 +91,7 @@ class SearchPage extends ConsumerWidget {
                                 //       .instance.currentUser!.uid,
                                 // });
 
-                                setSearchValue(searchCtrl);
+                                setSearchValue();
                               })
                         ],
                       ),
