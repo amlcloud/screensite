@@ -74,13 +74,15 @@ class SearchPage extends ConsumerWidget {
                                 //       .instance.currentUser!.uid,
                                 // });
 
+                                var text = searchCtrl.text
+                                    .replaceAll(RegExp('[^A-Za-z ]'), '');
                                 FirebaseFirestore.instance
                                     .collection('user')
                                     .doc(FirebaseAuth.instance.currentUser!.uid)
                                     .collection('search')
-                                    .doc(searchCtrl.text)
+                                    .doc(text)
                                     .set({
-                                  'target': searchCtrl.text,
+                                  'target': text,
                                   'timeCreated': FieldValue.serverTimestamp(),
                                   'author':
                                       FirebaseAuth.instance.currentUser!.uid,
