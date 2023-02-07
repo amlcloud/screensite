@@ -149,6 +149,7 @@ abstract class IndexingForm extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     bool? editing = ref.watch(editings)[document.id];
 
+    print("user id: ${FirebaseAuth.instance.currentUser!.uid}");
     return editing != null && editing
         ? Column(children: [
             inputType(),
@@ -172,14 +173,13 @@ abstract class IndexingForm extends ConsumerWidget {
                     loading: () => Container(),
                     error: (e, s) => ErrorWidget(e),
                     data: (adminDoc) => adminDoc.exists == true
-                        ? Container()
-                        : Expanded(
+                        ? Expanded(
                             child: Align(
-                                alignment: Alignment
-                                    .centerLeft, //Edit text alignment by kk
+                                alignment: Alignment.centerLeft,
                                 child: TextButton(
                                     onPressed: () => {_setEditing(ref, true)},
-                                    child: Text('Edit')))),
+                                    child: Text('Edit'))))
+                        : Container(),
                   )
             ])
           ]);
