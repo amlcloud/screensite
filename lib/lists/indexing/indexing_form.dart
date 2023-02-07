@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../providers/firestore.dart';
 import '../list_indexing.dart';
 
 abstract class IndexingForm extends ConsumerWidget {
@@ -146,6 +148,8 @@ abstract class IndexingForm extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     bool? editing = ref.watch(editings)[document.id];
+
+    print("user id: ${FirebaseAuth.instance.currentUser!.uid}");
     return editing != null && editing
         ? Column(children: [
             inputType(),
@@ -162,13 +166,21 @@ abstract class IndexingForm extends ConsumerWidget {
         : Column(children: [
             read(ref),
             Row(children: [
-              Expanded(
-                  child: Align(
-                      alignment:
-                          Alignment.centerLeft, //Edit text alignment by kk
-                      child: TextButton(
-                          onPressed: () => {_setEditing(ref, true)},
-                          child: Text('Edit')))),
+              ref
+                  .watch(
+                      docSP('admin/${FirebaseAuth.instance.currentUser!.uid}'))
+                  .when(
+                    loading: () => Container(),
+                    error: (e, s) => ErrorWidget(e),
+                    data: (adminDoc) => adminDoc.exists == true
+                        ? Expanded(
+                            child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: TextButton(
+                                    onPressed: () => {_setEditing(ref, true)},
+                                    child: Text('Edit'))))
+                        : Container(),
+                  )
             ])
           ]);
   }
