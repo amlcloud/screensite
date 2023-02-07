@@ -48,7 +48,23 @@ class SearchPage extends ConsumerWidget {
                         children: [
                           Expanded(
                               child: TextField(
-                                  onChanged: (v) {}, controller: searchCtrl)),
+                            onChanged: (v) {},
+                            controller: searchCtrl,
+                            onSubmitted: (value) {
+                              if (searchCtrl.text.isEmpty) return;
+                              FirebaseFirestore.instance
+                                  .collection('user')
+                                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                                  .collection('search')
+                                  .doc(searchCtrl.text)
+                                  .set({
+                                'target': searchCtrl.text,
+                                'timeCreated': FieldValue.serverTimestamp(),
+                                'author':
+                                    FirebaseAuth.instance.currentUser!.uid,
+                              });
+                            },
+                          )),
                           ElevatedButton(
                               child: Text("Search"),
                               onPressed: () async {
