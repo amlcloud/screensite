@@ -23,6 +23,20 @@ class SearchPage extends ConsumerWidget {
 
   final now = DateTime.now(); //
 
+  void setSearchValue() {
+    if (searchCtrl.text.isEmpty) return;
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('search')
+        .doc(searchCtrl.text)
+        .set({
+      'target': searchCtrl.text,
+      'timeCreated': FieldValue.serverTimestamp(),
+      'author': FirebaseAuth.instance.currentUser!.uid,
+    });
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
@@ -48,7 +62,10 @@ class SearchPage extends ConsumerWidget {
                         children: [
                           Expanded(
                               child: TextField(
-                                  onChanged: (v) {}, controller: searchCtrl)),
+                            onChanged: (v) {},
+                            controller: searchCtrl,
+                            onSubmitted: (value) async => setSearchValue(),
+                          )),
                           ElevatedButton(
                               child: Text("Search"),
                               onPressed: () async {
@@ -74,17 +91,7 @@ class SearchPage extends ConsumerWidget {
                                 //       .instance.currentUser!.uid,
                                 // });
 
-                                FirebaseFirestore.instance
-                                    .collection('user')
-                                    .doc(FirebaseAuth.instance.currentUser!.uid)
-                                    .collection('search')
-                                    .doc(searchCtrl.text)
-                                    .set({
-                                  'target': searchCtrl.text,
-                                  'timeCreated': FieldValue.serverTimestamp(),
-                                  'author':
-                                      FirebaseAuth.instance.currentUser!.uid,
-                                });
+                                setSearchValue();
                               })
                         ],
                       ),
