@@ -159,17 +159,16 @@ abstract class IndexingForm extends ConsumerWidget {
                   child: TextButton(onPressed: _delete, child: Text('Delete')))
             ])
           ])
-        : Column(children: [
+        : Row(children: [
             read(ref),
-            Row(children: [
-              Expanded(
-                  child: Align(
-                      alignment:
-                          Alignment.centerRight, //Edit text alignment by kk
-                      child: TextButton(
-                          onPressed: () => {_setEditing(ref, true)},
-                          child: Text('Edit')))),
-            ])
+            Expanded(
+              child: Align(
+                  alignment: Alignment.centerRight,
+                  //for edit button Right side
+                  child: TextButton(
+                      onPressed: () => {_setEditing(ref, true)},
+                      child: Text('Edit'))),
+            ),
           ]);
   }
 }
