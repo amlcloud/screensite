@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart';
 import 'package:screensite/providers/firestore.dart';
 import 'package:screensite/lists/lists_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,6 +23,13 @@ class EntityListView extends ConsumerStatefulWidget {
   ConsumerState<EntityListView> createState() => _EntityListViewState();
 }
 
+List<MapEntry<int, QueryDocumentSnapshot<Map<String, dynamic>>>> sortList(
+    List<MapEntry<int, QueryDocumentSnapshot<Map<String, dynamic>>>> list1) {
+  return list1
+    ..sort(
+        (e1, e2) => e1.value.data()['name'].compareTo(e2.value.data()['name']));
+}
+
 class _EntityListViewState extends ConsumerState<EntityListView> {
   //creating int to keep information about selected item and function to write index of selected item
   @override
@@ -38,45 +47,44 @@ class _EntityListViewState extends ConsumerState<EntityListView> {
                   .when(
                       loading: () => [],
                       error: (e, s) => [ErrorWidget(e)],
-                      data: (entities) => entities.docs
-                          .asMap()
-                          .entries
-                          .map((entity) => Card(
-                                child: ListTile(
-                                    selected: ref.read(selectedEntityList.notifier).value ==
-                                            entity.key
-                                        ? true
-                                        : false,
-                                    selectedTileColor:
-                                        Theme.of(context).colorScheme.secondary,
-                                    title: Text((entityDoc.data()!['entitiesName1'] == null
-                                            ? ''
-                                            : entity.value.get(entityDoc
-                                                .data()!['entitiesName1'])) +
-                                        (entityDoc.data()!['entitiesName2'] == null
-                                            ? ''
-                                            : entity.value.get(entityDoc
-                                                .data()!['entitiesName2'])) +
-                                        (entityDoc.data()!['entitiesName3'] == null
-                                            ? ''
-                                            : entity.value
-                                                .get(entityDoc.data()!['entitiesName3']))),
-                                    subtitle: Text((entity.value.data()[entityDoc.data()!['entitiesAddress']] != null) ? 'Location: ' + entity.value.data()[entityDoc.data()!['entitiesAddress']] : 'Location: undefined'),
-                                    isThreeLine: true,
-                                    onTap: () {
-                                      ref
-                                          .read(selectedEntityList.notifier)
-                                          .value = entity.key;
-                                      ref.read(widget.selectedItem).value =
-                                          Map.fromEntries(entity.value
-                                              .data()
-                                              .entries
-                                              .toList()
-                                            ..sort((e1, e2) =>
-                                                e1.key.compareTo(e2.key)));
-                                    }),
-                              ))
-                          .toList())))
+                      data: (entities) =>
+                          sortList(entities.docs.asMap().entries.toList())
+                              .map((entity) => Card(
+                                    child: ListTile(
+                                        selected:
+                                            ref.read(selectedEntityList.notifier).value ==
+                                                    entity.key
+                                                ? true
+                                                : false,
+                                        selectedTileColor: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                        title: Text((entityDoc.data()!['entitiesName1'] == null ? '' : entity.value.get(entityDoc.data()!['entitiesName1'])) +
+                                            (entityDoc.data()!['entitiesName2'] == null
+                                                ? ''
+                                                : entity.value.get(
+                                                    entityDoc.data()![
+                                                        'entitiesName2'])) +
+                                            (entityDoc.data()!['entitiesName3'] == null
+                                                ? ''
+                                                : entity.value.get(entityDoc
+                                                    .data()!['entitiesName3']))),
+                                        subtitle: Text((entity.value.data()[entityDoc.data()!['entitiesAddress']] != null) ? 'Location: ' + entity.value.data()[entityDoc.data()!['entitiesAddress']] : 'Location: undefined'),
+                                        isThreeLine: true,
+                                        onTap: () {
+                                          ref
+                                              .read(selectedEntityList.notifier)
+                                              .value = entity.key;
+                                          ref.read(widget.selectedItem).value =
+                                              Map.fromEntries(entity.value
+                                                  .data()
+                                                  .entries
+                                                  .toList()
+                                                ..sort((e1, e2) =>
+                                                    e1.key.compareTo(e2.key)));
+                                        }),
+                                  ))
+                              .toList())))
     ]);
   }
 }
