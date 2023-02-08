@@ -23,6 +23,21 @@ class SearchPage extends ConsumerWidget {
 
   final now = DateTime.now(); //
 
+  void setSearchValue() {
+    if (searchCtrl.text.isEmpty) return;
+    var text = searchCtrl.text.replaceAll(RegExp('[^A-Za-z ]'), '');
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('search')
+        .doc(text)
+        .set({
+      'target': text,
+      'timeCreated': FieldValue.serverTimestamp(),
+      'author': FirebaseAuth.instance.currentUser!.uid,
+    });
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
@@ -48,7 +63,10 @@ class SearchPage extends ConsumerWidget {
                         children: [
                           Expanded(
                               child: TextField(
-                                  onChanged: (v) {}, controller: searchCtrl)),
+                            onChanged: (v) {},
+                            controller: searchCtrl,
+                            onSubmitted: (value) async => setSearchValue(),
+                          )),
                           ElevatedButton(
                               child: Text("Search"),
                               onPressed: () async {
@@ -74,19 +92,7 @@ class SearchPage extends ConsumerWidget {
                                 //       .instance.currentUser!.uid,
                                 // });
 
-                                var text = searchCtrl.text
-                                    .replaceAll(RegExp('[^A-Za-z ]'), '');
-                                FirebaseFirestore.instance
-                                    .collection('user')
-                                    .doc(FirebaseAuth.instance.currentUser!.uid)
-                                    .collection('search')
-                                    .doc(text)
-                                    .set({
-                                  'target': text,
-                                  'timeCreated': FieldValue.serverTimestamp(),
-                                  'author':
-                                      FirebaseAuth.instance.currentUser!.uid,
-                                });
+                                setSearchValue();
                               })
                         ],
                       ),
