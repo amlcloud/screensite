@@ -47,9 +47,10 @@ class ListIndexing extends ConsumerWidget {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                  title: const Text('No fields available'),
-                  content:
-                      const Text('There is no fields collection in Firestore'),
+                  title: const Text(
+                      'No fields dictionary available. Please contact system administrator.'),
+                  content: Text(
+                      'No fields dictionary is available for the list $entityId. Please contact system administrator.'),
                   actions: <Widget>[
                     TextButton(
                       child: const Text('OK'),
