@@ -25,7 +25,7 @@ class SearchPage extends ConsumerWidget {
 
   void setSearchValue() {
     if (searchCtrl.text.isEmpty) return;
-    var text = searchCtrl.text.replaceAll(RegExp('[^A-Za-z ]'), '');
+    var text = searchCtrl.text.replaceAll(RegExp('[^A-Za-z0-9 ]'), '');
     FirebaseFirestore.instance
         .collection('user')
         .doc(FirebaseAuth.instance.currentUser!.uid)
