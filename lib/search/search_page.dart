@@ -23,9 +23,18 @@ class SearchPage extends ConsumerWidget {
 
   final now = DateTime.now(); //
 
+  final _formKey = GlobalKey<FormState>();
+
+  final regexp = RegExp('[^A-Za-z0-9- ]');
+
+  bool isValid() {
+    return !regexp.hasMatch(searchCtrl.text);
+  }
+
   void setSearchValue() {
+    if (!isValid()) return;
     if (searchCtrl.text.isEmpty) return;
-    var text = searchCtrl.text.replaceAll(RegExp('[^A-Za-z0-9 ]'), '');
+    var text = searchCtrl.text.replaceAll(regexp, '');
     FirebaseFirestore.instance
         .collection('user')
         .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -62,11 +71,21 @@ class SearchPage extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(
-                              child: TextField(
-                            onChanged: (v) {},
-                            controller: searchCtrl,
-                            onSubmitted: (value) async => setSearchValue(),
-                          )),
+                              child: Form(
+                                  key: _formKey,
+                                  child: TextFormField(
+                                    validator: (value) {
+                                      return isValid()
+                                          ? null
+                                          : "Invalid characters";
+                                    },
+                                    onChanged: (v) {
+                                      _formKey.currentState?.validate();
+                                    },
+                                    controller: searchCtrl,
+                                    onFieldSubmitted: (value) async =>
+                                        setSearchValue(),
+                                  ))),
                           ElevatedButton(
                               child: Text("Search"),
                               onPressed: () async {
