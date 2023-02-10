@@ -25,16 +25,16 @@ class SearchPage extends ConsumerWidget {
 
   final _formKey = GlobalKey<FormState>();
 
-  final regexp = RegExp('[^A-Za-z0-9- ]');
+  final _regexp = RegExp('[^A-Za-z0-9- ]');
 
   bool isValid() {
-    return !regexp.hasMatch(searchCtrl.text);
+    return !_regexp.hasMatch(searchCtrl.text);
   }
 
   void setSearchValue() {
     if (!isValid()) return;
     if (searchCtrl.text.isEmpty) return;
-    var text = searchCtrl.text.replaceAll(regexp, '');
+    var text = searchCtrl.text.replaceAll(_regexp, '');
     FirebaseFirestore.instance
         .collection('user')
         .doc(FirebaseAuth.instance.currentUser!.uid)
