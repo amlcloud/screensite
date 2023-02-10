@@ -18,6 +18,8 @@ final selectedRef = StateNotifierProvider<
         GenericStateNotifier<DocumentReference?>, DocumentReference?>(
     (ref) => GenericStateNotifier<DocumentReference?>(null));
 
+const MINIMUM_SEARCH_LENGTH = 7;
+
 class SearchPage extends ConsumerWidget {
   final TextEditingController searchCtrl = TextEditingController();
 
@@ -33,7 +35,8 @@ class SearchPage extends ConsumerWidget {
 
   void setSearchValue() {
     if (!isValid()) return;
-    if (searchCtrl.text.isEmpty) return;
+    if (searchCtrl.text.isEmpty ||
+        searchCtrl.text.length < MINIMUM_SEARCH_LENGTH) return;
     var text = searchCtrl.text.replaceAll(_regexp, '');
     FirebaseFirestore.instance
         .collection('user')
@@ -75,9 +78,13 @@ class SearchPage extends ConsumerWidget {
                                   key: _formKey,
                                   child: TextFormField(
                                     validator: (value) {
-                                      return isValid()
-                                          ? null
-                                          : "Invalid characters";
+                                      return isValid() &&
+                                              searchCtrl.text.length <
+                                                  MINIMUM_SEARCH_LENGTH
+                                          ? "Need at least 7 alpha-numeric, space or dash characters"
+                                          : isValid()
+                                              ? null
+                                              : "Invalid characters";
                                     },
                                     onChanged: (v) {
                                       _formKey.currentState?.validate();
@@ -89,7 +96,7 @@ class SearchPage extends ConsumerWidget {
                           ElevatedButton(
                               child: Text("Search"),
                               onPressed: () async {
-                                if (searchCtrl.text.isEmpty) return;
+                                // if (searchCtrl.text.isEmpty) return;
                                 // var url = Uri.parse(
                                 //     'https://screen-od6zwjoy2a-an.a.run.app/?name=${searchCtrl.text.toLowerCase()}');
                                 // var response = await http.post(url, body: {
