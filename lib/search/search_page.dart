@@ -78,13 +78,15 @@ class SearchPage extends ConsumerWidget {
                                   key: _formKey,
                                   child: TextFormField(
                                     validator: (value) {
+                                      String message =
+                                          "Please input $MINIMUM_SEARCH_LENGTH or more alpha-numeric, space or dash characters";
                                       return isValid() &&
                                               searchCtrl.text.length <
                                                   MINIMUM_SEARCH_LENGTH
-                                          ? "Need at least 7 alpha-numeric, space or dash characters"
+                                          ? message
                                           : isValid()
                                               ? null
-                                              : "Invalid characters";
+                                              : message;
                                     },
                                     onChanged: (v) {
                                       _formKey.currentState?.validate();
