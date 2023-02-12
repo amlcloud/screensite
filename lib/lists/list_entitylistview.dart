@@ -50,9 +50,8 @@ class _EntityListViewState extends ConsumerState<EntityListView> {
                   .when(
                       loading: () => [],
                       error: (e, s) => [ErrorWidget(e)],
-                      data: (entities) => entities.docs
-                          .asMap()
-                          .entries
+                      data: (entities) => sortList(
+                              entities.docs.asMap().entries.toList())
                           .map((entity) =>
                               builtEntityListTile(entity, context, entityDoc))
                           .toList())))
