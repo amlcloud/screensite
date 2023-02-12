@@ -24,10 +24,13 @@ class EntityListView extends ConsumerStatefulWidget {
 }
 
 List<MapEntry<int, QueryDocumentSnapshot<Map<String, dynamic>>>> sortList(
-    List<MapEntry<int, QueryDocumentSnapshot<Map<String, dynamic>>>> list1) {
-  return list1
-    ..sort(
-        (e1, e2) => e1.value.data()['name'].compareTo(e2.value.data()['name']));
+    List<MapEntry<int, QueryDocumentSnapshot<Map<String, dynamic>>>>
+        sourceList) {
+  List<MapEntry<int, QueryDocumentSnapshot<Map<String, dynamic>>>>
+      destinationList = sourceList
+        ..sort((e1, e2) =>
+            (e1.value.data()['name']).compareTo(e2.value.data()['name']));
+  return destinationList;
 }
 
 class _EntityListViewState extends ConsumerState<EntityListView> {
