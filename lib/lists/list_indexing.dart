@@ -22,7 +22,7 @@ class ListIndexing extends ConsumerWidget {
 
   const ListIndexing(this.entityId);
 
-  void add() {
+  void add(BuildContext context) {
     FirebaseFirestore db = FirebaseFirestore.instance;
     db
         .collection('list/$entityId/fields/')
@@ -42,6 +42,24 @@ class ListIndexing extends ConsumerWidget {
             'valid': true
           });
         });
+      } else {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                  title: const Text(
+                      'No fields dictionary available. Please contact system administrator.'),
+                  content: Text(
+                      'No fields dictionary is available for the list $entityId. Please contact system administrator.'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('OK'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ]);
+            });
       }
     });
   }
@@ -75,7 +93,7 @@ class ListIndexing extends ConsumerWidget {
                     data: (entities) => entities.docs.map((entry) {
                           return Column(children: [content(entry), Divider()]);
                         }).toList())),
-        TextButton(onPressed: () => {add()}, child: Text('Add'))
+        TextButton(onPressed: () => {add(context)}, child: Text('Add'))
       ]),
     );
   }

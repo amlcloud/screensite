@@ -50,44 +50,49 @@ class _EntityListViewState extends ConsumerState<EntityListView> {
                   .when(
                       loading: () => [],
                       error: (e, s) => [ErrorWidget(e)],
-                      data: (entities) =>
-                          sortList(entities.docs.asMap().entries.toList())
-                              .map((entity) => Card(
-                                    child: ListTile(
-                                        selected:
-                                            ref.read(selectedEntityList.notifier).value ==
-                                                    entity.key
-                                                ? true
-                                                : false,
-                                        selectedTileColor: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                        title: Text((entityDoc.data()!['entitiesName1'] == null ? '' : entity.value.get(entityDoc.data()!['entitiesName1'])) +
-                                            (entityDoc.data()!['entitiesName2'] == null
-                                                ? ''
-                                                : entity.value.get(
-                                                    entityDoc.data()![
-                                                        'entitiesName2'])) +
-                                            (entityDoc.data()!['entitiesName3'] == null
-                                                ? ''
-                                                : entity.value.get(entityDoc
-                                                    .data()!['entitiesName3']))),
-                                        subtitle: Text((entity.value.data()[entityDoc.data()!['entitiesAddress']] != null) ? 'Location: ' + entity.value.data()[entityDoc.data()!['entitiesAddress']] : 'Location: undefined'),
-                                        isThreeLine: true,
-                                        onTap: () {
-                                          ref
-                                              .read(selectedEntityList.notifier)
-                                              .value = entity.key;
-                                          ref.read(widget.selectedItem).value =
-                                              Map.fromEntries(entity.value
-                                                  .data()
-                                                  .entries
-                                                  .toList()
-                                                ..sort((e1, e2) =>
-                                                    e1.key.compareTo(e2.key)));
-                                        }),
-                                  ))
-                              .toList())))
+                      data: (entities) => entities.docs
+                          .asMap()
+                          .entries
+                          .map((entity) =>
+                              builtEntityListTile(entity, context, entityDoc))
+                          .toList())))
     ]);
+  }
+
+  Card builtEntityListTile(
+      MapEntry<int, QueryDocumentSnapshot<Map<String, dynamic>>> entity,
+      BuildContext context,
+      DocumentSnapshot<Map<String, dynamic>> entityDoc) {
+    final entityName1 = (entityDoc.data()!['entitiesName1'] == null
+        ? ''
+        : entity.value.get(entityDoc.data()!['entitiesName1']));
+
+    final entityName2 = (entityDoc.data()!['entitiesName2'] == null
+        ? ''
+        : entity.value.get(entityDoc.data()!['entitiesName2']));
+    final entityName3 = (entityDoc.data()!['entitiesName3'] == null
+        ? ''
+        : entity.value.get(entityDoc.data()!['entitiesName3']));
+    return Card(
+      child: ListTile(
+          selected: ref.read(selectedEntityList.notifier).value == entity.key
+              ? true
+              : false,
+          selectedTileColor: Theme.of(context).colorScheme.secondary,
+          title: Text('$entityName1 $entityName2 $entityName3'),
+          subtitle: Text(
+              (entity.value.data()[entityDoc.data()!['entitiesAddress']] !=
+                      null)
+                  ? 'Location: ' +
+                      entity.value.data()[entityDoc.data()!['entitiesAddress']]
+                  : 'Location: undefined'),
+          isThreeLine: true,
+          onTap: () {
+            ref.read(selectedEntityList.notifier).value = entity.key;
+            ref.read(widget.selectedItem).value = Map.fromEntries(
+                entity.value.data().entries.toList()
+                  ..sort((e1, e2) => e1.key.compareTo(e2.key)));
+          }),
+    );
   }
 }

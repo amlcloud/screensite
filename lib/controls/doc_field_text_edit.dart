@@ -37,7 +37,7 @@ class DocFieldTextEditState extends ConsumerState<DocFieldTextEdit> {
   void initState() {
     super.initState();
     sub = widget.docRef.snapshots().listen((event) {
-      if (!event.exists) return;
+      if (!event.exists || event.data()![widget.field] == null) return;
       print('received ${event.data()![widget.field]}');
       if (ctrl.text != event.data()![widget.field]) {
         ctrl.text = event.data()![widget.field];
@@ -63,7 +63,7 @@ class DocFieldTextEditState extends ConsumerState<DocFieldTextEdit> {
     if (descSaveTimer != null && descSaveTimer!.isActive) {
       descSaveTimer!.cancel();
     }
-    descSaveTimer = Timer(Duration(milliseconds: 200), () {
+    descSaveTimer = Timer(Duration(milliseconds: 1000), () {
       widget.validator?.call(ctrl.text, (valid) {
         this.valid = valid;
         _formKey.currentState?.validate();
@@ -73,6 +73,7 @@ class DocFieldTextEditState extends ConsumerState<DocFieldTextEdit> {
       Map<String, dynamic> map = {};
       map[widget.field] = v;
       // the document will get created, if not exists
+      print('update the document');
       widget.docRef.set(map, SetOptions(merge: true));
       // throws exception if document doesn't exist
       //widget.docRef.update({widget.field: v});
