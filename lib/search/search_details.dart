@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:screensite/providers/firestore.dart';
 import 'package:screensite/search/search_results.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
@@ -22,17 +24,25 @@ class SearchDetails extends ConsumerWidget {
   SearchDetails(this.entityId, this._selectedItemNotifier);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) =>
-      ref.watch(docSP(entityId.path)).when(
-          loading: () => Container(),
-          error: (e, s) => ErrorWidget(e),
-          data: (searchDoc) => Container(
-              decoration: RoundedCornerContainer.containerStyle,
-              child: SingleChildScrollView(
-                  child: Column(
-                children: [
-                  Text(searchDoc.id),
-                  SearchResults(searchDoc.id, _selectedItemNotifier)
-                ],
-              ))));
+  Widget build(BuildContext context, WidgetRef ref) {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    return ref
+        .watch(docSP('user/${auth.currentUser!.uid}/${entityId.path}'))
+        .when(
+            loading: () => Container(),
+            error: (e, s) => ErrorWidget(e),
+            data: (searchDoc) {
+              return Container(
+                  decoration: RoundedCornerContainer.containerStyle,
+                  child: SingleChildScrollView(
+                      child: Column(
+                    children: [
+                      Text('Searched Target:${searchDoc.id}'), //kk
+                      Text(
+                          'Search Time:${Jiffy(searchDoc.data()!['timeCreated'].toDate()).format("h:mm a, do MMM, yyyy")}'),
+                      SearchResults(searchDoc.id, _selectedItemNotifier),
+                    ],
+                  )));
+            });
+  }
 }
