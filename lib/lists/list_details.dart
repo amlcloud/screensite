@@ -19,8 +19,8 @@ class ListDetails extends ConsumerWidget {
       selectedItem;
 
   final _indexButtonClicked =
-      StateNotifierProvider<GenericStateNotifier<bool?>, bool?>(
-          (ref) => GenericStateNotifier<bool?>(null));
+      StateNotifierProvider<GenericStateNotifier<bool>, bool>(
+          (ref) => GenericStateNotifier<bool>(false));
 
   final TextEditingController idCtrl = TextEditingController(),
       nameCtrl = TextEditingController(),
@@ -83,7 +83,7 @@ class ListDetails extends ConsumerWidget {
     return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
       Row(
           mainAxisAlignment: MainAxisAlignment.start,
-          children: [IndexingProgress(entityId, _indexButtonClicked.notifier)]),
+          children: [IndexingProgress(entityId, _indexButtonClicked)]),
       Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
         Container(
             padding: EdgeInsets.all(8.0),

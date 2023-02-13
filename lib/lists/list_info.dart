@@ -52,11 +52,32 @@ class ListInfo extends ConsumerWidget {
                       Flexible(
                         child: TextButton(
                             onPressed: () {
-                              HttpsCallable callable = FirebaseFunctions
-                                  .instance
-                                  .httpsCallable('index_list2?list=$entityId');
-                              callable();
+                              bool? clicked =
+                                  ref.read(_indexButtonClicked).value;
+                              if (clicked == null || clicked == false) {
+                                HttpsCallable callable =
+                                    FirebaseFunctions.instance.httpsCallable(
+                                        'index_list2?list=$entityId');
+                                callable();
+                              }
                               ref.read(_indexButtonClicked).value = true;
+                              ref
+                                  .watch(
+                                      colSPfiltered('indexStatus/', queries: [
+                                    QueryParam('listId',
+                                        {Symbol('isEqualTo'): entityId})
+                                  ]))
+                                  .when(
+                                      loading: () {},
+                                      error: (e, s) {},
+                                      data: (data) {
+                                        Future.delayed(
+                                            const Duration(milliseconds: 500),
+                                            () {
+                                          ref.read(_indexButtonClicked).value =
+                                              false;
+                                        });
+                                      });
                             },
                             child: Text('Reindex')),
                       ),
