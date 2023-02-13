@@ -7,7 +7,7 @@ import 'package:screensite/state/generic_state_notifier.dart';
 import 'package:screensite/drawer.dart';
 import 'package:screensite/common.dart';
 import 'jsonview_switch.dart';
-import 'jsonview_switch.dart';
+//import 'jsonview_switch.dart';
 // import 'package:flutter_json_viewer/flutter_json_viewer.dart';
 
 import 'indexing/indexing_item_list.dart';

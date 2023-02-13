@@ -21,6 +21,32 @@ final selectedRef = StateNotifierProvider<
 class SearchPage extends ConsumerWidget {
   final TextEditingController searchCtrl = TextEditingController();
 
+  final now = DateTime.now(); //
+
+  final _formKey = GlobalKey<FormState>();
+
+  final regexp = RegExp('[^A-Za-z0-9- ]');
+
+  bool isValid() {
+    return !regexp.hasMatch(searchCtrl.text);
+  }
+
+  void setSearchValue() {
+    if (!isValid()) return;
+    if (searchCtrl.text.isEmpty) return;
+    var text = searchCtrl.text.replaceAll(regexp, '');
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('search')
+        .doc(text)
+        .set({
+      'target': text,
+      'timeCreated': FieldValue.serverTimestamp(),
+      'author': FirebaseAuth.instance.currentUser!.uid,
+    });
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
@@ -45,13 +71,25 @@ class SearchPage extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(
-                              child: TextField(
-                                  onChanged: (v) {}, controller: searchCtrl)),
+                              child: Form(
+                                  key: _formKey,
+                                  child: TextFormField(
+                                    validator: (value) {
+                                      return isValid()
+                                          ? null
+                                          : "Invalid characters";
+                                    },
+                                    onChanged: (v) {
+                                      _formKey.currentState?.validate();
+                                    },
+                                    controller: searchCtrl,
+                                    onFieldSubmitted: (value) async =>
+                                        setSearchValue(),
+                                  ))),
                           ElevatedButton(
                               child: Text("Search"),
                               onPressed: () async {
                                 if (searchCtrl.text.isEmpty) return;
-
                                 // var url = Uri.parse(
                                 //     'https://screen-od6zwjoy2a-an.a.run.app/?name=${searchCtrl.text.toLowerCase()}');
                                 // var response = await http.post(url, body: {
@@ -73,17 +111,7 @@ class SearchPage extends ConsumerWidget {
                                 //       .instance.currentUser!.uid,
                                 // });
 
-                                FirebaseFirestore.instance
-                                    .collection('user')
-                                    .doc(FirebaseAuth.instance.currentUser!.uid)
-                                    .collection('search')
-                                    .doc(searchCtrl.text)
-                                    .set({
-                                  'target': searchCtrl.text,
-                                  'timeCreated': FieldValue.serverTimestamp(),
-                                  'author':
-                                      FirebaseAuth.instance.currentUser!.uid,
-                                });
+                                setSearchValue();
                               })
                         ],
                       ),

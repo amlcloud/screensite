@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../extensions/string_validations.dart';
 import 'package:screensite/theme.dart';
+import 'dart:convert';
 
 // Make an enum to check for type
 enum SplittingType { UNDERSCORE, CAPITAL, NONE }
@@ -49,11 +50,25 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
       return Container(
         padding: EdgeInsets.only(left: 14.0),
         child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start, children: _getList()),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: _getList(),
+        ),
       );
     }
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.start, children: _getList());
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: _getList(),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            copyToClipboard(jsonEncode(widget.jsonObj));
+          },
+          child: Text("Copy Details"),
+        ),
+      ],
+    );
   }
 
   // Check if there is any kind of data
@@ -133,10 +148,14 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
         children: <Widget>[
           ex
               ? ((openFlag[entry.key] ?? false)
-                  ? Icon(Icons.arrow_drop_down,
-                      size: 14) //, color: Color.fromARGB(255, 13, 13, 13))
-                  : Icon(Icons.arrow_right,
-                      size: 14)) //, color: Color.fromARGB(255, 10, 10, 10)))
+                  ? Icon(
+                      Icons.arrow_drop_down,
+                      size: 14,
+                    ) //, color: Color.fromARGB(255, 13, 13, 13))
+                  : Icon(
+                      Icons.arrow_right,
+                      size: 14,
+                    )) //, color: Color.fromARGB(255, 10, 10, 10)))
               : const Icon(
                   Icons.arrow_right,
                   // color: Color.fromARGB(0, 0, 0, 0),
@@ -145,10 +164,11 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
           (ex && ink)
               ? InkWell(
                   child: Text(
-                      entry.key.runtimeType == String
-                          ? ConvertEntryData(entry.key)
-                          : entry.key,
-                      style: Theme.of(context).textTheme.titleSmall),
+                    entry.key.runtimeType == String
+                        ? ConvertEntryData(entry.key)
+                        : entry.key,
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
                   // style: TextStyle(color: Colors.purple[900])),
                   onTap: () {
                     setState(() {
@@ -209,17 +229,14 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
     if (entry.value == null) {
       return Expanded(
           child: Text(
-        '',
+        '', style: Theme.of(context).textTheme.subtitle2,
         // style: TextStyle(color: Color.fromARGB(255, 13, 13, 13)),
       ));
     } else if (entry.value is int) {
       return Expanded(
           child: GestureDetector(
               onTap: () {
-                Clipboard.setData(ClipboardData(text: entry.value.toString()));
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Text copied to clipboard'),
-                ));
+                copyToClipboard(entry.value.toString());
               },
               child: Text(
                 entry.value.toString(),
@@ -229,10 +246,7 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
       return Expanded(
           child: GestureDetector(
               onTap: () {
-                Clipboard.setData(ClipboardData(text: entry.value.toString()));
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Text copied to clipboard'),
-                ));
+                copyToClipboard(entry.value.toString());
               },
               child: Text(
                 '\"' + entry.value + '\"',
@@ -242,10 +256,7 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
       return Expanded(
           child: GestureDetector(
               onTap: () {
-                Clipboard.setData(ClipboardData(text: entry.value.toString()));
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Text copied to clipboard'),
-                ));
+                copyToClipboard(entry.value.toString());
               },
               child: Text(
                 entry.value.toString(),
@@ -255,10 +266,7 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
       return Expanded(
           child: GestureDetector(
               onTap: () {
-                Clipboard.setData(ClipboardData(text: entry.value.toString()));
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Text copied to clipboard'),
-                ));
+                copyToClipboard(entry.value.toString());
               },
               child: Text(
                 entry.value.toString(),
@@ -268,10 +276,7 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
       if (entry.value.isEmpty) {
         return GestureDetector(
             onTap: () {
-              Clipboard.setData(ClipboardData(text: ""));
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text('Text copied to clipboard'),
-              ));
+              copyToClipboard("");
             },
             child: Text(
               'Empty',
@@ -310,6 +315,7 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
             },
             child: Text(
               '',
+              style: Theme.of(context).textTheme.subtitle2,
               // style: TextStyle(color: Colors.grey),
             )),
         onTap: () {
@@ -348,6 +354,14 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
     }
     return 'Object';
   }
+
+  void copyToClipboard(String text) {
+    Clipboard.setData(ClipboardData(text: text)).then((value) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Text copied to clipboard'),
+      ));
+    });
+  }
 }
 
 class JsonArrayViewer extends StatefulWidget {
@@ -374,7 +388,19 @@ class _JsonArrayViewerState extends State<JsonArrayViewer> {
               children: _getList()));
     }
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.start, children: _getList());
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: _getList(),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            copyToClipboard(jsonEncode(widget.jsonArray));
+          },
+          child: Text("Copy Details"),
+        ),
+      ],
+    );
   }
 
   @override
@@ -394,17 +420,26 @@ class _JsonArrayViewerState extends State<JsonArrayViewer> {
         children: <Widget>[
           ex
               ? ((openFlag[i])
-                  ? Icon(Icons.arrow_drop_down, size: 14)
+                  ? Icon(
+                      Icons.arrow_drop_down,
+                      size: 14,
+                    )
                   // color: Colors.grey[700])
-                  : Icon(Icons.arrow_right, size: 14))
+                  : Icon(
+                      Icons.arrow_right,
+                      size: 14,
+                    ))
               //  color: Colors.grey[700]))
               : const Icon(
                   Icons.arrow_right, //color: Color.fromARGB(0, 0, 0, 0)
-                  // size: 14,
+                  size: 14,
                 ),
           (ex && ink)
               ? getInkWell(i)
-              : Text('[$i]', style: Theme.of(context).textTheme.subtitle2),
+              : Text(
+                  '[$i]',
+                  style: Theme.of(context).textTheme.subtitle2,
+                ),
           Text(
             ':',
             style: Theme.of(context).textTheme.subtitle2,
@@ -424,7 +459,10 @@ class _JsonArrayViewerState extends State<JsonArrayViewer> {
 
   getInkWell(int index) {
     return InkWell(
-        child: Text('[$index]', style: Theme.of(context).textTheme.subtitle2),
+        child: Text(
+          '[$index]',
+          style: Theme.of(context).textTheme.subtitle2,
+        ),
         onTap: () {
           setState(() {
             openFlag[index] = !(openFlag[index]);
@@ -492,5 +530,13 @@ class _JsonArrayViewerState extends State<JsonArrayViewer> {
             openFlag[index] = !(openFlag[index]);
           });
         });
+  }
+
+  void copyToClipboard(String text) {
+    Clipboard.setData(ClipboardData(text: text)).then((value) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Text copied to clipboard'),
+      ));
+    });
   }
 }
