@@ -37,7 +37,7 @@ class SearchDetails extends ConsumerWidget {
                   child: SingleChildScrollView(
                       child: Column(
                     children: [
-                      Text('Searched Target:${searchDoc.id}'), //kk
+                      Text('Searched Target:${searchDoc.id}'),
                       Text(
                           'Search Time:${Jiffy(searchDoc.data()!['timeCreated'].toDate()).format("h:mm a, do MMM, yyyy")}'),
                       SearchResults(searchDoc.id, _selectedItemNotifier),
