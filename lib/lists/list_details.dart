@@ -22,6 +22,10 @@ class ListDetails extends ConsumerWidget {
       StateNotifierProvider<GenericStateNotifier<bool>, bool>(
           (ref) => GenericStateNotifier<bool>(false));
 
+  final _reindexInitiated =
+      StateNotifierProvider<GenericStateNotifier<bool>, bool>(
+          (ref) => GenericStateNotifier<bool>(false));
+
   final TextEditingController idCtrl = TextEditingController(),
       nameCtrl = TextEditingController(),
       descCtrl = TextEditingController();
@@ -29,61 +33,78 @@ class ListDetails extends ConsumerWidget {
   ListDetails(this.entityId, this.selectedItem);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => Container(
-      decoration: RoundedCornerContainer.containerStyle,
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Container(
-              padding: EdgeInsets.all(10.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "List id: " + entityId,
-                    textAlign: TextAlign.center,
-                  )
-                ],
-              ),
-            ),
-            Divider(),
-            ListInfo(entityId, _indexButtonClicked.notifier),
-            Divider(),
-            Container(
-                child: ref.watch(docSP('list/' + entityId)).when(
-                    loading: () => Container(),
-                    error: (e, s) => ErrorWidget(e),
-                    data: (entityDoc) => entityDoc.exists == false
-                        ? Center(child: Text('No entity data exists'))
-                        : buildListItemDetails(entityDoc, context))),
-
-            Divider(),
-            ListIndexing(entityId),
-            Divider(),
-            //Timeline(entityId),
-            /*Expanded(
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ref
+        .watch(colSPfiltered('indexStatus/', queries: [
+          QueryParam('listId', {Symbol('isEqualTo'): entityId})
+        ]))
+        .when(
+            loading: () => Container(),
+            error: (e, s) => ErrorWidget(e),
+            data: (indexStatus) {
+              return Container(
+                  decoration: RoundedCornerContainer.containerStyle,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "List id: " + entityId,
+                                textAlign: TextAlign.center,
+                              )
+                            ],
+                          ),
+                        ),
+                        Divider(),
+                        ListInfo(entityId, _indexButtonClicked.notifier,
+                            indexStatus),
+                        Divider(),
+                        Container(
+                            child: ref.watch(docSP('list/' + entityId)).when(
+                                loading: () => Container(),
+                                error: (e, s) => ErrorWidget(e),
+                                data: (entityDoc) => entityDoc.exists == false
+                                    ? Center(
+                                        child: Text('No entity data exists'))
+                                    : buildListItemDetails(
+                                        entityDoc, context, indexStatus, ref))),
+                        Divider(),
+                        ListIndexing(entityId),
+                        Divider(),
+                        //Timeline(entityId),
+                        /*Expanded(
               flex: 10,
               child: EntityList(entityId),
             ),*/
-            //DataExportButton(entityId),
-            Expanded(
-                flex: 10,
-                child: SingleChildScrollView(
-                  child: EntityListView(entityId, selectedItem),
-                )),
-            Divider(),
-            ListCount(entityId),
-          ]));
+                        //DataExportButton(entityId),
+                        Expanded(
+                            flex: 10,
+                            child: SingleChildScrollView(
+                              child: EntityListView(entityId, selectedItem),
+                            )),
+                        Divider(),
+                        ListCount(entityId),
+                      ]));
+            });
+  }
 
   Widget buildListItemDetails(
-      DocumentSnapshot<Map<String, dynamic>> entityDoc, BuildContext context) {
+      DocumentSnapshot<Map<String, dynamic>> entityDoc,
+      BuildContext context,
+      QuerySnapshot<Map<String, dynamic>> indexStatus,
+      WidgetRef ref) {
     return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-      Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [IndexingProgress(entityId, _indexButtonClicked)]),
+      Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+        IndexingProgress(entityId, ref.watch(_indexButtonClicked),
+            _reindexInitiated.notifier, indexStatus)
+      ]),
       Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
         Container(
             padding: EdgeInsets.all(8.0),
