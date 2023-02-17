@@ -32,14 +32,15 @@ class SearchDetails extends ConsumerWidget {
             loading: () => Container(),
             error: (e, s) => ErrorWidget(e),
             data: (searchDoc) {
+              Timestamp? timeCreated = searchDoc.data()!['timeCreated'];
               return Container(
                   decoration: RoundedCornerContainer.containerStyle,
                   child: SingleChildScrollView(
                       child: Column(
                     children: [
-                      Text('Searched Target:${searchDoc.id}'), //kk
+                      Text('Searched Target: ${searchDoc.id}'), //kk
                       Text(
-                          'Search Time:${Jiffy(searchDoc.data()!['timeCreated'].toDate()).format("h:mm a, do MMM, yyyy")}'),
+                          'Search Time: ${timeCreated != null ? Jiffy(timeCreated.toDate()).format("h:mm a, do MMM, yyyy") : ''}'),
                       SearchResults(searchDoc.id, _selectedItemNotifier),
                     ],
                   )));
