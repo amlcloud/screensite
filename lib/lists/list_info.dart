@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -11,9 +12,9 @@ import 'package:cloud_functions/cloud_functions.dart';
 
 class ListInfo extends ConsumerWidget {
   final String entityId;
-  final AlwaysAliveProviderBase<GenericStateNotifier<bool?>>
-      _indexButtonClicked;
-  const ListInfo(this.entityId, this._indexButtonClicked);
+  final AlwaysAliveProviderBase<GenericStateNotifier<bool>> _indexButtonClicked;
+  final QuerySnapshot<Map<String, dynamic>> _indexStatus;
+  const ListInfo(this.entityId, this._indexButtonClicked, this._indexStatus);
   @override
   Widget build(BuildContext context, WidgetRef ref) =>
       ref.watch(docSP('list/${entityId}')).when(
@@ -52,11 +53,17 @@ class ListInfo extends ConsumerWidget {
                       Flexible(
                         child: TextButton(
                             onPressed: () {
-                              HttpsCallable callable = FirebaseFunctions
-                                  .instance
-                                  .httpsCallable('index_list2?list=$entityId');
-                              callable();
-                              ref.read(_indexButtonClicked).value = true;
+                              if (ref.read(_indexButtonClicked).value ==
+                                      false &&
+                                  (_indexStatus.docs.isEmpty ||
+                                      _indexStatus.docs.first['indexing'] ==
+                                          false)) {
+                                ref.read(_indexButtonClicked).value = true;
+                                HttpsCallable callable =
+                                    FirebaseFunctions.instance.httpsCallable(
+                                        'index_list2?list=$entityId');
+                                callable();
+                              }
                             },
                             child: Text('Reindex')),
                       ),
