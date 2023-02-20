@@ -19,15 +19,6 @@ class ListDetails extends ConsumerWidget {
   final AlwaysAliveProviderBase<GenericStateNotifier<Map<String, dynamic>?>>
       selectedItem;
 
-  //TODO: move button logic to inner widget where it is used.
-  final _indexButtonClicked =
-      StateNotifierProvider<GenericStateNotifier<bool>, bool>(
-          (ref) => GenericStateNotifier<bool>(false));
-
-  final _afterIndexButtonClicked =
-      StateNotifierProvider<GenericStateNotifier<bool>, bool>(
-          (ref) => GenericStateNotifier<bool>(false));
-
   final TextEditingController idCtrl = TextEditingController(),
       nameCtrl = TextEditingController(),
       descCtrl = TextEditingController();
@@ -65,8 +56,7 @@ class ListDetails extends ConsumerWidget {
                           ),
                         ),
                         Divider(),
-                        ListInfo(entityId, _indexButtonClicked.notifier,
-                            indexStatus),
+                        ListInfo(entityId, indexStatus),
                         Divider(),
                         Container(
                             child: ref.watch(docSP('list/' + entityId)).when(

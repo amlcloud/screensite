@@ -16,16 +16,11 @@ import 'list_info_details.dart';
 
 class ListInfo extends ConsumerWidget {
   final String entityId;
-  final AlwaysAliveProviderBase<GenericStateNotifier<bool>> _indexButtonClicked;
   final QuerySnapshot<Map<String, dynamic>> _indexStatus;
-  const ListInfo(this.entityId, this._indexButtonClicked, this._indexStatus);
+  const ListInfo(this.entityId, this._indexStatus);
   @override
-  Widget build(BuildContext context, WidgetRef ref) =>
-      Column(children: [
-                ListDetailsWidget(
-                    indexButtonClicked: _indexButtonClicked,
-                    indexStatus: _indexStatus,
-                    entityId: entityId),
-                APIWidget(entityId: entityId)
-              ]);
+  Widget build(BuildContext context, WidgetRef ref) => Column(children: [
+        ListDetailsWidget(indexStatus: _indexStatus, entityId: entityId),
+        APIWidget(entityId: entityId)
+      ]);
 }

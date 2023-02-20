@@ -10,14 +10,15 @@ import '../providers/firestore.dart';
 import '../state/generic_state_notifier.dart';
 
 class ListDetailsWidget extends ConsumerWidget {
-  const ListDetailsWidget({
+  ListDetailsWidget({
     Key? key,
-    required this.indexButtonClicked,
     required this.indexStatus,
     required this.entityId,
   }) : super(key: key);
 
-  final AlwaysAliveProviderBase<GenericStateNotifier<bool>> indexButtonClicked;
+  final indexButtonClicked =
+      StateNotifierProvider<GenericStateNotifier<bool>, bool>(
+          (ref) => GenericStateNotifier<bool>(false));
   final QuerySnapshot<Map<String, dynamic>> indexStatus;
   final String entityId;
 
@@ -41,7 +42,7 @@ class ListDetailsWidget extends ConsumerWidget {
         final isIndexing = indexStatus.docs.isNotEmpty &&
             indexStatus.docs.first['indexing'] == true;
         final isButtonDisabled =
-            ref.watch(indexButtonClicked).value || isIndexing;
+            ref.watch(indexButtonClicked.notifier).value || isIndexing;
         return Row(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -55,12 +56,17 @@ class ListDetailsWidget extends ConsumerWidget {
                 onPressed: isButtonDisabled
                     ? null
                     : () {
-                        ref.read(indexButtonClicked).value = true;
-                        HttpsCallable callable = FirebaseFunctions.instance
-                            .httpsCallable('index_list2?list=$entityId');
-                        callable().then((_) {
-                          ref.read(indexButtonClicked).value = false;
-                        });
+                        if (ref.read(indexButtonClicked.notifier).value ==
+                                false &&
+                            (indexStatus.docs.isEmpty ||
+                                indexStatus.docs.first['indexing'] == false)) {
+                          ref.read(indexButtonClicked.notifier).value = true;
+                          HttpsCallable callable = FirebaseFunctions.instance
+                              .httpsCallable('index_list2?list=$entityId');
+                          callable().then((_) {
+                            ref.read(indexButtonClicked.notifier).value = false;
+                          });
+                        }
                       },
                 child: Text('Reindex'),
               ),
