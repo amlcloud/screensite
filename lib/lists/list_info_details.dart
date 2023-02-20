@@ -56,12 +56,17 @@ class ListDetailsWidget extends ConsumerWidget {
                 onPressed: isButtonDisabled
                     ? null
                     : () {
-                        ref.read(indexButtonClicked.notifier).value = true;
-                        HttpsCallable callable = FirebaseFunctions.instance
-                            .httpsCallable('index_list2?list=$entityId');
-                        callable().then((_) {
-                          ref.read(indexButtonClicked.notifier).value = false;
-                        });
+                        if (ref.read(indexButtonClicked.notifier).value ==
+                                false &&
+                            (indexStatus.docs.isEmpty ||
+                                indexStatus.docs.first['indexing'] == false)) {
+                          ref.read(indexButtonClicked.notifier).value = true;
+                          HttpsCallable callable = FirebaseFunctions.instance
+                              .httpsCallable('index_list2?list=$entityId');
+                          callable().then((_) {
+                            ref.read(indexButtonClicked.notifier).value = false;
+                          });
+                        }
                       },
                 child: Text('Reindex'),
               ),
