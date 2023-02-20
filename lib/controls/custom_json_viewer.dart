@@ -5,7 +5,7 @@ import 'package:screensite/theme.dart';
 import 'dart:convert';
 
 // Make an enum to check for type
-enum SplittingType { UNDERSCORE, CAPITAL, NONE }
+enum SplittingType { UNDERSCORE, WHITESPACE, CAPITAL, NONE }
 
 class CustomJsonViewer extends StatefulWidget {
   final dynamic jsonObj;
@@ -81,6 +81,8 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
 
     if (inputString.contains('_')) {
       return SplittingType.UNDERSCORE;
+    } else if (inputString.contains(' ')) {
+      return SplittingType.WHITESPACE;
     } else {
       // Check if there is an uppercase and lowercase but no _, which mean Uppercase might be the connector
       // However, What happen if we have PARENT which have upper case, but no _
@@ -110,6 +112,8 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
     if (type == SplittingType.UNDERSCORE) {
       // _ is the connector so we split it with _
       listChar = inputString.split('_');
+    } else if (type == SplittingType.WHITESPACE) {
+      listChar = inputString.split(' ');
     } else {
       // We will split by capital letter with the RegExp for capital
       final beforeCapitalLetter = RegExp(r"(?=[A-Z])");
