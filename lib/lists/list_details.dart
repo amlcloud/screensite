@@ -19,6 +19,7 @@ class ListDetails extends ConsumerWidget {
   final AlwaysAliveProviderBase<GenericStateNotifier<Map<String, dynamic>?>>
       selectedItem;
 
+  //TODO: move button logic to inner widget where it is used.
   final _indexButtonClicked =
       StateNotifierProvider<GenericStateNotifier<bool>, bool>(
           (ref) => GenericStateNotifier<bool>(false));
@@ -103,11 +104,9 @@ class ListDetails extends ConsumerWidget {
       QuerySnapshot<Map<String, dynamic>> indexStatus,
       WidgetRef ref) {
     return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-      Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-        IndexingStatus(ref.watch(_indexButtonClicked), indexStatus,
-            _indexButtonClicked, _afterIndexButtonClicked),
-        IndexingProgress(entityId)
-      ]),
+      Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [IndexingStatus(indexStatus), IndexingProgress(entityId)]),
       Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
         Container(
             padding: EdgeInsets.all(8.0),
