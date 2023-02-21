@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,30 +15,6 @@ class Lists extends ConsumerWidget {
       activeList;
 
   const Lists(this.activeList);
-
-  //Sort List of results
-  //Parameter: unsorted list and fieldname to sort
-  List<QueryDocumentSnapshot<Map<String, dynamic>>> sortedMapbyFieldName(
-      List<QueryDocumentSnapshot<Map<String, dynamic>>> dataList,
-      String fieldName) {
-    List<QueryDocumentSnapshot<Map<String, dynamic>>> sortedDataList =
-        dataList.toList()
-          ..sort((a, b) {
-            if (a.data()[fieldName] == null && b.data()[fieldName] == null) {
-              return 0;
-            }
-            if (a.data()[fieldName] == null) {
-              return 1;
-            }
-            if (b.data()[fieldName] == null) {
-              return -1;
-            } else {
-              return a.data()[fieldName].compareTo(b.data()[fieldName]);
-            }
-          });
-    // ..sort((a, b) => a.data()[fieldName].compareTo(b.data()[fieldName]));
-    return sortedDataList;
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => Column(
@@ -82,7 +57,7 @@ class Lists extends ConsumerWidget {
                                   d['author'] ==
                                   FirebaseAuth.instance.currentUser!.uid)
                               .toList()
-                          : sortedMapbyFieldName(entities.docs, "name"))
+                          : entities.docs)
                       // ..sort((a, b) => a[ref.watch(activeSort) ?? 'id']
                       //     .compareTo(b[ref.watch(activeSort) ?? 'id']))
                       )

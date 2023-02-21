@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart';
 import 'package:screensite/providers/firestore.dart';
 import 'package:screensite/lists/lists_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,16 +22,6 @@ class EntityListView extends ConsumerStatefulWidget {
   ConsumerState<EntityListView> createState() => _EntityListViewState();
 }
 
-List<MapEntry<int, QueryDocumentSnapshot<Map<String, dynamic>>>> sortList(
-    List<MapEntry<int, QueryDocumentSnapshot<Map<String, dynamic>>>>
-        sourceList) {
-  List<MapEntry<int, QueryDocumentSnapshot<Map<String, dynamic>>>>
-      destinationList = sourceList
-        ..sort((e1, e2) =>
-            (e1.value.data()['name']).compareTo(e2.value.data()['name']));
-  return destinationList;
-}
-
 class _EntityListViewState extends ConsumerState<EntityListView> {
   //creating int to keep information about selected item and function to write index of selected item
   @override
@@ -50,8 +39,9 @@ class _EntityListViewState extends ConsumerState<EntityListView> {
                   .when(
                       loading: () => [],
                       error: (e, s) => [ErrorWidget(e)],
-                      data: (entities) => sortList(
-                              entities.docs.asMap().entries.toList())
+                      data: (entities) => entities.docs
+                          .asMap()
+                          .entries
                           .map((entity) =>
                               builtEntityListTile(entity, context, entityDoc))
                           .toList())))

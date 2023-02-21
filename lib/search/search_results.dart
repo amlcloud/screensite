@@ -30,19 +30,27 @@ class SearchResults extends ConsumerWidget {
           .watch(colSP(
               'user/${FirebaseAuth.instance.currentUser!.uid}/search/$searchId/res'))
           .when(
-              loading: () => [],
-              error: (e, s) => [ErrorWidget(e)],
-              data: (results) =>
-                  sortedMapbyFieldName(results.docs, 'levScore').map((res) {
-                    return GestureDetector(
-                        onTap: () {
-                          ref.read(_selectedItemNotifier).value =
-                              res.data()['ref'];
-                        },
-                        child: ListTile(
-                          title: Text("Name: " + res.data()['target']),
-                          subtitle: Text(
-                              "Levscore: " + res.data()['levScore'].toString()),
-                        ));
-                  }).toList()));
+            loading: () => [],
+            error: (e, s) => [ErrorWidget(e)],
+            data: (results) {
+              if (results.docs.isEmpty) {
+                return [
+                  Center(
+                    child: Text("Nothing was found to match $searchId"),
+                  ),
+                ];
+              }
+              return sortedMapbyFieldName(results.docs, 'levScore').map((res) {
+                return GestureDetector(
+                    onTap: () {
+                      ref.read(_selectedItemNotifier).value = res.data()['ref'];
+                    },
+                    child: ListTile(
+                      title: Text("Name: " + res.data()['target']),
+                      subtitle: Text(
+                          "Levscore: " + res.data()['levScore'].toString()),
+                    ));
+              }).toList();
+            },
+          ));
 }
