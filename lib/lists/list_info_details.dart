@@ -2,6 +2,7 @@ import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jiffy/jiffy.dart';
@@ -51,26 +52,50 @@ class ListDetailsWidget extends ConsumerWidget {
             Flexible(child: Text(listName)),
             Flexible(child: Text('Last updated on $lastUpdatedOn')),
             Flexible(child: Text('Last changed on $lastChangedOn')),
-            Flexible(
-              child: ElevatedButton(
-                onPressed: isButtonDisabled
-                    ? null
-                    : () {
-                        if (ref.read(indexButtonClicked.notifier).value ==
-                                false &&
-                            (indexStatus.docs.isEmpty ||
-                                indexStatus.docs.first['indexing'] == false)) {
-                          ref.read(indexButtonClicked.notifier).value = true;
-                          HttpsCallable callable = FirebaseFunctions.instance
-                              .httpsCallable('index_list2?list=$entityId');
-                          callable().then((_) {
-                            ref.read(indexButtonClicked.notifier).value = false;
-                          });
-                        }
-                      },
-                child: Text('Reindex'),
-              ),
-            ),
+            ref
+                .watch(docSP('admin/${FirebaseAuth.instance.currentUser!.uid}'))
+                .when(
+                    loading: () => Container(),
+                    error: (e, s) => ErrorWidget(e),
+                    data: (doc) {
+                      bool admin = doc.exists &&
+                          doc.data() != null &&
+                          doc.data()!['role'] == 'admin';
+                      return admin
+                          ? Flexible(
+                              child: ElevatedButton(
+                                onPressed: isButtonDisabled
+                                    ? null
+                                    : () {
+                                        if (ref
+                                                    .read(indexButtonClicked
+                                                        .notifier)
+                                                    .value ==
+                                                false &&
+                                            (indexStatus.docs.isEmpty ||
+                                                indexStatus.docs
+                                                        .first['indexing'] ==
+                                                    false)) {
+                                          ref
+                                              .read(indexButtonClicked.notifier)
+                                              .value = true;
+                                          HttpsCallable callable = FirebaseFunctions
+                                              .instance
+                                              .httpsCallable(
+                                                  'index_list2?list=$entityId');
+                                          callable().then((_) {
+                                            ref
+                                                .read(
+                                                    indexButtonClicked.notifier)
+                                                .value = false;
+                                          });
+                                        }
+                                      },
+                                child: Text('Reindex'),
+                              ),
+                            )
+                          : Container();
+                    }),
           ],
         );
       },

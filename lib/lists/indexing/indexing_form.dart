@@ -170,17 +170,24 @@ abstract class IndexingForm extends ConsumerWidget {
                   .watch(
                       docSP('admin/${FirebaseAuth.instance.currentUser!.uid}'))
                   .when(
-                    loading: () => Container(),
-                    error: (e, s) => ErrorWidget(e),
-                    data: (adminDoc) => adminDoc.exists == true
-                        ? Expanded(
-                            child: Align(
-                                alignment: Alignment.centerRight,
-                                child: TextButton(
-                                    onPressed: () => {_setEditing(ref, true)},
-                                    child: Text('Edit'))))
-                        : Container(),
-                  )
+                      loading: () => Container(),
+                      error: (e, s) => ErrorWidget(e),
+                      data: (doc) {
+                        bool admin = doc.exists &&
+                            doc.data() != null &&
+                            doc.data()!['role'] == 'admin';
+                        return admin
+                            ?
+                            // Expanded(
+                            //     child: Align(
+                            //         alignment: Alignment.centerRight,
+                            //         child:
+                            TextButton(
+                                onPressed: () => {_setEditing(ref, true)},
+                                child: Text('Edit'))
+                            // ))
+                            : Container();
+                      })
             ])
           ]);
   }
