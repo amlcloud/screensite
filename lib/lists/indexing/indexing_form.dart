@@ -163,7 +163,7 @@ abstract class IndexingForm extends ConsumerWidget {
                   child: TextButton(onPressed: _delete, child: Text('Delete')))
             ])
           ])
-        : Row(children: [
+        : Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             read(ref),
             Row(children: [
               ref
@@ -173,13 +173,20 @@ abstract class IndexingForm extends ConsumerWidget {
                     loading: () => Container(),
                     error: (e, s) => ErrorWidget(e),
                     data: (adminDoc) => adminDoc.exists == true
-                        ? Expanded(
-                            child: Align(
-                                alignment: Alignment.centerRight,
-                                child: TextButton(
-                                    onPressed: () => {_setEditing(ref, true)},
-                                    child: Text('Edit'))))
+                        ? Column(children: [
+                            TextButton(
+                                onPressed: () => {_setEditing(ref, true)},
+                                child: Text('Edit'))
+                          ])
                         : Container(),
+
+                    // ? Expanded(
+                    //     child: Align(
+                    //         alignment: Alignment.centerRight,
+                    //         child: TextButton(
+                    //             onPressed: () => {_setEditing(ref, true)},
+                    //             child: Text('Edit'))))
+                    // : Container(),
                   )
             ])
           ]);
