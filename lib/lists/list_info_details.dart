@@ -58,10 +58,7 @@ class ListDetailsWidget extends ConsumerWidget {
                     loading: () => Container(),
                     error: (e, s) => ErrorWidget(e),
                     data: (doc) {
-                      bool admin = doc.exists &&
-                          doc.data() != null &&
-                          doc.data()!['role'] == 'admin';
-                      return admin
+                      return doc.exists
                           ? Flexible(
                               child: ElevatedButton(
                                 onPressed: isButtonDisabled

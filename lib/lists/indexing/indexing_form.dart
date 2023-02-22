@@ -173,10 +173,7 @@ abstract class IndexingForm extends ConsumerWidget {
                       loading: () => Container(),
                       error: (e, s) => ErrorWidget(e),
                       data: (doc) {
-                        bool admin = doc.exists &&
-                            doc.data() != null &&
-                            doc.data()!['role'] == 'admin';
-                        return admin
+                        return doc.exists
                             ?
                             // Expanded(
                             //     child: Align(
