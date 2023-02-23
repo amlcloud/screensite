@@ -174,15 +174,11 @@ abstract class IndexingForm extends ConsumerWidget {
                       error: (e, s) => ErrorWidget(e),
                       data: (doc) {
                         return doc.exists
-                            ?
-                            // Expanded(
-                            //     child: Align(
-                            //         alignment: Alignment.centerRight,
-                            //         child:
-                            TextButton(
-                                onPressed: () => {_setEditing(ref, true)},
-                                child: Text('Edit'))
-                            // ))
+                            ? Column(children: [
+                                TextButton(
+                                    onPressed: () => {_setEditing(ref, true)},
+                                    child: Text('Edit'))
+                              ])
                             : Container();
                       })
             ])
