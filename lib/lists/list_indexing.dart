@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/firestore.dart';
@@ -90,10 +91,42 @@ class ListIndexing extends ConsumerWidget {
                 .when(
                     loading: () => [Container()],
                     error: (e, s) => [ErrorWidget(e)],
-                    data: (entities) => entities.docs.map((entry) {
-                          return Column(children: [content(entry), Divider()]);
-                        }).toList())),
-        TextButton(onPressed: () => {add(context)}, child: Text('Add'))
+                    data: (entities) {
+                      List<Widget> widgets = [];
+                      if (entities.size == 0) {
+                        widgets.add(Text('No index'));
+                      } else {
+                        for (int i = 0; i < entities.size; i++) {
+                          Widget widget;
+                          if (i == 0) {
+                            widget =
+                                Column(children: [content(entities.docs[i])]);
+                          } else {
+                            widget = Column(children: [
+                              Divider(),
+                              content(entities.docs[i])
+                            ]);
+                          }
+                          widgets.add(widget);
+                        }
+                      }
+                      return widgets;
+                    })),
+        ref
+            .watch(docSP('admin/${FirebaseAuth.instance.currentUser!.uid}'))
+            .when(
+                loading: () => Container(),
+                error: (e, s) => ErrorWidget(e),
+                data: (doc) {
+                  return doc.exists
+                      ? Column(children: [
+                          Divider(),
+                          TextButton(
+                              onPressed: () => {add(context)},
+                              child: Text('Add'))
+                        ])
+                      : Container();
+                })
       ]),
     );
   }
