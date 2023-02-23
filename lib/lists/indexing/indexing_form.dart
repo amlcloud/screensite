@@ -163,7 +163,7 @@ abstract class IndexingForm extends ConsumerWidget {
                   child: TextButton(onPressed: _delete, child: Text('Delete')))
             ])
           ])
-        : Row(children: [
+        : Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             read(ref),
             Row(children: [
               ref
