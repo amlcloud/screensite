@@ -43,9 +43,10 @@ class SearchHistory extends ConsumerWidget {
                 //     // print(sortedBy);
                 //     return a[sortedBy].compareTo(b[sortedBy]);
                 //   });
-                return data.docs
+
+                return (data.docs
                     .map((e) =>
                         SearchListItem(e.reference, _selectedItemNotifier))
-                    .toList();
+                    .toList());
               }));
 }

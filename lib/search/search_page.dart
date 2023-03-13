@@ -42,8 +42,7 @@ class SearchPage extends ConsumerWidget {
         .collection('user')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection('search')
-        .doc(text)
-        .set({
+        .add({
       'target': text,
       'timeCreated': FieldValue.serverTimestamp(),
       'author': FirebaseAuth.instance.currentUser!.uid,
