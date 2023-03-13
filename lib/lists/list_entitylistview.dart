@@ -28,23 +28,29 @@ class _EntityListViewState extends ConsumerState<EntityListView> {
   Widget build(BuildContext context) {
     return Column(children: [
       ListView(
-          padding: EdgeInsets.zero,
-          shrinkWrap: true,
-          children: ref.watch(docSP('list/${widget.entityId}')).when(
-              loading: () => [],
-              error: (e, s) => [],
-              data: (entityDoc) => ref
-                  .watch(
-                      colSPfiltered('list/${widget.entityId}/item', limit: 500))
-                  .when(
-                      loading: () => [],
-                      error: (e, s) => [ErrorWidget(e)],
-                      data: (entities) => entities.docs
+        padding: EdgeInsets.zero,
+        shrinkWrap: true,
+        children: ref.watch(docSP('list/${widget.entityId}')).when(
+            loading: () => [],
+            error: (e, s) => [],
+            data: (entityDoc) => ref
+                .watch(
+                    colSPfiltered('list/${widget.entityId}/item', limit: 500))
+                .when(
+                    loading: () => [],
+                    error: (e, s) => [ErrorWidget(e)],
+                    data: (entities) {
+                      entities.docs.sort((a, b) =>
+                          (a.data()['entitiesName1'] ?? '')
+                              .compareTo(b.data()['entitiesName1'] ?? ''));
+                      return entities.docs
                           .asMap()
                           .entries
                           .map((entity) =>
                               builtEntityListTile(entity, context, entityDoc))
-                          .toList())))
+                          .toList();
+                    })),
+      )
     ]);
   }
 
