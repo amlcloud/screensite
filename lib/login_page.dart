@@ -9,7 +9,7 @@ class LoginPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Clear search history from state on display of login page
-    ref.read(selectedSearchResult.notifier).state = null;
+    ref.read(selectedSearchResult.notifier).value = null;
 
     return Scaffold(
         body: LoginScreen(
