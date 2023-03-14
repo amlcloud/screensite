@@ -37,7 +37,8 @@ class SearchListItem extends ConsumerWidget {
                   //   //     Icon(Icons.delete))
                   // ]),
                   onTap: () {
-                    ref.read(activeBatch.notifier).value = searchRef.id;
+                    ref.read(selectedSearchResult.notifier).value =
+                        searchRef.id;
                     ref.read(_selectedItemNotifier).value = null;
                   },
                 )
