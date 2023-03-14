@@ -21,7 +21,10 @@ class SearchHistory extends ConsumerWidget {
       padding: EdgeInsets.zero,
       shrinkWrap: true,
       children: ref
-          .watch(colSP('user/${FirebaseAuth.instance.currentUser!.uid}/search'))
+          .watch(colSPfiltered(
+              'user/${FirebaseAuth.instance.currentUser!.uid}/search',
+              orderBy: 'timeCreated',
+              isOrderDesc: true))
           .when(
               loading: () => [Container()],
               error: (e, s) => [ErrorWidget(e)],
