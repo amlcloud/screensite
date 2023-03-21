@@ -58,6 +58,9 @@ class Lists extends ConsumerWidget {
                                   FirebaseAuth.instance.currentUser!.uid)
                               .toList()
                           : entities.docs)
+                        ..sort(((a, b) => (a.data()['name']?.toLowerCase() ??
+                                '')
+                            .compareTo(b.data()['name']?.toLowerCase() ?? '')))
                       // ..sort((a, b) => a[ref.watch(activeSort) ?? 'id']
                       //     .compareTo(b[ref.watch(activeSort) ?? 'id']))
                       )
