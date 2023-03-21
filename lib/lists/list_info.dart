@@ -5,7 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:screensite/lists/api_widget.dart';
-import 'package:screensite/providers/firestore.dart';
+import 'package:providers/firestore.dart';
 import 'package:http/http.dart' as http;
 
 import '../common.dart';

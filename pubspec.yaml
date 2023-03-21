@@ -47,23 +47,32 @@ dependencies:
   rxdart: ^0.27.4
   http: ^0.13.4
   url_launcher: ^6.1.7
-  login:
-    git: 
-      url: https://github.com/amlcloud/flutter-lib.git
-      path: login
-      ref: main
   country_picker: ^2.0.16
   flutter_json_viewer: ^1.0.1
   flutter_launcher_icons: ^0.9.2
   state_notifier: ^0.7.2+1
   flutter_svg: ^1.1.6  
   flutter_dotenv: ^5.0.2
-  
-  # userprofile:
-  #   git: 
-  #     url: https://github.com/amlcloud/flutter-lib.git
-  #     path: userprofile
-  #     ref: main_dependencies_versions
+  common:
+    git: 
+      url: https://github.com/kovarny/flutter_firebase_framework.git
+      path: common
+  sandbox:
+    git: 
+      url: https://github.com/kovarny/flutter_firebase_framework.git
+      path: sandbox
+  providers:
+    git: 
+      url: https://github.com/kovarny/flutter_firebase_framework.git
+      path: providers
+  auth:
+    git: 
+      url: https://github.com/kovarny/flutter_firebase_framework.git
+      path: auth
+  widgets:
+    git: 
+      url: https://github.com/kovarny/flutter_firebase_framework.git
+      path: widgets
       
       
 dev_dependencies:

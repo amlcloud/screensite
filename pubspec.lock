@@ -5,10 +5,10 @@ packages:
     dependency: transitive
     description:
       name: _flutterfire_internals
-      sha256: "935316be721961664cc0dc11b4cbc7bb5e91e4d08ed8963daf84ef8322a20672"
+      sha256: "330d7fcbb72624f5b6d374af8b059b0ef4ba96ba5b8987f874964a1287eb617d"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.10"
+    version: "1.0.18"
   archive:
     dependency: transitive
     description:
@@ -33,6 +33,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.10.0"
+  auth:
+    dependency: "direct main"
+    description:
+      path: auth
+      ref: HEAD
+      resolved-ref: e847b37c566687eb8067e6c8dacc64c766d7e788
+      url: "https://github.com/kovarny/flutter_firebase_framework.git"
+    source: git
+    version: "0.0.1"
   boolean_selector:
     dependency: transitive
     description:
@@ -129,6 +138,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.17.0"
+  common:
+    dependency: "direct main"
+    description:
+      path: common
+      ref: HEAD
+      resolved-ref: e847b37c566687eb8067e6c8dacc64c766d7e788
+      url: "https://github.com/kovarny/flutter_firebase_framework.git"
+    source: git
+    version: "0.0.1"
   convert:
     dependency: transitive
     description:
@@ -229,50 +247,50 @@ packages:
     dependency: "direct main"
     description:
       name: firebase_core
-      sha256: "01962872df08437d9be593caeab8c700624c93b629f3d3d60f061612d6263666"
+      sha256: "75f747cafd7cbd6c00b908e3a7aa59fc31593d46ba8165d9ee8a79e69464a394"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.0"
+    version: "2.8.0"
   firebase_core_platform_interface:
     dependency: transitive
     description:
       name: firebase_core_platform_interface
-      sha256: "5fab93f5b354648efa62e7cc829c90efb68c8796eecf87e0888cae2d5f3accd4"
+      sha256: "5615b30c36f55b2777d0533771deda7e5730e769e5d3cb7fda79e9bed86cfa55"
       url: "https://pub.dev"
     source: hosted
-    version: "4.5.2"
+    version: "4.5.3"
   firebase_core_web:
     dependency: transitive
     description:
       name: firebase_core_web
-      sha256: b2917618cbe75196261621d676a992e05215ce6a70daca5f655794d5a008d369
+      sha256: "0c1cf1f1022d2245ac117443bb95207952ca770281524d2908e323bc063fb8ff"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.2"
+    version: "2.2.2"
   firebase_storage:
     dependency: "direct main"
     description:
       name: firebase_storage
-      sha256: "7b6b7e7b8602f346c024f874d432fea8809b5c9b1e62a338c65fabb5f391f9e1"
+      sha256: "0a49413725587aa3ceaaa6233fdb2e32687e4972f13cd7277526219cd5acb398"
       url: "https://pub.dev"
     source: hosted
-    version: "11.0.8"
+    version: "11.0.16"
   firebase_storage_platform_interface:
     dependency: transitive
     description:
       name: firebase_storage_platform_interface
-      sha256: e3770f5f38eed5faee4248c2e5cb7311cb07afe2c35e73225b7cceb09b8805bc
+      sha256: "951871b91ffdc49ead69daa03e58606f29b9b541056258ef805bbb7128f54afc"
       url: "https://pub.dev"
     source: hosted
-    version: "4.1.25"
+    version: "4.1.32"
   firebase_storage_web:
     dependency: transitive
     description:
       name: firebase_storage_web
-      sha256: "543b311e886f40e6b01817c36109090b29f9b08cd5bb0ac86b2cc540bed6430d"
+      sha256: d77573712c9fa5e05c7f1e23c77db0757b0b0718136a550d4d9823c92eeca8c8
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.17"
+    version: "3.3.25"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -456,15 +474,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
-  login:
-    dependency: "direct main"
-    description:
-      path: login
-      ref: main
-      resolved-ref: "2ba05326baf48c4a20dcc6fa907b92c0920f124f"
-      url: "https://github.com/amlcloud/flutter-lib.git"
-    source: git
-    version: "0.0.1"
   matcher:
     dependency: transitive
     description:
@@ -625,6 +634,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.2.4"
+  providers:
+    dependency: "direct main"
+    description:
+      path: providers
+      ref: HEAD
+      resolved-ref: e847b37c566687eb8067e6c8dacc64c766d7e788
+      url: "https://github.com/kovarny/flutter_firebase_framework.git"
+    source: git
+    version: "0.0.1"
   quiver:
     dependency: "direct main"
     description:
@@ -649,6 +667,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.27.7"
+  sandbox:
+    dependency: "direct main"
+    description:
+      path: sandbox
+      ref: HEAD
+      resolved-ref: e847b37c566687eb8067e6c8dacc64c766d7e788
+      url: "https://github.com/kovarny/flutter_firebase_framework.git"
+    source: git
+    version: "0.0.1"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -806,6 +833,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  widgets:
+    dependency: "direct main"
+    description:
+      path: widgets
+      ref: HEAD
+      resolved-ref: e847b37c566687eb8067e6c8dacc64c766d7e788
+      url: "https://github.com/kovarny/flutter_firebase_framework.git"
+    source: git
+    version: "0.0.1"
   win32:
     dependency: transitive
     description:
