@@ -22,9 +22,7 @@ class SearchListItem extends ConsumerWidget {
                 child: Column(
               children: [
                 ListTile(
-                  title: Text(searchDoc.id
-                      //(searchDoc.data()!['target'] ?? ''),
-                      ),
+                  title: Text(searchDoc.data()!['target'] ?? ''),
                   trailing: Text(searchDoc.data()!['resultsCount'].toString()),
                   // subtitle: Text(entityDoc.data()!['desc'] ?? 'desc'),
                   // trailing: Column(children: <Widget>[
