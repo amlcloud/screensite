@@ -62,7 +62,6 @@ class TheApp extends ConsumerStatefulWidget {
 }
 
 class TheAppState extends ConsumerState<TheApp> {
-  //bool isLoading = false;
   @override
   void initState() {
     super.initState();
