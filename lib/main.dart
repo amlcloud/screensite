@@ -13,6 +13,7 @@ import 'package:screensite/adversemedia/adversemedia_page.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
 import 'package:screensite/state/theme_state_notifier.dart';
 import 'package:screensite/theme.dart';
+import 'cases/cases_page.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -92,25 +93,19 @@ class TheAppState extends ConsumerState<TheApp> {
               ? LoginPage()
               : DefaultTabController(
                   initialIndex: 0,
-                  length: 5,
+                  length: 3,
                   child: Navigator(
                     onGenerateRoute: (RouteSettings settings) {
                       // print('onGenerateRoute: ${settings}');
                       if (settings.name == '/' || settings.name == 'search') {
                         return PageRouteBuilder(
                             pageBuilder: (_, __, ___) => SearchPage());
+                      } else if (settings.name == 'cases') {
+                        return PageRouteBuilder(
+                            pageBuilder: (_, __, ___) => CasesPage());
                       } else if (settings.name == 'lists') {
                         return PageRouteBuilder(
                             pageBuilder: (_, __, ___) => ListsPage());
-                      } else if (settings.name == 'pep admin') {
-                        return PageRouteBuilder(
-                            pageBuilder: (_, __, ___) => PepAdminPage());
-                      } else if (settings.name == 'pep library') {
-                        return PageRouteBuilder(
-                            pageBuilder: (_, __, ___) => PepLibraryPage());
-                      } else if (settings.name == 'adverse media') {
-                        return PageRouteBuilder(
-                            pageBuilder: (_, __, ___) => AdverseMediaPage());
                       } else {
                         throw 'no page to show';
                       }

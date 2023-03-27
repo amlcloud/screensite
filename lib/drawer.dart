@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:screensite/search/search_page.dart';
 import 'package:screensite/lists/lists_page.dart';
 
+import 'cases/cases_page.dart';
+
 class TheDrawer {
   static Widget buildDrawer(BuildContext context) {
     return Drawer(
@@ -42,6 +44,20 @@ class TheDrawer {
                 Navigator.push(context, MaterialPageRoute(
                   builder: (context) {
                     return ListsPage();
+                  },
+                ));
+              }),
+          ListTile(
+              leading: IconButton(
+                icon: Icon(Icons.view_list),
+                onPressed: () => Scaffold.of(context).openDrawer(),
+              ),
+              title: const Text('Cases'),
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return CasesPage();
                   },
                 ));
               }),
