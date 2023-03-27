@@ -12,9 +12,7 @@ class MyAppBar {
   static final List<String> _tabs = [
     'search',
     'lists',
-    'pep admin',
-    'pep library',
-    'adverse media'
+    'cases',
   ];
 
   static PreferredSizeWidget getBar(BuildContext context, WidgetRef ref) {
