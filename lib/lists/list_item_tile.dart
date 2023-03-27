@@ -57,6 +57,7 @@ class _ListItemState extends ConsumerState<ListItemTile> {
 Last updated on ${Jiffy(entityDoc.data()!['lastUpdateTime'].toDate()).format(DISPLAY_DATE_TIME_FORMAT)}'''),
                   isThreeLine: true,
                   onTap: () {
+                    ref.read(selectedItem.notifier).value = null;
                     ref.read(selectedEntityList.notifier).value = null;
                     ref.read(selectedListItem.notifier).value = widget.entityId;
                     ref.read(widget.activeList.notifier).value =
