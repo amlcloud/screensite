@@ -33,9 +33,9 @@ class _EntityListViewState extends ConsumerState<EntityListView> {
           children: ref.watch(docSP('list/${widget.entityId}')).when(
               loading: () => [],
               error: (e, s) => [],
-              data: (entityDoc) => ref
+              data: (listDoc) => ref
                   .watch(colSPfiltered('list/${widget.entityId}/item',
-                      limit: 500, orderBy: 'name'))
+                      limit: 500, orderBy: listDoc.data()?['entitiesName1']))
                   .when(
                       loading: () => [],
                       error: (e, s) => [ErrorWidget(e)],
@@ -43,7 +43,7 @@ class _EntityListViewState extends ConsumerState<EntityListView> {
                           .asMap()
                           .entries
                           .map((entity) =>
-                              builtEntityListTile(entity, context, entityDoc))
+                              builtEntityListTile(entity, context, listDoc))
                           .toList())))
     ]);
   }
