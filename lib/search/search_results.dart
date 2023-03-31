@@ -7,11 +7,11 @@ import 'package:providers/firestore.dart';
 import '../state/generic_state_notifier.dart';
 
 class SearchResults extends ConsumerWidget {
-  final String searchId;
+  final DocumentSnapshot searchDoc;
   final AlwaysAliveProviderBase<GenericStateNotifier<DocumentReference?>>
       _selectedItemNotifier;
 
-  SearchResults(this.searchId, this._selectedItemNotifier);
+  SearchResults(this.searchDoc, this._selectedItemNotifier);
 
   //Sort List of results
   //Parameter: unsorted list and fieldname to sort
@@ -28,7 +28,7 @@ class SearchResults extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) => Column(
       children: ref
           .watch(colSP(
-              'user/${FirebaseAuth.instance.currentUser!.uid}/search/$searchId/res'))
+              'user/${FirebaseAuth.instance.currentUser!.uid}/search/${searchDoc.id}/res'))
           .when(
             loading: () => [],
             error: (e, s) => [ErrorWidget(e)],
@@ -36,7 +36,8 @@ class SearchResults extends ConsumerWidget {
               if (results.docs.isEmpty) {
                 return [
                   Center(
-                    child: Text("Nothing was found to match $searchId"),
+                    child: Text(
+                        "Nothing was found to match ${searchDoc['target']}"),
                   ),
                 ];
               }
