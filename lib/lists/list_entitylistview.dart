@@ -42,44 +42,61 @@ class _EntityListViewState extends ConsumerState<EntityListView> {
                       data: (entities) => entities.docs
                           .asMap()
                           .entries
-                          .map((entity) =>
-                              builtEntityListTile(entity, context, listDoc))
+                          .map((entity) => builtEntityListTile(
+                              entity.value, entity.key, context, listDoc))
                           .toList())))
     ]);
   }
 
-  Card builtEntityListTile(
-      MapEntry<int, QueryDocumentSnapshot<Map<String, dynamic>>> entity,
-      BuildContext context,
-      DocumentSnapshot<Map<String, dynamic>> entityDoc) {
-    final entityName1 = (entityDoc.data()!['entitiesName1'] == null
-        ? ''
-        : entity.value.get(entityDoc.data()!['entitiesName1']));
+  String? getEntityNameField(
+      DocumentSnapshot<Map<String, dynamic>> listDoc, String fieldName) {
+    return listDoc.data()![fieldName];
+  }
 
-    final entityName2 = (entityDoc.data()!['entitiesName2'] == null
-        ? ''
-        : entity.value.get(entityDoc.data()!['entitiesName2']));
-    final entityName3 = (entityDoc.data()!['entitiesName3'] == null
-        ? ''
-        : entity.value.get(entityDoc.data()!['entitiesName3']));
+  String getNameByEntityNameField(
+      DocumentSnapshot<Map<String, dynamic>> listDoc,
+      DocumentSnapshot<Map<String, dynamic>> entityDoc,
+      String fieldNameName) {
+    String? fieldName = getEntityNameField(listDoc, fieldNameName);
+    if (fieldName != null) return entityDoc.data()?[fieldName] ?? '';
+    return '';
+  }
+
+  Card builtEntityListTile(
+      QueryDocumentSnapshot<Map<String, dynamic>> entityDoc,
+      int index,
+      BuildContext context,
+      DocumentSnapshot<Map<String, dynamic>> listDoc) {
+    final entityName1 =
+        getNameByEntityNameField(listDoc, entityDoc, 'entitiesName1');
+    final entityName2 =
+        getNameByEntityNameField(listDoc, entityDoc, 'entitiesName2');
+    final entityName3 =
+        getNameByEntityNameField(listDoc, entityDoc, 'entitiesName3');
+
+    // final entityName2 = (listDoc.data()!['entitiesName2'] == null
+    //     ? ''
+    //     : entityDoc.get(listDoc.data()!['entitiesName2']));
+    // final entityName3 = (listDoc.data()!['entitiesName3'] == null
+    //     ? ''
+    //     : entityDoc.get(listDoc.data()!['entitiesName3']));
     return Card(
       child: ListTile(
-          selected: ref.read(selectedEntityList.notifier).value == entity.key
+          selected: ref.read(selectedEntityList.notifier).value == index
               ? true
               : false,
           selectedTileColor: Theme.of(context).colorScheme.secondary,
           title: Text('$entityName1 $entityName2 $entityName3'),
           subtitle: Text(
-              (entity.value.data()[entityDoc.data()!['entitiesAddress']] !=
-                      null)
+              (entityDoc.data()[listDoc.data()!['entitiesAddress']] != null)
                   ? 'Location: ' +
-                      entity.value.data()[entityDoc.data()!['entitiesAddress']]
+                      entityDoc.data()[listDoc.data()!['entitiesAddress']]
                   : 'Location: undefined'),
           isThreeLine: true,
           onTap: () {
-            ref.read(selectedEntityList.notifier).value = entity.key;
+            ref.read(selectedEntityList.notifier).value = index;
             ref.read(widget.selectedItem).value = Map.fromEntries(
-                entity.value.data().entries.toList()
+                entityDoc.data().entries.toList()
                   ..sort((e1, e2) => e1.key.compareTo(e2.key)));
           }),
     );
