@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:screensite/lists/list_item_tile.dart';
 import 'package:screensite/lists/filter_my_entities.dart';
-import 'package:screensite/providers/firestore.dart';
+import 'package:providers/firestore.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
 
 final activeSort =
@@ -58,6 +58,9 @@ class Lists extends ConsumerWidget {
                                   FirebaseAuth.instance.currentUser!.uid)
                               .toList()
                           : entities.docs)
+                        ..sort(((a, b) => (a.data()['name']?.toLowerCase() ??
+                                '')
+                            .compareTo(b.data()['name']?.toLowerCase() ?? '')))
                       // ..sort((a, b) => a[ref.watch(activeSort) ?? 'id']
                       //     .compareTo(b[ref.watch(activeSort) ?? 'id']))
                       )

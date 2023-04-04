@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jiffy/jiffy.dart';
 
-import '../providers/firestore.dart';
+import 'package:providers/firestore.dart';
 import '../state/generic_state_notifier.dart';
 
 class ListDetailsWidget extends ConsumerWidget {

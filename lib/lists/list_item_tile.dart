@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:screensite/controls/doc_field_text_edit.dart';
 import 'package:screensite/lists/lists_page.dart';
-import 'package:screensite/providers/firestore.dart';
+import 'package:providers/firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:flutter/gestures.dart';
@@ -57,6 +57,7 @@ class _ListItemState extends ConsumerState<ListItemTile> {
 Last updated on ${Jiffy(entityDoc.data()!['lastUpdateTime'].toDate()).format(DISPLAY_DATE_TIME_FORMAT)}'''),
                   isThreeLine: true,
                   onTap: () {
+                    ref.read(selectedItem.notifier).value = null;
                     ref.read(selectedEntityList.notifier).value = null;
                     ref.read(selectedListItem.notifier).value = widget.entityId;
                     ref.read(widget.activeList.notifier).value =

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:screensite/providers/firestore.dart';
+import 'package:providers/firestore.dart';
 import 'package:screensite/lists/lists_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
@@ -33,9 +33,9 @@ class _EntityListViewState extends ConsumerState<EntityListView> {
           children: ref.watch(docSP('list/${widget.entityId}')).when(
               loading: () => [],
               error: (e, s) => [],
-              data: (entityDoc) => ref
-                  .watch(
-                      colSPfiltered('list/${widget.entityId}/item', limit: 500))
+              data: (listDoc) => ref
+                  .watch(colSPfiltered('list/${widget.entityId}/item',
+                      limit: 500, orderBy: listDoc.data()?['entitiesName1']))
                   .when(
                       loading: () => [],
                       error: (e, s) => [ErrorWidget(e)],
@@ -43,7 +43,7 @@ class _EntityListViewState extends ConsumerState<EntityListView> {
                           .asMap()
                           .entries
                           .map((entity) =>
-                              builtEntityListTile(entity, context, entityDoc))
+                              builtEntityListTile(entity, context, listDoc))
                           .toList())))
     ]);
   }
