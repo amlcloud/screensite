@@ -401,15 +401,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
-  login:
-    dependency: "direct main"
-    description:
-      path: login
-      ref: main
-      resolved-ref: "2ba05326baf48c4a20dcc6fa907b92c0920f124f"
-      url: "https://github.com/amlcloud/flutter-lib.git"
-    source: git
-    version: "0.0.1"
   matcher:
     dependency: transitive
     description:
@@ -543,6 +534,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.4"
+  providers:
+    dependency: "direct main"
+    description:
+      path: providers
+      ref: HEAD
+      resolved-ref: e847b37c566687eb8067e6c8dacc64c766d7e788
+      url: "https://github.com/kovarny/flutter_firebase_framework.git"
+    source: git
+    version: "0.0.1"
   quiver:
     dependency: "direct main"
     description:
@@ -564,6 +564,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.27.7"
+  sandbox:
+    dependency: "direct main"
+    description:
+      path: sandbox
+      ref: HEAD
+      resolved-ref: e847b37c566687eb8067e6c8dacc64c766d7e788
+      url: "https://github.com/kovarny/flutter_firebase_framework.git"
+    source: git
+    version: "0.0.1"
   sky_engine:
     dependency: transitive
     description: flutter

@@ -1,3 +1,4 @@
+import 'package:auth/current_user_avatar_extended.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,9 +13,7 @@ class MyAppBar {
   static final List<String> _tabs = [
     'search',
     'lists',
-    'pep admin',
-    'pep library',
-    'adverse media'
+    'cases',
   ];
 
   static PreferredSizeWidget getBar(BuildContext context, WidgetRef ref) {
@@ -64,7 +63,8 @@ class MyAppBar {
                     },
                   ))),
       actions: [
-        // AppBarUserProfile(),
+        //AppBarUserProfile(),
+        CurrentUserAvatarExtended(),
         ThemeIconButton(),
         IconButton(
             onPressed: () {

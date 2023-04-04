@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:screensite/providers/firestore.dart';
+import 'package:providers/firestore.dart';
 import 'package:screensite/search/search_list_item.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
 
@@ -21,7 +21,10 @@ class SearchHistory extends ConsumerWidget {
       padding: EdgeInsets.zero,
       shrinkWrap: true,
       children: ref
-          .watch(colSP('user/${FirebaseAuth.instance.currentUser!.uid}/search'))
+          .watch(colSPfiltered(
+              'user/${FirebaseAuth.instance.currentUser!.uid}/search',
+              orderBy: 'timeCreated',
+              isOrderDesc: true))
           .when(
               loading: () => [Container()],
               error: (e, s) => [ErrorWidget(e)],
@@ -43,9 +46,10 @@ class SearchHistory extends ConsumerWidget {
                 //     // print(sortedBy);
                 //     return a[sortedBy].compareTo(b[sortedBy]);
                 //   });
-                return data.docs
+
+                return (data.docs
                     .map((e) =>
                         SearchListItem(e.reference, _selectedItemNotifier))
-                    .toList();
+                    .toList());
               }));
 }

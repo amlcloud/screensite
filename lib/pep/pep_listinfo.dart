@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:screensite/controls/doc_field_text_edit.dart';
-import 'package:screensite/providers/firestore.dart';
+import 'package:providers/firestore.dart';
 
 class PepListInfo extends ConsumerWidget {
   final String entityId;

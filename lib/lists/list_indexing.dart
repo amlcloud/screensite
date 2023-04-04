@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../providers/firestore.dart';
+import 'package:providers/firestore.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
 
 import 'indexing/indexing_array_of_values_field_form.dart';
@@ -99,12 +99,35 @@ class ListIndexing extends ConsumerWidget {
                         for (int i = 0; i < entities.size; i++) {
                           Widget widget;
                           if (i == 0) {
-                            widget =
-                                Column(children: [content(entities.docs[i])]);
+                            widget = Column(children: [
+                              Card(
+                                  child: ListTile(
+                                      hoverColor: Theme.of(context).hoverColor,
+                                      textColor: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .color,
+                                      selectedTileColor: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                      onTap: () => {},
+                                      subtitle: content(entities.docs[i])))
+                            ]);
                           } else {
                             widget = Column(children: [
                               Divider(),
-                              content(entities.docs[i])
+                              Card(
+                                  child: ListTile(
+                                      hoverColor: Theme.of(context).hoverColor,
+                                      textColor: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .color,
+                                      selectedTileColor: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                      onTap: () => {},
+                                      subtitle: content(entities.docs[i])))
                             ]);
                           }
                           widgets.add(widget);

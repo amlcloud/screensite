@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../../providers/firestore.dart';
+import 'package:providers/firestore.dart';
 import '../list_indexing.dart';
 
 abstract class IndexingForm extends ConsumerWidget {
