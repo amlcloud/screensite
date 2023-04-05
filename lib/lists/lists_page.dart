@@ -35,6 +35,7 @@ class ListsPage extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Expanded(
+                      flex: 1,
                       child: SingleChildScrollView(
                           child: Column(
                     children: [
@@ -42,12 +43,14 @@ class ListsPage extends ConsumerWidget {
                     ],
                   ))),
                   Expanded(
+                    flex: 2,
                     child: ref.watch(activeList) == null
                         ? Container()
                         : ListDetails(
                             ref.watch(activeList)!, selectedItem.notifier),
                   ),
                   Expanded(
+                      flex: 2,
                       child: Card(
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
