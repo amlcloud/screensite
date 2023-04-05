@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:providers/firestore.dart';
+import 'package:intl/intl.dart';
 
 class CaseTableWidget extends ConsumerWidget {
   final TextEditingController searchCtrl = TextEditingController();
@@ -37,7 +39,7 @@ class CaseTableWidget extends ConsumerWidget {
                   .entries
                   .map<DataRow>((e) => DataRow(cells: <DataCell>[
                         DataCell(Text(e.key)),
-                        DataCell(Text(e.value)),
+                        DataCell(Text(e.value.toString())),
                       ]))
                   .toList(),
               loading: () => [],
