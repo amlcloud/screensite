@@ -39,7 +39,9 @@ class CaseTableWidget extends ConsumerWidget {
                   .entries
                   .map<DataRow>((e) => DataRow(cells: <DataCell>[
                         DataCell(Text(e.key)),
-                        DataCell(Text(e.value.toString())),
+                        DataCell((e.key == 'DOB')
+                            ? Text((e.value as Timestamp).toDate().toString())
+                            : Text(e.value.toString())),
                       ]))
                   .toList(),
               loading: () => [],
