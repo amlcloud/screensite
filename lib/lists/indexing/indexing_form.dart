@@ -34,7 +34,7 @@ abstract class IndexingForm extends ConsumerWidget {
         collectionRef.add({
           'value': data.docs[0].id,
           'createdTimestamp': DateTime.now().millisecondsSinceEpoch,
-          'valid': true
+          // 'valid': true
         });
       }
     });
@@ -94,53 +94,53 @@ abstract class IndexingForm extends ConsumerWidget {
     document.reference.delete();
   }
 
-  void validator(
-      MapEntry<int, QueryDocumentSnapshot<Map<String, dynamic>>> doc,
-      QuerySnapshot<Map<String, dynamic>> data,
-      String text,
-      bool needArray,
-      void Function(bool) callback) {
-    if (text.isEmpty) {
-      doc.value.reference.update({'valid': false});
-      callback(false);
-    } else {
-      bool duplicated = false;
-      for (int i = 0; i < data.docs.length; i++) {
-        if (doc.value.reference != data.docs[i].reference &&
-            text == data.docs[i].data()['value']) {
-          duplicated = true;
-          break;
-        }
-      }
-      if (duplicated) {
-        doc.value.reference.update({'valid': false});
-        callback(false);
-      } else {
-        FirebaseFirestore.instance
-            .collection('list/${entityId}/item')
-            .orderBy(text)
-            .limit(1)
-            .snapshots()
-            .listen((event) {
-          bool valid = event.docs.isNotEmpty;
-          if (valid) {
-            try {
-              List _ = event.docs.first.data()[text];
-              if (!needArray) {
-                valid = false;
-              }
-            } catch (e) {
-              if (needArray) {
-                valid = false;
-              }
-            }
-          }
-          doc.value.reference.update({'valid': valid});
-          callback(valid);
-        });
-      }
-    }
-  }
+  // void validator(
+  //     MapEntry<int, QueryDocumentSnapshot<Map<String, dynamic>>> doc,
+  //     QuerySnapshot<Map<String, dynamic>> data,
+  //     String text,
+  //     bool needArray,
+  //     void Function(bool) callback) {
+  //   if (text.isEmpty) {
+  //     doc.value.reference.update({'valid': false});
+  //     callback(false);
+  //   } else {
+  //     bool duplicated = false;
+  //     for (int i = 0; i < data.docs.length; i++) {
+  //       if (doc.value.reference != data.docs[i].reference &&
+  //           text == data.docs[i].data()['value']) {
+  //         duplicated = true;
+  //         break;
+  //       }
+  //     }
+  //     if (duplicated) {
+  //       doc.value.reference.update({'valid': false});
+  //       callback(false);
+  //     } else {
+  //       FirebaseFirestore.instance
+  //           .collection('list/${entityId}/item')
+  //           .orderBy(text)
+  //           .limit(1)
+  //           .snapshots()
+  //           .listen((event) {
+  //         bool valid = event.docs.isNotEmpty;
+  //         if (valid) {
+  //           try {
+  //             List _ = event.docs.first.data()[text];
+  //             if (!needArray) {
+  //               valid = false;
+  //             }
+  //           } catch (e) {
+  //             if (needArray) {
+  //               valid = false;
+  //             }
+  //           }
+  //         }
+  //         doc.value.reference.update({'valid': valid});
+  //         callback(valid);
+  //       });
+  //     }
+  //   }
+  // }
 
   Widget read(WidgetRef ref);
   Widget edit(WidgetRef ref);

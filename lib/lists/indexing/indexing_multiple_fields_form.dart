@@ -33,7 +33,7 @@ class IndexingMultipleFieldsForm extends IndexingForm {
             collectionRef.add({
               'value': data.docs[0].id,
               'createdTimestamp': DateTime.now().millisecondsSinceEpoch,
-              'valid': true
+              // 'valid': true
             });
           }
         }
