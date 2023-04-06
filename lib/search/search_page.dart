@@ -10,7 +10,7 @@ import 'package:screensite/search/search_results_item.dart';
 import 'package:screensite/state/generic_state_notifier.dart';
 import 'package:screensite/drawer.dart';
 
-final activeSearch =
+final selectedSearchResult =
     StateNotifierProvider<GenericStateNotifier<String?>, String?>(
         (ref) => GenericStateNotifier<String?>(null));
 
@@ -127,13 +127,13 @@ class SearchPage extends ConsumerWidget {
                     ],
                   )),
                   Expanded(
-                      child: ref.watch(activeSearch) == null
+                      child: ref.watch(selectedSearchResult) == null
                           ? Container()
                           : Padding(
                               padding: EdgeInsets.all(8),
                               child: SearchDetails(
                                   FirebaseFirestore.instance.doc(
-                                    'search/${ref.watch(activeSearch)}',
+                                    'search/${ref.watch(selectedSearchResult)}',
                                   ),
                                   selectedRef.notifier))),
                   Expanded(

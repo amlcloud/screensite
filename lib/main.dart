@@ -69,9 +69,12 @@ class TheAppState extends ConsumerState<TheApp> {
     ref.read(isLoading.notifier).value = true;
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user == null) {
+        // Clear search history from state on display of login page
+        ref.read(selectedSearchResult.notifier).value = null;
         ref.read(isLoggedIn.notifier).value = false;
         ref.read(isLoading.notifier).value = false;
       } else {
+        ref.read(selectedSearchResult.notifier).value = null;
         ref.read(isLoggedIn.notifier).value = true;
         ref.read(isLoading.notifier).value = false;
       }
