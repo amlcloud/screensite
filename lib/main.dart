@@ -1,18 +1,22 @@
+import 'package:common/common.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:providers/generic.dart';
+import 'package:sandbox/sandbox_launcher2.dart';
+import 'package:screensite/adversemedia/adversemedia_page.dart';
 import 'package:screensite/lists/lists_page.dart';
 import 'package:screensite/login_page.dart';
-import 'package:screensite/search/search_page.dart';
 import 'package:screensite/pep/pep_admin.dart';
 import 'package:screensite/pep/pep_library.dart';
-import 'package:screensite/adversemedia/adversemedia_page.dart';
-import 'package:screensite/state/generic_state_notifier.dart';
+import 'package:screensite/sandbox_app.dart';
+import 'package:screensite/search/search_page.dart';
 import 'package:screensite/state/theme_state_notifier.dart';
 import 'package:screensite/theme.dart';
+
 import 'cases/cases_page.dart';
 import 'firebase_options.dart';
 
@@ -29,7 +33,16 @@ void main() async {
     await dotenv.load(fileName: ".env.development");
   }
 
-  runApp(ProviderScope(child: MainApp()));
+  runApp(SandboxLauncher2(
+    enabled: const String.fromEnvironment('SANDBOX') == 'true',
+    app: ProviderScope(child: MainApp()),
+    sandbox: SandboxApp(),
+    getInitialState: () =>
+        kDB.doc('sandbox/serge').get().then((doc) => doc.data()!['sandbox']),
+    saveState: (state) => {
+      kDB.doc('sandbox/serge').set({'sandbox': state})
+    },
+  ));
 }
 
 class MainApp extends ConsumerWidget {

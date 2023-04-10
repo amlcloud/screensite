@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:providers/firestore.dart';
-import 'package:screensite/state/generic_state_notifier.dart';
+import 'package:providers/generic.dart';
 
 import 'indexing/indexing_array_of_values_field_form.dart';
 import 'indexing/indexing_multiple_fields_form.dart';

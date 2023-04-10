@@ -8,7 +8,7 @@ class LoginPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-        body: LoginScreen("AML Cloud", "Sanctions Screener", {
+        body: LoginScreen(Text("AML Cloud"), "Sanctions Screener", {
       "loginGitHub": true,
       "loginGoogle": true,
       "loginEmail": true,

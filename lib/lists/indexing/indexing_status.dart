@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../state/generic_state_notifier.dart';
-
 //Change by GPT
 class IndexingStatus extends ConsumerWidget {
   final QuerySnapshot<Map<String, dynamic>> _indexStatus;
