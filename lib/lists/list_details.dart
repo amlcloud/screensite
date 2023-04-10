@@ -108,8 +108,7 @@ class ListDetails extends ConsumerWidget {
                 recognizer: TapGestureRecognizer()
                   ..onTap = () async {
                     //on tap code here, you can navigate to other page or URL
-                    final url =
-                        Uri.parse(entityDoc.data()!['domainURL'] ?? '#');
+                    final url = Uri.parse(entityDoc.data()!['website'] ?? '#');
                     var urllaunchable = await canLaunchUrl(
                         url); //canLaunch is from url_launcher package
                     if (urllaunchable) {
@@ -130,7 +129,8 @@ class ListDetails extends ConsumerWidget {
                 recognizer: TapGestureRecognizer()
                   ..onTap = () async {
                     //on tap code here, you can navigate to other page or URL
-                    final url = Uri.parse(entityDoc.data()!['listURL'] ?? '#');
+                    final url =
+                        Uri.parse(entityDoc.data()!['dataSource'] ?? '#');
                     var urllaunchable = await canLaunchUrl(
                         url); //canLaunch is from url_launcher package
                     if (urllaunchable) {
