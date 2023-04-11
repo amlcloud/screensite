@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:screensite/controls/doc_field_text_edit.dart';
+import 'package:widgets/doc_field_text_edit.dart';
 import 'package:screensite/theme.dart';
 
 class Sandbox extends StatelessWidget {

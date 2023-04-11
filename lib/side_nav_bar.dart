@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:screensite/controls/nav_rail.dart';
+import 'package:widgets/nav_rail.dart';
 
 class CustomNavRail extends ConsumerWidget {
   static final CustomNavRail _navRail = CustomNavRail(key: ValueKey('navRail'));
