@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:providers/firestore.dart';
-import '../../state/generic_state_notifier.dart';
+import 'package:providers/generic.dart';
 
 class IndexingItemList extends ConsumerWidget {
   final String _entityId;

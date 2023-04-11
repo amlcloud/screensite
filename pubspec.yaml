@@ -55,24 +55,25 @@ dependencies:
   flutter_dotenv: ^5.0.2
   common:
     git: 
-      url: https://github.com/kovarny/flutter_firebase_framework.git
+      url: https://github.com/Super-Fast-Forward/flutter_firebase_framework.git
       path: common
   sandbox:
     git: 
-      url: https://github.com/kovarny/flutter_firebase_framework.git
+      url: https://github.com/Super-Fast-Forward/flutter_firebase_framework.git
       path: sandbox
   providers:
     git: 
-      url: https://github.com/kovarny/flutter_firebase_framework.git
+      url: https://github.com/Super-Fast-Forward/flutter_firebase_framework.git
       path: providers
   auth:
     git: 
-      url: https://github.com/kovarny/flutter_firebase_framework.git
+      url: https://github.com/Super-Fast-Forward/flutter_firebase_framework.git
       path: auth
   widgets:
     git: 
-      url: https://github.com/kovarny/flutter_firebase_framework.git
+      url: https://github.com/Super-Fast-Forward/flutter_firebase_framework.git
       path: widgets
+      
       
       
 dev_dependencies:

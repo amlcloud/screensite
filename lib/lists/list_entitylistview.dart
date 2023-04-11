@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:providers/firestore.dart';
+import 'package:providers/generic.dart';
 import 'package:screensite/lists/lists_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:screensite/state/generic_state_notifier.dart';
 
 final selectedEntityList =
     StateNotifierProvider<GenericStateNotifier<int?>, int?>(

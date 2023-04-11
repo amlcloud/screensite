@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:providers/generic.dart';
 
 import '../../controls/doc_field_drop_down.dart';
 import 'package:providers/firestore.dart';
-import '../../state/generic_state_notifier.dart';
 import 'indexing_form.dart';
 import 'indexing_index_by_array.dart';
 

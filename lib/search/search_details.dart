@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:providers/firestore.dart';
+import 'package:providers/generic.dart';
 import 'package:screensite/search/search_results.dart';
-import 'package:screensite/state/generic_state_notifier.dart';
 import 'package:screensite/theme.dart';
 
 final activeEntity =

@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:providers/generic.dart';
 import 'package:screensite/lists/list_info.dart';
 import 'package:screensite/lists/list_entitylistview.dart';
 import 'package:screensite/lists/list_indexing.dart';
-import 'package:screensite/state/generic_state_notifier.dart';
 import 'package:screensite/theme.dart';
 import 'package:providers/firestore.dart';
 import 'package:screensite/controls/doc_field_text_edit.dart';
@@ -52,6 +52,7 @@ class ListDetails extends ConsumerWidget {
                               Text(
                                 "List id: " + entityId,
                                 textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.titleMedium,
                               )
                             ],
                           ),

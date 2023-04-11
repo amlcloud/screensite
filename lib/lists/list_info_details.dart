@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jiffy/jiffy.dart';
 
 import 'package:providers/firestore.dart';
-import '../state/generic_state_notifier.dart';
+import 'package:providers/generic.dart';
 
 class ListDetailsWidget extends ConsumerWidget {
   ListDetailsWidget({
