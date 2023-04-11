@@ -13,6 +13,8 @@ import 'package:screensite/drawer.dart';
 import 'case_table_widget.dart';
 import 'chat_widget.dart';
 import 'matches_widget.dart';
+import 'package:screensite/side_nav_bar.dart';
+
 
 class CasesPage extends ConsumerWidget {
   final TextEditingController searchCtrl = TextEditingController();
@@ -30,6 +32,7 @@ class CasesPage extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: [
+                  CustomNavRail.getNavRail(),
                   Flexible(
                       child: Column(
                     mainAxisSize: MainAxisSize.max,

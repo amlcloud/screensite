@@ -7,6 +7,8 @@ import 'package:screensite/state/generic_state_notifier.dart';
 import 'package:screensite/drawer.dart';
 import 'package:screensite/common.dart';
 import 'jsonview_switch.dart';
+import 'package:screensite/side_nav_bar.dart';
+
 //import 'jsonview_switch.dart';
 // import 'package:flutter_json_viewer/flutter_json_viewer.dart';
 
@@ -34,6 +36,7 @@ class ListsPage extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: [
+                  CustomNavRail.getNavRail(),
                   Expanded(
                       flex: 1,
                       child: SingleChildScrollView(
