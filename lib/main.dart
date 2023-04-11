@@ -16,6 +16,7 @@ import 'package:screensite/sandbox_app.dart';
 import 'package:screensite/search/search_page.dart';
 import 'package:screensite/state/theme_state_notifier.dart';
 import 'package:screensite/theme.dart';
+import 'package:widgets/routing.dart';
 
 import 'cases/cases_page.dart';
 import 'firebase_options.dart';
@@ -59,6 +60,13 @@ class MainApp extends ConsumerWidget {
       theme: lightTheme,
       darkTheme: darkTheme,
       home: TheApp(),
+      initialRoute: '/',
+      onGenerateRoute: generateRoutes({
+        '/': (context, settings) => SearchPage(),
+        '/search': (context, settings) => SearchPage(),
+        '/cases': (context, settings) => CasesPage(),
+        '/lists': (context, settings) => ListsPage(),
+      }),
     );
   }
 }
@@ -105,28 +113,28 @@ class TheAppState extends ConsumerState<TheApp> {
       );
     } else {
       return Scaffold(
-          body: ref.watch(isLoggedIn) == false
-              ? LoginPage()
-              : DefaultTabController(
-                  initialIndex: 0,
-                  length: 3,
-                  child: Navigator(
-                    onGenerateRoute: (RouteSettings settings) {
-                      // print('onGenerateRoute: ${settings}');
-                      if (settings.name == '/' || settings.name == 'search') {
-                        return PageRouteBuilder(
-                            pageBuilder: (_, __, ___) => SearchPage());
-                      } else if (settings.name == 'cases') {
-                        return PageRouteBuilder(
-                            pageBuilder: (_, __, ___) => CasesPage());
-                      } else if (settings.name == 'lists') {
-                        return PageRouteBuilder(
-                            pageBuilder: (_, __, ___) => ListsPage());
-                      } else {
-                        throw 'no page to show';
-                      }
-                    },
-                  )));
+          body: ref.watch(isLoggedIn) == false ? LoginPage() : SearchPage()
+          // DefaultTabController(
+          //     initialIndex: 0,
+          //     length: 3,
+          //     child: Navigator(
+          //       onGenerateRoute: (RouteSettings settings) {
+          //         // print('onGenerateRoute: ${settings}');
+          //         if (settings.name == '/' || settings.name == 'search') {
+          //           return PageRouteBuilder(
+          //               pageBuilder: (_, __, ___) => SearchPage());
+          //         } else if (settings.name == 'cases') {
+          //           return PageRouteBuilder(
+          //               pageBuilder: (_, __, ___) => CasesPage());
+          //         } else if (settings.name == 'lists') {
+          //           return PageRouteBuilder(
+          //               pageBuilder: (_, __, ___) => ListsPage());
+          //         } else {
+          //           throw 'no page to show';
+          //         }
+          //       },
+          //     ))
+          );
     }
   }
 }

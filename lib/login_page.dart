@@ -8,13 +8,24 @@ class LoginPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-        body: LoginScreen(Text("AML Cloud"), "Sanctions Screener", {
-      "loginGitHub": true,
-      "loginGoogle": true,
-      "loginEmail": true,
-      "loginSSO": true,
-      "loginAnonymous": true,
-      "signupOption": true,
-    }));
+        body: LoginScreen(
+            SizedBox(
+                height: 400,
+                width: 300,
+                child: Center(
+                    child: Text("AML Cloud",
+                        style: TextStyle(
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                        )))),
+            "Sanctions Screener",
+            {
+          "loginGitHub": true,
+          "loginGoogle": true,
+          "loginEmail": true,
+          "loginSSO": true,
+          "loginAnonymous": true,
+          "signupOption": true,
+        }));
   }
 }
