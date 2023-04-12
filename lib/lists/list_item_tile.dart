@@ -33,10 +33,10 @@ class _ListItemState extends ConsumerState<ListItemTile> {
     return ref.watch(docSP('list/${widget.entityId}')).when(
         loading: () => Container(),
         error: (e, s) => ErrorWidget(e),
-        data: (entityDoc) => (entityDoc.data()?.containsKey('isVisible') == true && entityDoc.data()!['isVisible'] == false)
-            ? Container()
-            : (entityDoc.exists == false)
-                ? Center(child: Text('No entity data exists'))
+        data: (entityDoc) => (entityDoc.exists == false)
+            ? Center(child: Text('No entity data exists'))  
+            : (entityDoc.data()?.containsKey('isVisible') == true && entityDoc.data()?['isVisible'] != null && entityDoc.data()?['isVisible'] == false)
+                ? Container()
             : Card(
                 child:
                     Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
