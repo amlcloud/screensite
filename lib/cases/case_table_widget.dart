@@ -37,7 +37,7 @@ class CaseTableWidget extends ConsumerWidget {
           //           DataCell(Text(item.value.toString())),
           //         ]))
 
-          ref.watch(docSP('case/' + caseId)).when(
+          ref.watch(docSP('case/${caseId}')).when(
               data: (caseDoc) => caseDoc
                   .data()!
                   .entries
