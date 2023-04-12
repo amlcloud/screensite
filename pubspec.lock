@@ -38,7 +38,7 @@ packages:
     description:
       path: auth
       ref: HEAD
-      resolved-ref: "2c9eb6a85aa0af223760a906cf81825dccd6b1a7"
+      resolved-ref: "67cd5b71df688659ade590d0a99af3c5367afc93"
       url: "https://github.com/Super-Fast-Forward/flutter_firebase_framework.git"
     source: git
     version: "0.0.1"
@@ -143,7 +143,7 @@ packages:
     description:
       path: common
       ref: HEAD
-      resolved-ref: "2c9eb6a85aa0af223760a906cf81825dccd6b1a7"
+      resolved-ref: "67cd5b71df688659ade590d0a99af3c5367afc93"
       url: "https://github.com/Super-Fast-Forward/flutter_firebase_framework.git"
     source: git
     version: "0.0.1"
@@ -542,10 +542,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider_foundation
-      sha256: "818b2dc38b0f178e0ea3f7cf3b28146faab11375985d815942a68eee11c2d0f7"
+      sha256: ad4c4d011830462633f03eb34445a45345673dfd4faf1ab0b4735fbd93b19183
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.1"
+    version: "2.2.2"
   path_provider_linux:
     dependency: transitive
     description:
@@ -631,7 +631,7 @@ packages:
     description:
       path: providers
       ref: HEAD
-      resolved-ref: "2c9eb6a85aa0af223760a906cf81825dccd6b1a7"
+      resolved-ref: "67cd5b71df688659ade590d0a99af3c5367afc93"
       url: "https://github.com/Super-Fast-Forward/flutter_firebase_framework.git"
     source: git
     version: "0.0.1"
@@ -664,7 +664,7 @@ packages:
     description:
       path: sandbox
       ref: HEAD
-      resolved-ref: "2c9eb6a85aa0af223760a906cf81825dccd6b1a7"
+      resolved-ref: "67cd5b71df688659ade590d0a99af3c5367afc93"
       url: "https://github.com/Super-Fast-Forward/flutter_firebase_framework.git"
     source: git
     version: "0.0.1"
@@ -734,7 +734,7 @@ packages:
     description:
       path: theme
       ref: HEAD
-      resolved-ref: "2c9eb6a85aa0af223760a906cf81825dccd6b1a7"
+      resolved-ref: "67cd5b71df688659ade590d0a99af3c5367afc93"
       url: "https://github.com/Super-Fast-Forward/flutter_firebase_framework.git"
     source: git
     version: "0.0.1"
@@ -839,7 +839,7 @@ packages:
     description:
       path: widgets
       ref: HEAD
-      resolved-ref: "2c9eb6a85aa0af223760a906cf81825dccd6b1a7"
+      resolved-ref: "67cd5b71df688659ade590d0a99af3c5367afc93"
       url: "https://github.com/Super-Fast-Forward/flutter_firebase_framework.git"
     source: git
     version: "0.0.1"
