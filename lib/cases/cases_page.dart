@@ -40,7 +40,7 @@ class CasesPage extends ConsumerWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Expanded(child: CaseTableWidget()),
+                          Expanded(child: CaseTableWidget('2')),
                         ],
                       ),
                       Expanded(child: ChatWidget()),
