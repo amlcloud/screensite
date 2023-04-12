@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:providers/generic.dart';
-import 'package:screensite/controls/doc_field_drop_down.dart';
-import 'package:screensite/controls/doc_field_text_edit.dart';
+import 'package:widgets/doc_field_drop_down.dart';
+import 'package:widgets/doc_field_text_edit.dart';
 
 class Income extends ConsumerWidget {
   final String entityId;

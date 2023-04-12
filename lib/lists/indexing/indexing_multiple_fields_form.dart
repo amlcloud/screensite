@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:providers/generic.dart';
 import 'package:screensite/lists/indexing/indexing_index_by.dart';
 
-import '../../controls/doc_field_drop_down.dart';
+import 'package:widgets/doc_field_drop_down.dart';
 import 'package:providers/firestore.dart';
 import 'indexing_form.dart';
 

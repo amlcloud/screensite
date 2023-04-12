@@ -7,7 +7,7 @@ import 'package:screensite/lists/list_entitylistview.dart';
 import 'package:screensite/lists/list_indexing.dart';
 import 'package:screensite/theme.dart';
 import 'package:providers/firestore.dart';
-import 'package:screensite/controls/doc_field_text_edit.dart';
+import 'package:widgets/doc_field_text_edit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/gestures.dart';
