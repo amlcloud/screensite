@@ -33,7 +33,7 @@ class _ListItemState extends ConsumerState<ListItemTile> {
     return ref.watch(docSP('list/${widget.entityId}')).when(
         loading: () => Container(),
         error: (e, s) => ErrorWidget(e),
-        data: (entityDoc) => (entityDoc.data()!['isVisible'] == false)
+        data: (entityDoc) => (entityDoc.data()?.containsKey('isVisible') == true && entityDoc.data()!['isVisible'] == false)
             ? Container()
             : (entityDoc.exists == false)
                 ? Center(child: Text('No entity data exists'))
