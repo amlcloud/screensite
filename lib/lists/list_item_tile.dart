@@ -35,7 +35,7 @@ class _ListItemState extends ConsumerState<ListItemTile> {
         error: (e, s) => ErrorWidget(e),
         data: (entityDoc) => (entityDoc.exists == false)
             ? Center(child: Text('No entity data exists'))  
-            : (entityDoc.data()?.containsKey('isVisible') == true && entityDoc.data()?['isVisible'] != null && entityDoc.data()?['isVisible'] == false)
+            : (entityDoc.data()?.containsKey('isVisible') == true && entityDoc.data()?['isVisible'] == false)
                 ? Container()
             : Card(
                 child:
