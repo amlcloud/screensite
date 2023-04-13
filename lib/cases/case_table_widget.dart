@@ -1,9 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:providers/firestore.dart';
+import 'package:intl/intl.dart';
 
 class CaseTableWidget extends ConsumerWidget {
   final TextEditingController searchCtrl = TextEditingController();
+  final String caseId;
+
+  CaseTableWidget(this.caseId);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -12,13 +18,13 @@ class CaseTableWidget extends ConsumerWidget {
       columns: [
         DataColumn(
           label: Text(
-            'Field1',
+            'Property',
             style: TextStyle(fontStyle: FontStyle.italic),
           ),
         ),
         DataColumn(
           label: Text(
-            'Value1',
+            'Value',
             style: TextStyle(fontStyle: FontStyle.italic),
           ),
         )
@@ -31,13 +37,15 @@ class CaseTableWidget extends ConsumerWidget {
           //           DataCell(Text(item.value.toString())),
           //         ]))
 
-          ref.watch(docSP('case/1')).when(
+          ref.watch(docSP('case/${caseId}')).when(
               data: (caseDoc) => caseDoc
                   .data()!
                   .entries
                   .map<DataRow>((e) => DataRow(cells: <DataCell>[
                         DataCell(Text(e.key)),
-                        DataCell(Text(e.value)),
+                        DataCell((e.value.runtimeType == Timestamp)
+                            ? Text(formatDate(e.value))
+                            : Text(e.value.toString())),
                       ]))
                   .toList(),
               loading: () => [],
