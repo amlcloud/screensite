@@ -48,6 +48,7 @@ class SearchPage extends ConsumerWidget {
       'timeCreated': FieldValue.serverTimestamp(),
       'author': FirebaseAuth.instance.currentUser!.uid,
     });
+    searchCtrl.clear();
   }
 
   @override
