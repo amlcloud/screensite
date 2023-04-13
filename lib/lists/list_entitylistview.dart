@@ -35,7 +35,7 @@ class _EntityListViewState extends ConsumerState<EntityListView> {
               error: (e, s) => [],
               data: (listDoc) => ref
                   .watch(colSPfiltered('list/${widget.entityId}/item',
-                      limit: 500, orderBy: listDoc.data()?['entitiesName1']))
+                      limit: 50, orderBy: listDoc.data()?['entitiesName1']))
                   .when(
                       loading: () => [],
                       error: (e, s) => [ErrorWidget(e)],
