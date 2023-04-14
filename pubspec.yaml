@@ -73,7 +73,12 @@ dependencies:
     git: 
       url: https://github.com/Super-Fast-Forward/flutter_firebase_framework.git
       path: widgets
+  theme:
+    git: 
+      url: https://github.com/Super-Fast-Forward/flutter_firebase_framework.git
+      path: theme
       
+
 
 
 

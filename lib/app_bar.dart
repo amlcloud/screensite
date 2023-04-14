@@ -32,6 +32,7 @@ class MyAppBar {
               child: SvgPicture.asset(
                 'assets/Logo_Dark.svg',
               )),
+      title: Text("Sanctions Screener", style: TextStyle(fontSize: 20)),
       // tabsAlignment: TabsAlignment.left,
       // onTabSelected: (context, tabIndex, tab) {
       //   Navigator.of(context).pushNamed('/${tab.toLowerCase()}');

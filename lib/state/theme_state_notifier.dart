@@ -33,8 +33,8 @@ class ThemeStateNotifier extends StateNotifier<bool> {
   }
 }
 
-final themeStateNotifierProvider =
-    StateNotifierProvider<ThemeStateNotifier, bool>((ref) {
-  bool loginState = ref.watch(isLoggedIn);
-  return ThemeStateNotifier(loginState);
-}, dependencies: [isLoggedIn]);
+// final themeStateNotifierProvider =
+//     StateNotifierProvider<ThemeStateNotifier, bool>((ref) {
+//   bool loginState = ref.watch(isLoggedIn);
+//   return ThemeStateNotifier(loginState);
+// }, dependencies: [isLoggedIn]);

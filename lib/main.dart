@@ -16,6 +16,7 @@ import 'package:screensite/sandbox_app.dart';
 import 'package:screensite/search/search_page.dart';
 import 'package:screensite/state/theme_state_notifier.dart';
 import 'package:screensite/theme.dart';
+import 'package:theme/theme_mode.dart';
 import 'package:widgets/routing.dart';
 
 import 'cases/cases_page.dart';
@@ -53,7 +54,7 @@ class MainApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    bool isDarkTheme = ref.watch(themeStateNotifierProvider);
+    bool isDarkTheme = ref.watch(themeModeSNP);
     return MaterialApp(
       title: 'Sanctions Screener',
       themeMode: isDarkTheme ? ThemeMode.dark : ThemeMode.light,
