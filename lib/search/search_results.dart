@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:providers/firestore.dart';
 import 'package:providers/generic.dart';
+import 'package:widgets/doc_field_text.dart';
 
 class SearchResults extends ConsumerWidget {
   final DocumentSnapshot searchDoc;
@@ -46,10 +47,21 @@ class SearchResults extends ConsumerWidget {
                       ref.read(_selectedItemNotifier).value = res.data()['ref'];
                     },
                     child: ListTile(
-                      title: Text("Name: " + res.data()['target']),
-                      subtitle: Text(
-                          "Levscore: " + res.data()['levScore'].toString()),
-                    ));
+                        title: Text("Name: " + res.data()['target']),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Levscore: " +
+                                res.data()['levScore'].toString()),
+                            Text("List id: " +
+                                res.data()['ref'].parent.parent.id),
+                            Row(children: [
+                              Text('List name: '),
+                              DocFieldText(
+                                  res.data()['ref'].parent.parent, 'name')
+                            ])
+                          ],
+                        )));
               }).toList();
             },
           ));
