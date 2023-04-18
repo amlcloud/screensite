@@ -12,15 +12,15 @@ class CustomNavRail extends ConsumerWidget {
     // ),
     'search': const NavigationRailDestination(
       icon: Icon(Icons.search),
-      label: Text('Search Centre'),
+      label: Text('Search'),
     ),
     'lists': const NavigationRailDestination(
       icon: Icon(Icons.source),
-      label: Text('Sources'),
+      label: Text('Lists'),
     ),
     'cases': const NavigationRailDestination(
       icon: Icon(Icons.assignment_late),
-      label: Text('Alerts'),
+      label: Text('Cases'),
     ),
     // 'customers': const NavigationRailDestination(
     //   icon: Icon(Icons.groups),
@@ -52,13 +52,17 @@ class CustomNavRail extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return NavRail(
-        onDestinationSelected: (int index) {
-          print('index: $index, name: ${destinations.keys.elementAt(index)}');
-          Navigator.of(context).pushNamed(
-              '/' + destinations.keys.elementAt(index).toLowerCase());
-        },
-        destinations: destinations);
+    return SizedBox(
+        width: 150,
+        child: NavRail(
+            extended: true,
+            onDestinationSelected: (int index) {
+              print(
+                  'index: $index, name: ${destinations.keys.elementAt(index)}');
+              Navigator.of(context).pushNamed(
+                  '/' + destinations.keys.elementAt(index).toLowerCase());
+            },
+            destinations: destinations));
   }
 
   static getNavRail() => _navRail;
