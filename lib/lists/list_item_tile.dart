@@ -52,10 +52,24 @@ class _ListItemState extends ConsumerState<ListItemTile> {
                             ? entityDoc.data()!['name']
                             : 'undefined list name',
                   ),
-                  subtitle: Text(
-                      '''Last changed on ${Jiffy(entityDoc.data()!['lastUpdateTime'].toDate()).format(DISPLAY_DATE_TIME_FORMAT)}
-Last updated on ${Jiffy(entityDoc.data()!['lastUpdateTime'].toDate()).format(DISPLAY_DATE_TIME_FORMAT)}'''),
-                  isThreeLine: true,
+//                   subtitle: Text(
+//                       '''Last changed on ${Jiffy(entityDoc.data()!['lastUpdateTime'].toDate()).format(DISPLAY_DATE_TIME_FORMAT)}
+// Last updated on ${Jiffy(entityDoc.data()!['lastUpdateTime'].toDate()).format(DISPLAY_DATE_TIME_FORMAT)}'''),
+
+                  subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children:[
+                        Text(
+                           style: Theme.of(context).textTheme.bodySmall,
+                       'Changed: ${Jiffy(entityDoc.data()!['lastUpdateTime'].toDate()).format("yy/MM/dd HH:mm")}',
+                         ),
+                        Text( 
+                          style: Theme.of(context).textTheme.bodySmall,
+                          'Updated: ${Jiffy(entityDoc.data()!['lastUpdateTime'].toDate()).format("yy/MM/dd HH:mm")}'),
+                         // style: Theme.of(context).textTheme.caption, 
+                      ],
+                    ),                  
+                    isThreeLine: true,
                   onTap: () {
                     ref.read(selectedItem.notifier).value = null;
                     ref.read(selectedEntityList.notifier).value = null;
