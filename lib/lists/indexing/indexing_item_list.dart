@@ -48,7 +48,11 @@ class IndexingItemList extends ConsumerWidget {
                                   width: double.infinity,
                                   child:
                                       Text('Actual values: ${data.docs.map((f) {
-                                    return _item[f.data()['value']];
+                                    if (_item[f.data()['value']] != null) {
+                                      return _item[f.data()['value']];
+                                    } else {
+                                      return '';
+                                    }
                                   }).join(' ')}'))
                             ];
                           }));
@@ -104,12 +108,12 @@ class IndexingItemList extends ConsumerWidget {
                                                 return f.data()['target'];
                                               }));
                                               final removedCharactersSubset = subset
-                                                  .map((value) => value
-                                                      .toString()
-                                                      .replaceAll(
-                                                          RegExp(r'[^a-z0-9]'),
-                                                          ''))
-                                                  .toSet();
+                                                      .map((value) => value
+                                                          .toString()
+                                                          .replaceAll(
+                                                              RegExp(r'[^a-z0-9]'),
+                                                              ''))
+                                                      .toSet();
                                               final removedCharactersSet = data.docs
                                                   .map((f) => f
                                                       .data()['target']
@@ -119,10 +123,13 @@ class IndexingItemList extends ConsumerWidget {
                                                           ''))
                                                   .toSet();
                                               return setEquals(
-                                                      removedCharactersSubset
-                                                          .intersection(
-                                                              removedCharactersSet),
-                                                      removedCharactersSubset)
+                                                          removedCharactersSubset
+                                                              .intersection(
+                                                                  removedCharactersSet),
+                                                          removedCharactersSubset) &&
+                                                      removedCharactersSet
+                                                              .elementAt(0) !=
+                                                          ''
                                                   ? Icon(Icons.check,
                                                       color: Colors.green)
                                                   : Icon(Icons.close,
