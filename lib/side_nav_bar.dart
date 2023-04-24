@@ -16,7 +16,7 @@ class CustomNavRail extends ConsumerWidget {
     ),
     'lists': const NavigationRailDestination(
       icon: Icon(Icons.source),
-      label: Text('Lists'),
+      label: Text('Sanctions'),
     ),
     'cases': const NavigationRailDestination(
       icon: Icon(Icons.assignment_late),
