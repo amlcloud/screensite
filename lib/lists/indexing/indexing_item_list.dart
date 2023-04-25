@@ -107,14 +107,17 @@ class IndexingItemList extends ConsumerWidget {
                                               set.addAll(data.docs.map((f) {
                                                 return f.data()['target'];
                                               }));
-                                              final removedCharactersSubset = subset
+                                              final removedCharactersSubset =
+                                                  subset
                                                       .map((value) => value
                                                           .toString()
                                                           .replaceAll(
-                                                              RegExp(r'[^a-z0-9]'),
+                                                              RegExp(
+                                                                  r'[^a-z0-9]'),
                                                               ''))
                                                       .toSet();
-                                              final removedCharactersSet = data.docs
+                                              final removedCharactersSet = data
+                                                  .docs
                                                   .map((f) => f
                                                       .data()['target']
                                                       .toString()
@@ -123,13 +126,10 @@ class IndexingItemList extends ConsumerWidget {
                                                           ''))
                                                   .toSet();
                                               return setEquals(
-                                                          removedCharactersSubset
-                                                              .intersection(
-                                                                  removedCharactersSet),
-                                                          removedCharactersSubset) &&
-                                                      removedCharactersSet
-                                                              .elementAt(0) !=
-                                                          ''
+                                                      removedCharactersSubset
+                                                          .intersection(
+                                                              removedCharactersSet),
+                                                      removedCharactersSubset)
                                                   ? Icon(Icons.check,
                                                       color: Colors.green)
                                                   : Icon(Icons.close,
