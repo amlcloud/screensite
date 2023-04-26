@@ -4,35 +4,41 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:providers/firestore.dart';
 import 'package:providers/generic.dart';
 import 'package:screensite/search/search_page.dart';
+import 'package:logger/logger.dart';
+
+var logger = Logger();
 
 class SearchListItem extends ConsumerWidget {
   final DocumentReference searchRef;
   final AlwaysAliveProviderBase<GenericStateNotifier<DocumentReference?>>
       _selectedItemNotifier;
-
   const SearchListItem(this.searchRef, this._selectedItemNotifier);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(docSP(searchRef.path)).when(
-        loading: () => Container(),
-        error: (e, s) => ErrorWidget(e),
-        data: (searchDoc) => Card(
-                child: Column(
+    return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+      future: FirebaseFirestore.instance.doc(searchRef.path).get(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Container();
+        } else if (snapshot.hasError) {
+          return ErrorWidget(snapshot.error!);
+        } else {
+          final searchDoc = snapshot.data;
+          return Card(
+            child: Column(
               children: [
                 ListTile(
-                  title: Text(searchDoc.data()!['target'] ?? ''),
-                  trailing: Text(searchDoc.data()!['resultsCount'].toString()),
-                  // subtitle: Text(entityDoc.data()!['desc'] ?? 'desc'),
-                  // trailing: Column(children: <Widget>[
-                  //   Text(searchDoc.data()!['target'] ?? ''),
-                  //   // buildDeleteEntityButton(
-                  //   //     context,
-                  //   //     FirebaseFirestore.instance
-                  //   //         .collection('batch')
-                  //   //         .doc(batchId),
-                  //   //     Icon(Icons.delete))
-                  // ]),
+                  title: Text(searchDoc?.data()!['target'] ?? ''),
+                  trailing: searchDoc == null
+                      ? CircularProgressIndicator()
+                      : Text(searchDoc.data()!['resultsCount']?.toString() ??
+                          'loading'),
+
+                  // ? CircularProgressIndicator()
+                  // : Text(
+                  //     searchDoc.data()!['resultsCount'].toString(),
+                  //   ),
                   onTap: () {
                     ref.read(selectedSearchResult.notifier).value =
                         searchRef.id;
@@ -40,6 +46,10 @@ class SearchListItem extends ConsumerWidget {
                   },
                 )
               ],
-            )));
+            ),
+          );
+        }
+      },
+    );
   }
 }

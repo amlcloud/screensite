@@ -10,6 +10,7 @@ import 'package:screensite/search/search_list.dart';
 import 'package:screensite/search/search_results_item.dart';
 import 'package:screensite/drawer.dart';
 import 'package:screensite/side_nav_bar.dart';
+import 'package:logger/logger.dart';
 
 final selectedSearchResult =
     StateNotifierProvider<GenericStateNotifier<String?>, String?>(
@@ -30,6 +31,8 @@ class SearchPage extends ConsumerWidget {
 
   final _regexp = RegExp('[^A-Za-z0-9- ]');
 
+  var logger = Logger();
+
   bool isValid() {
     return !_regexp.hasMatch(searchCtrl.text);
   }
@@ -39,6 +42,7 @@ class SearchPage extends ConsumerWidget {
     if (searchCtrl.text.isEmpty ||
         searchCtrl.text.length < MINIMUM_SEARCH_LENGTH) return;
     var text = searchCtrl.text.replaceAll(_regexp, '');
+    logger.d(text);
     FirebaseFirestore.instance
         .collection('user')
         .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -48,11 +52,13 @@ class SearchPage extends ConsumerWidget {
       'timeCreated': FieldValue.serverTimestamp(),
       'author': FirebaseAuth.instance.currentUser!.uid,
     });
+
     searchCtrl.clear();
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    logger.d("logger working...");
     return Scaffold(
         appBar: MyAppBar.getBar(context, ref),
         drawer: (MediaQuery.of(context).size.width < WIDE_SCREEN_WIDTH)
