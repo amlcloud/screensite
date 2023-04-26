@@ -34,6 +34,7 @@ class IndexingIndexByArray extends ConsumerWidget {
                 Padding(
                     padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
                     child: text(data))
+                // child: text(data))
               ]);
             });
   }

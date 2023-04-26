@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -20,11 +22,22 @@ class IndexingIndexBy extends ConsumerWidget {
             error: (e, s) => ErrorWidget(e),
             data: (data) {
               return Row(children: [
-                Container(
-                    width: 80,
-                    child: Padding(
+                Column(
+                  children: [
+                    Container(
+                      width: 80,
+                      child: Padding(
                         padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
-                        child: Text('Index by'))),
+                        child: Text('Index by'),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: (() {}),
+                      icon: Icon(Icons.edit),
+                      iconSize: 20,
+                    )
+                  ],
+                ),
                 Padding(
                     padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
                     child: Text(data.docs
