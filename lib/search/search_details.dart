@@ -7,6 +7,7 @@ import 'package:providers/firestore.dart';
 import 'package:providers/generic.dart';
 import 'package:screensite/search/search_results.dart';
 import 'package:screensite/theme.dart';
+import 'package:flutter/services.dart';
 
 final activeEntity =
     StateNotifierProvider<GenericStateNotifier<String?>, String?>(
@@ -36,14 +37,27 @@ class SearchDetails extends ConsumerWidget {
               return Container(
                   decoration: RoundedCornerContainer.containerStyle,
                   child: SingleChildScrollView(
-                      child: Column(
+                      child: Column(                        
                     children: [
-                      Text(
-                          'Searched Target: ${searchDoc.data()!['target']}'), //kk
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children:[
+                          Text('Searched Target: ${searchDoc.data()!['target']}'
+                              ), //kk
+
+                      ElevatedButton(
+                      child: Text("Copy"),
+                      onPressed: () async 
+                       {
+                       await Clipboard.setData(ClipboardData(text: 'target'));
+                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                       content: Text('Copied: ${searchDoc.data()!['target']}')));
+                       })]),
+                        
                       Text(
                           'Search Time: ${timeCreated != null ? Jiffy(timeCreated.toDate()).format("h:mm a, do MMM, yyyy") : ''}'),
                       SearchResults(searchDoc, _selectedItemNotifier),
-                    ],
+                      ],
                   )));
             });
   }
