@@ -8,11 +8,13 @@ import 'package:providers/generic.dart';
 import 'indexing/indexing_array_of_values_field_form.dart';
 import 'indexing/indexing_multiple_fields_form.dart';
 import 'indexing/indexing_single_field_form.dart';
+import 'indexing/indexing_array_of_objects_field_form.dart';
 
 const List<String> indexTypes = <String>[
   'Single field',
   'Multiple fields',
-  'Array of values'
+  'Array of values',
+  'Array of objects'
 ];
 
 final editings = StateNotifierProvider<GenericStateNotifier<Map<String, bool>>,
@@ -27,7 +29,7 @@ class ListIndexing extends ConsumerWidget {
     FirebaseFirestore db = FirebaseFirestore.instance;
     db
         .collection('list/$entityId/fields/')
-        .where('type', isNotEqualTo: 'array')
+        //.where('type', isNotEqualTo: 'array')
         .get()
         .then((data) {
       if (data.docs.isNotEmpty) {
@@ -72,8 +74,10 @@ class ListIndexing extends ConsumerWidget {
       widget = IndexingSingleFieldForm(entityId, document);
     } else if (type == indexTypes[1]) {
       widget = IndexingMultipleFieldsForm(entityId, document);
-    } else {
+    } else if (type == indexTypes[2]) {
       widget = IndexingArrayOfValuesFieldForm(entityId, document);
+    } else {
+      widget = IndexingArrayOfObjectsFieldForm(entityId, document);
     }
     return widget;
   }
