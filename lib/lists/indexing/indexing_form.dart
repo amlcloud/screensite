@@ -26,6 +26,8 @@ abstract class IndexingForm extends ConsumerWidget {
         FirebaseFirestore.instance.collection('list/$entityId/fields/');
     if (type == 'Array of values') {
       query = ref.where('type', isEqualTo: 'array');
+    } else if (type == 'Array of objects') { 
+      query = ref.where('type', isEqualTo: 'array');
     } else {
       query = ref.where('type', isNotEqualTo: 'array');
     }

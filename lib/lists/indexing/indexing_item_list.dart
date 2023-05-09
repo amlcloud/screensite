@@ -49,7 +49,13 @@ class IndexingItemList extends ConsumerWidget {
                                   child:
                                       Text('Actual values: ${data.docs.map((f) {
                                     if (_item[f.data()['value']] != null) {
-                                      return _item[f.data()['value']];
+                                      if (type == 'Array of objects') {
+                                        final objects = _item[f.data()['value']];
+                                        return objects.map((obj) => obj['wholeName'].toString()).join(", ");
+                                      }
+                                      else {
+                                        return _item[f.data()['value']];
+                                      }
                                     } else {
                                       return '';
                                     }
@@ -91,6 +97,21 @@ class IndexingItemList extends ConsumerWidget {
                                         }
                                       }
                                     }
+                                    else if (type == 'Array of objects') {
+                                      for (int i = 0;
+                                          i < config.docs.length;
+                                          i++) { 
+                                            String key =
+                                            config.docs[i].data()['value'];
+                                            if (_item.containsKey(key)) {
+                                              for (int j = 0;
+                                                  j < _item[key].length;
+                                                  j++) {
+                                                subset.add(_item[key][j]['wholeName']);
+                                              }
+                                            }
+                                      }                                                                             
+                                    }
                                     return ref
                                         .watch(
                                             colSPfiltered('index/', queries: [
@@ -124,7 +145,7 @@ class IndexingItemList extends ConsumerWidget {
                                                       .replaceAll(
                                                           RegExp(r'[^a-z0-9]'),
                                                           ''))
-                                                  .toSet();
+                                                  .toSet();                                                 
                                               return setEquals(
                                                       removedCharactersSubset
                                                           .intersection(
