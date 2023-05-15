@@ -7,10 +7,11 @@ import 'package:screensite/lists/list_entitylistview.dart';
 import 'package:screensite/lists/list_indexing.dart';
 import 'package:screensite/theme.dart';
 import 'package:providers/firestore.dart';
-import 'package:widgets/doc_field_text_edit.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/gestures.dart';
+import 'package:widgets/doc_field_text_field.dart';
 import 'indexing/indexing_status.dart';
 import 'indexing/indexing_progress.dart';
 import 'list_count.dart';
@@ -165,7 +166,7 @@ class ListDetails extends ConsumerWidget {
                                             key: _formKey,
                                             child: Column(
                                               children: <Widget>[
-                                                DocFieldTextEdit(
+                                                DocFieldTextField(
                                                     FirebaseFirestore.instance
                                                         .doc(
                                                             'list/${entityId}'),
@@ -173,7 +174,7 @@ class ListDetails extends ConsumerWidget {
                                                     decoration: InputDecoration(
                                                         hintText:
                                                             "Entity Name 1")),
-                                                DocFieldTextEdit(
+                                                DocFieldTextField(
                                                     FirebaseFirestore.instance
                                                         .doc(
                                                             'list/${entityId}'),
@@ -181,14 +182,14 @@ class ListDetails extends ConsumerWidget {
                                                     decoration: InputDecoration(
                                                         hintText:
                                                             "Entity Name 2")),
-                                                DocFieldTextEdit(
+                                                DocFieldTextField(
                                                     FirebaseFirestore.instance
                                                         .doc(
                                                             'list/${entityId}'),
                                                     'name',
                                                     decoration: InputDecoration(
                                                         hintText: "List Name")),
-                                                DocFieldTextEdit(
+                                                DocFieldTextField(
                                                     FirebaseFirestore.instance
                                                         .doc(
                                                             'list/${entityId}'),
@@ -196,7 +197,7 @@ class ListDetails extends ConsumerWidget {
                                                     decoration: InputDecoration(
                                                         hintText:
                                                             "Entity address")),
-                                                DocFieldTextEdit(
+                                                DocFieldTextField(
                                                     FirebaseFirestore.instance
                                                         .doc(
                                                             'list/${entityId}'),
@@ -204,7 +205,7 @@ class ListDetails extends ConsumerWidget {
                                                     decoration: InputDecoration(
                                                         hintText:
                                                             "Data Source")),
-                                                DocFieldTextEdit(
+                                                DocFieldTextField(
                                                     FirebaseFirestore.instance
                                                         .doc(
                                                             'list/${entityId}'),

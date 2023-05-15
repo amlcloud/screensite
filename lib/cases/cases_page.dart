@@ -9,7 +9,6 @@ import 'chat_widget.dart';
 import 'matches_widget.dart';
 import 'package:screensite/side_nav_bar.dart';
 
-
 class CasesPage extends ConsumerWidget {
   final TextEditingController searchCtrl = TextEditingController();
 
@@ -40,7 +39,7 @@ class CasesPage extends ConsumerWidget {
                           Expanded(child: CaseTableWidget('2')),
                         ],
                       ),
-                      Expanded(child: ChatWidget()),
+                      Expanded(child: CaseChatWidget()),
                     ],
                   )),
                   Expanded(

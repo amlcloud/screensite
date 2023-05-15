@@ -12,7 +12,7 @@ class ListCount extends ConsumerWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        ref.watch(count('list/${entityId}/item')).when(
+        ref.watch(colCount('list/${entityId}/item')).when(
             loading: () => Text(''),
             error: (e, s) => Text(''),
             data: ((data) => Text('${data.count} records')))
