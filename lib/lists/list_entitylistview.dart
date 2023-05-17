@@ -1,11 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:providers/firestore.dart';
 import 'package:providers/generic.dart';
-import 'package:screensite/lists/lists_page.dart';
 
 final selectedEntityList =
     StateNotifierProvider<GenericStateNotifier<int?>, int?>(
@@ -15,7 +12,7 @@ final selectedEntityList =
 class EntityListView extends ConsumerStatefulWidget {
   const EntityListView(this.entityId, this.selectedItem);
   final String entityId;
-  final AlwaysAliveProviderBase<GenericStateNotifier<Map<String, dynamic>?>>
+  final AlwaysAliveProviderBase<GenericStateNotifier<Map<String, dynamic>?>>?
       selectedItem;
 
   @override
@@ -95,9 +92,10 @@ class _EntityListViewState extends ConsumerState<EntityListView> {
           isThreeLine: true,
           onTap: () {
             ref.read(selectedEntityList.notifier).value = index;
-            ref.read(widget.selectedItem).value = Map.fromEntries(
-                entityDoc.data().entries.toList()
-                  ..sort((e1, e2) => e1.key.compareTo(e2.key)));
+            if (widget.selectedItem != null)
+              ref.read(widget.selectedItem!).value = Map.fromEntries(
+                  entityDoc.data().entries.toList()
+                    ..sort((e1, e2) => e1.key.compareTo(e2.key)));
           }),
     );
   }

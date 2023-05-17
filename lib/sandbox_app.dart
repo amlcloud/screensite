@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:providers/generic.dart';
 
+import 'lists/api_widget.dart';
 import 'lists/list_details.dart';
-import 'lists/list_info_details.dart';
+import 'lists/list_indexing_widget.dart';
 
 class SandboxApp extends StatelessWidget {
   SandboxApp({Key? key}) : super(key: key);
@@ -23,7 +24,9 @@ class SandboxApp extends StatelessWidget {
             body: SizedBox(
                 width: 800,
                 height: 600,
-                child: ListDetails('api.trade.gov', _nsp.notifier))),
+                child: ListDetails('api.trade.gov', null)
+                //ListDetails('api.trade.gov', _nsp.notifier)
+                )),
       ),
     );
   }

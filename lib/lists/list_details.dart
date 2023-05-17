@@ -1,37 +1,41 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:common/common.dart';
+import 'package:common/dialogs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:providers/firestore.dart';
 import 'package:providers/generic.dart';
-import 'package:screensite/lists/list_info.dart';
 import 'package:screensite/lists/list_entitylistview.dart';
 import 'package:screensite/lists/list_indexing.dart';
 import 'package:screensite/theme.dart';
-import 'package:providers/firestore.dart';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter/gestures.dart';
+import 'package:widgets/copy_to_clipboard_widget.dart';
+import 'package:widgets/doc_field_text.dart';
 import 'package:widgets/doc_field_text_field.dart';
-import 'indexing/indexing_status.dart';
-import 'indexing/indexing_progress.dart';
+import 'package:widgets/doc_stream_widget.dart';
+
+import '../common.dart';
 import 'list_count.dart';
+import 'list_indexing_widget.dart';
 
 class ListDetails extends ConsumerWidget {
-  final String entityId;
-  final AlwaysAliveProviderBase<GenericStateNotifier<Map<String, dynamic>?>>
+  final String listId;
+  final AlwaysAliveProviderBase<GenericStateNotifier<Map<String, dynamic>?>>?
       selectedItem;
 
   final TextEditingController idCtrl = TextEditingController(),
       nameCtrl = TextEditingController(),
       descCtrl = TextEditingController();
 
-  ListDetails(this.entityId, this.selectedItem);
+  ListDetails(this.listId, this.selectedItem);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ref
         .watch(colSPfiltered('indexStatus/', queries: [
-          QueryParam('listId', {Symbol('isEqualTo'): entityId})
+          QueryParam('listId', {Symbol('isEqualTo'): listId})
         ]))
         .when(
             loading: () => Container(),
@@ -39,109 +43,71 @@ class ListDetails extends ConsumerWidget {
             data: (indexStatus) {
               return Container(
                   decoration: RoundedCornerContainer.containerStyle,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(10.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "List id: " + entityId,
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.titleMedium,
-                              )
-                            ],
-                          ),
-                        ),
-                        Divider(),
-                        ListInfo(entityId, indexStatus),
-                        Divider(),
-                        Container(
-                            child: ref.watch(docSP('list/' + entityId)).when(
-                                loading: () => Container(),
-                                error: (e, s) => ErrorWidget(e),
-                                data: (entityDoc) => entityDoc.exists == false
-                                    ? Center(
-                                        child: Text('No entity data exists'))
-                                    : buildListItemDetails(
-                                        entityDoc, context, indexStatus, ref))),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          _buildHeader(context, ref),
+                          Divider(),
+                          ListIndexingWidget(listId: listId),
+                          Divider(),
+                          buildSourcesLinks(context, ref),
 
-                        Divider(),
-                        ListIndexing(entityId),
-                        Divider(),
-                        //Timeline(entityId),
-                        /*Expanded(
-              flex: 10,
-              child: EntityList(entityId),
-            ),*/
-                        //DataExportButton(entityId),
-                        Expanded(
-                            flex: 10,
-                            child: SingleChildScrollView(
-                              child: EntityListView(entityId, selectedItem),
-                            )),
-                        Divider(),
-                        ListCount(entityId),
-                      ]));
+                          Divider(),
+                          ListIndicesWidget(listId),
+                          Divider(),
+                          //Timeline(entityId),
+                          /*Expanded(
+                                flex: 10,
+                                child: EntityList(entityId),
+                              ),*/
+                          //DataExportButton(entityId),
+                          Expanded(
+                              flex: 10,
+                              child: SingleChildScrollView(
+                                child: EntityListView(listId, selectedItem),
+                              )),
+                          Divider(),
+                          ListCount(listId),
+                        ]),
+                  ));
             });
   }
 
-  Widget buildListItemDetails(
-      DocumentSnapshot<Map<String, dynamic>> entityDoc,
-      BuildContext context,
-      QuerySnapshot<Map<String, dynamic>> indexStatus,
-      WidgetRef ref) {
-    return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-      Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [IndexingStatus(indexStatus), IndexingProgress(entityId)]),
-      Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-        Container(
-            padding: EdgeInsets.all(8.0),
-            child: Text.rich(TextSpan(
-                style: TextStyle(decoration: TextDecoration.underline),
-                //make link underline
-                text: "View source page",
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () async {
-                    //on tap code here, you can navigate to other page or URL
-                    final url = Uri.parse(entityDoc.data()!['website'] ?? '#');
-                    var urllaunchable = await canLaunchUrl(
-                        url); //canLaunch is from url_launcher package
-                    if (urllaunchable) {
-                      await launchUrl(
-                          url); //launch is from url_launcher package to launch URL
-                    } else {
-                      print("URL can't be launched.");
-                    }
-                  })))
-      ]),
-      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
-        Container(
-            padding: EdgeInsets.all(8.0),
-            child: Text.rich(TextSpan(
-                style: TextStyle(decoration: TextDecoration.underline),
-                //make link underline
-                text: "View source list",
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () async {
-                    //on tap code here, you can navigate to other page or URL
-                    final url =
-                        Uri.parse(entityDoc.data()!['dataSource'] ?? '#');
-                    var urllaunchable = await canLaunchUrl(
-                        url); //canLaunch is from url_launcher package
-                    if (urllaunchable) {
-                      await launchUrl(
-                          url); //launch is from url_launcher package to launch URL
-                    } else {
-                      print("URL can't be launched.");
-                    }
-                  }))),
+  Widget _buildHeader(BuildContext context, WidgetRef ref) {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(children: [
+              DocFieldText(
+                kDB.doc('list/$listId'),
+                'name',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              _buildAPIButton(context),
+            ]),
+            Text(
+              'id: $listId',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.labelSmall,
+            ),
+            Flexible(
+                child: DocFieldText(
+              kDB.doc('list/$listId'),
+              'lastUpdateTime',
+              builder: (c, ref, v) => 'Last changed: ${formatDateTime(v)}',
+              style: Theme.of(context).textTheme.labelSmall,
+            )),
+          ],
+        ),
         ref
             .watch(docSP('admin/${FirebaseAuth.instance.currentUser!.uid}'))
             .when(
@@ -168,47 +134,41 @@ class ListDetails extends ConsumerWidget {
                                               children: <Widget>[
                                                 DocFieldTextField(
                                                     FirebaseFirestore.instance
-                                                        .doc(
-                                                            'list/${entityId}'),
+                                                        .doc('list/${listId}'),
                                                     'entitiesName1',
                                                     decoration: InputDecoration(
                                                         hintText:
                                                             "Entity Name 1")),
                                                 DocFieldTextField(
                                                     FirebaseFirestore.instance
-                                                        .doc(
-                                                            'list/${entityId}'),
+                                                        .doc('list/${listId}'),
                                                     'entitiesName2',
                                                     decoration: InputDecoration(
                                                         hintText:
                                                             "Entity Name 2")),
                                                 DocFieldTextField(
                                                     FirebaseFirestore.instance
-                                                        .doc(
-                                                            'list/${entityId}'),
+                                                        .doc('list/${listId}'),
                                                     'name',
                                                     decoration: InputDecoration(
                                                         hintText: "List Name")),
                                                 DocFieldTextField(
                                                     FirebaseFirestore.instance
-                                                        .doc(
-                                                            'list/${entityId}'),
+                                                        .doc('list/${listId}'),
                                                     'entitiesAddress',
                                                     decoration: InputDecoration(
                                                         hintText:
                                                             "Entity address")),
                                                 DocFieldTextField(
                                                     FirebaseFirestore.instance
-                                                        .doc(
-                                                            'list/${entityId}'),
+                                                        .doc('list/${listId}'),
                                                     'dataSource',
                                                     decoration: InputDecoration(
                                                         hintText:
                                                             "Data Source")),
                                                 DocFieldTextField(
                                                     FirebaseFirestore.instance
-                                                        .doc(
-                                                            'list/${entityId}'),
+                                                        .doc('list/${listId}'),
                                                     'website',
                                                     decoration: InputDecoration(
                                                         hintText: "Website")),
@@ -230,7 +190,107 @@ class ListDetails extends ConsumerWidget {
                               }))
                       : Container();
                 }),
-      ]),
-    ]);
+      ],
+    );
+  }
+
+  TextButton _buildAPIButton(BuildContext context) {
+    return TextButton(
+        child: Text("API"),
+        onPressed: () => showCustomDialog(
+                context,
+                'API Details',
+                Column(children: <Widget>[
+                  Column(children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Text("curl: ",
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        Expanded(
+                          child: CopyToClipboardWidget(
+                              child: Text(generateCurlUrl("GET", listId)),
+                              text: generateCurlUrl("GET", listId)),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                      ],
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          children: <Widget>[
+                            Text("url: ",
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            Expanded(
+                              child: CopyToClipboardWidget(
+                                child: Text(generateBrowserUrl(listId)),
+                                text: generateBrowserUrl(listId),
+                              ),
+                            ),
+                          ],
+                        )),
+                  ])
+                ]),
+                [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Close'),
+                  )
+                ]));
+  }
+
+  Widget buildSourcesLinks(BuildContext context, WidgetRef ref) {
+    return DocStreamWidget(
+        docSP('list/$listId'),
+        (c, listDoc) =>
+            Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Text.rich(TextSpan(
+                        style: TextStyle(decoration: TextDecoration.underline),
+                        //make link underline
+                        text: listDoc.data()?['website'] ?? '',
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () async {
+                            //on tap code here, you can navigate to other page or URL
+                            final url =
+                                Uri.parse(listDoc.data()!['website'] ?? '#');
+                            var urllaunchable = await canLaunchUrl(
+                                url); //canLaunch is from url_launcher package
+                            if (urllaunchable) {
+                              await launchUrl(
+                                  url); //launch is from url_launcher package to launch URL
+                            } else {
+                              print("URL can't be launched.");
+                            }
+                          }))
+                  ]),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text.rich(TextSpan(
+                        style: TextStyle(decoration: TextDecoration.underline),
+                        //make link underline
+                        text: listDoc.data()?['dataSource'] ?? '',
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () async {
+                            //on tap code here, you can navigate to other page or URL
+                            final url =
+                                Uri.parse(listDoc.data()!['dataSource'] ?? '#');
+                            var urllaunchable = await canLaunchUrl(
+                                url); //canLaunch is from url_launcher package
+                            if (urllaunchable) {
+                              await launchUrl(
+                                  url); //launch is from url_launcher package to launch URL
+                            } else {
+                              print("URL can't be launched.");
+                            }
+                          })),
+                  ]),
+            ]));
   }
 }

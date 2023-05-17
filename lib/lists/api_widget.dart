@@ -8,10 +8,10 @@ import '../common.dart';
 class APIWidget extends StatelessWidget {
   const APIWidget({
     super.key,
-    required this.entityId,
+    required this.listId,
   });
 
-  final String entityId;
+  final String listId;
 
   @override
   Widget build(BuildContext context) {
@@ -39,33 +39,30 @@ class APIWidget extends StatelessWidget {
                               children: <Widget>[
                                 Column(
                                   children: <Widget>[
-                                    Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: Row(
-                                          children: <Widget>[
-                                            Text("curl: ",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                            Expanded(
-                                              child: Container(
-                                                  child: Text(generateCurlUrl(
-                                                      "GET", entityId))),
-                                            ),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            ElevatedButton(
-                                              child: Text("copy"),
-                                              onPressed: () async => {
-                                                await Clipboard.setData(
-                                                    ClipboardData(
-                                                        text: generateCurlUrl(
-                                                            "GET", entityId)))
-                                              },
-                                            ),
-                                          ],
-                                        )),
+                                    Row(
+                                      children: <Widget>[
+                                        Text("curl: ",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold)),
+                                        Expanded(
+                                          child: Container(
+                                              child: Text(generateCurlUrl(
+                                                  "GET", listId))),
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        ElevatedButton(
+                                          child: Text("copy"),
+                                          onPressed: () async => {
+                                            await Clipboard.setData(
+                                                ClipboardData(
+                                                    text: generateCurlUrl(
+                                                        "GET", listId)))
+                                          },
+                                        ),
+                                      ],
+                                    ),
                                     Padding(
                                         padding: const EdgeInsets.all(10.0),
                                         child: Row(
@@ -76,8 +73,8 @@ class APIWidget extends StatelessWidget {
                                                         FontWeight.bold)),
                                             Expanded(
                                               child: Container(
-                                                child: Text(generateBrowserUrl(
-                                                    entityId)),
+                                                child: Text(
+                                                    generateBrowserUrl(listId)),
                                               ),
                                             ),
                                             ElevatedButton(
@@ -87,7 +84,7 @@ class APIWidget extends StatelessWidget {
                                                     ClipboardData(
                                                         text:
                                                             generateBrowserUrl(
-                                                                entityId)))
+                                                                listId)))
                                               },
                                             ),
                                           ],

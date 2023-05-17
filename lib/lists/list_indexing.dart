@@ -20,10 +20,10 @@ const List<String> indexTypes = <String>[
 final editings = StateNotifierProvider<GenericStateNotifier<Map<String, bool>>,
     Map<String, bool>>((ref) => GenericStateNotifier<Map<String, bool>>({}));
 
-class ListIndexing extends ConsumerWidget {
+class ListIndicesWidget extends ConsumerWidget {
   final String entityId;
 
-  const ListIndexing(this.entityId);
+  const ListIndicesWidget(this.entityId);
 
   void add(BuildContext context) {
     FirebaseFirestore db = FirebaseFirestore.instance;

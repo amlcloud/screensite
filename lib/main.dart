@@ -55,7 +55,9 @@ class MainApp extends ConsumerWidget {
       title: 'Sanctions Screener',
       themeMode: isDarkTheme ? ThemeMode.dark : ThemeMode.light,
       theme: lightTheme,
-      darkTheme: darkTheme,
+      darkTheme: ThemeData.dark().copyWith(
+          highlightColor: Colors.orange,
+          colorScheme: ColorScheme.dark().copyWith(secondary: Colors.orange)),
       home: TheApp(),
       initialRoute: '/',
       onGenerateRoute: generateRoutes({
