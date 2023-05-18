@@ -36,7 +36,7 @@ class ListsPage extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  CustomNavRail.getNavRail(),
+                  // CustomNavRail.getNavRail(),
                   Expanded(
                       flex: 1,
                       child: SingleChildScrollView(

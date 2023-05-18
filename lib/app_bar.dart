@@ -1,11 +1,7 @@
-import 'package:auth/current_user_avatar_extended.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:screensite/common.dart';
-import 'package:screensite/main.dart';
-import 'package:screensite/state/theme_state_notifier.dart';
 import 'package:widgets/custom_app_bar.dart';
 
 class MyAppBar {
@@ -13,11 +9,11 @@ class MyAppBar {
       {bool autoImplyLeading = true}) {
     return CustomAppBar(
       // automaticallyImplyLeading: autoImplyLeading,
-      // tabs: [
-      //   'search',
-      //   'lists',
-      //   'cases',
-      // ],
+      tabs: [
+        'search',
+        'lists',
+        'cases',
+      ],
       maxTabWidth: 50,
       // automaticallyImplyLeading:
       //     (MediaQuery.of(context).size.width < WIDE_SCREEN_WIDTH)
@@ -32,7 +28,7 @@ class MyAppBar {
               child: SvgPicture.asset(
                 'assets/Logo_Dark.svg',
               )),
-      title: Text("Sanctions Screener", style: TextStyle(fontSize: 20)),
+      // title: Text("Sanctions Screener", style: TextStyle(fontSize: 20)),
       // tabsAlignment: TabsAlignment.left,
       // onTabSelected: (context, tabIndex, tab) {
       //   Navigator.of(context).pushNamed('/${tab.toLowerCase()}');

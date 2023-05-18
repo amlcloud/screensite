@@ -32,7 +32,10 @@ class _EntityListViewState extends ConsumerState<EntityListView> {
               error: (e, s) => [],
               data: (listDoc) => ref
                   .watch(colSPfiltered('list/${widget.entityId}/item',
-                      limit: 50, orderBy: listDoc.data()?['entitiesName1']))
+                      limit: 50,
+                      orderBy: listDoc.data()?['entitiesName1'] == ''
+                          ? null
+                          : listDoc.data()?['entitiesName1']))
                   .when(
                       loading: () => [],
                       error: (e, s) => [ErrorWidget(e)],
@@ -55,7 +58,15 @@ class _EntityListViewState extends ConsumerState<EntityListView> {
       DocumentSnapshot<Map<String, dynamic>> entityDoc,
       String fieldNameName) {
     String? fieldName = getEntityNameField(listDoc, fieldNameName);
-    if (fieldName != null) return entityDoc.data()?[fieldName] ?? '';
+    if (fieldName != null) {
+      // check if the field is an array and if so, return the first element
+      // return entityDoc.data()?[fieldName] ?? '';
+      if (entityDoc.data()?[fieldName] is List) {
+        return entityDoc.data()?[fieldName][0] ?? '';
+      } else {
+        return entityDoc.data()?[fieldName] ?? '';
+      }
+    }
     return '';
   }
 

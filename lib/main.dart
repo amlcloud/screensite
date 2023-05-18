@@ -17,6 +17,7 @@ import 'package:widgets/routing.dart';
 
 import 'cases/cases_page.dart';
 import 'firebase_options.dart';
+import 'landing_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,22 +52,28 @@ class MainApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     bool isDarkTheme = ref.watch(themeModeSNP);
-    return MaterialApp(
-      title: 'Sanctions Screener',
-      themeMode: isDarkTheme ? ThemeMode.dark : ThemeMode.light,
-      theme: lightTheme,
-      darkTheme: ThemeData.dark().copyWith(
-          highlightColor: Colors.orange,
-          colorScheme: ColorScheme.dark().copyWith(secondary: Colors.orange)),
-      home: TheApp(),
-      initialRoute: '/',
-      onGenerateRoute: generateRoutes({
-        '/': (context, settings) => SearchPage(),
-        '/search': (context, settings) => SearchPage(),
-        '/cases': (context, settings) => CasesPage(),
-        '/lists': (context, settings) => ListsPage(),
-      }),
-    );
+    return DefaultTabController(
+        initialIndex: 0,
+        length: 3,
+        child: MaterialApp(
+          title: 'Sanctions Screener',
+          themeMode: isDarkTheme ? ThemeMode.dark : ThemeMode.light,
+          theme: lightTheme,
+          darkTheme: ThemeData.dark().copyWith(
+              highlightColor: Colors.orange,
+              colorScheme:
+                  ColorScheme.dark().copyWith(secondary: Colors.orange)),
+          // home: TheApp(),
+          initialRoute: '/',
+          onGenerateRoute: generateRoutes({
+            '/': (context, settings) => LandingPage(),
+            // '/': (context, settings) => SearchPage(),
+            '/login': (context, settings) => LoginPage(),
+            '/search': (context, settings) => SearchPage(),
+            '/cases': (context, settings) => CasesPage(),
+            '/lists': (context, settings) => ListsPage(),
+          }),
+        ));
   }
 }
 
@@ -111,29 +118,31 @@ class TheAppState extends ConsumerState<TheApp> {
         ),
       );
     } else {
-      return Scaffold(
-          body: ref.watch(isLoggedIn) == false ? LoginPage() : SearchPage()
-          // DefaultTabController(
-          //     initialIndex: 0,
-          //     length: 3,
-          //     child: Navigator(
-          //       onGenerateRoute: (RouteSettings settings) {
-          //         // print('onGenerateRoute: ${settings}');
-          //         if (settings.name == '/' || settings.name == 'search') {
-          //           return PageRouteBuilder(
-          //               pageBuilder: (_, __, ___) => SearchPage());
-          //         } else if (settings.name == 'cases') {
-          //           return PageRouteBuilder(
-          //               pageBuilder: (_, __, ___) => CasesPage());
-          //         } else if (settings.name == 'lists') {
-          //           return PageRouteBuilder(
-          //               pageBuilder: (_, __, ___) => ListsPage());
-          //         } else {
-          //           throw 'no page to show';
-          //         }
-          //       },
-          //     ))
-          );
+      return Text('not loading');
+      // return Container();
+      // return Scaffold(
+      //     body: ref.watch(isLoggedIn) == false ? LoginPage() : SearchPage()
+      //     // DefaultTabController(
+      //     //     initialIndex: 0,
+      //     //     length: 3,
+      //     //     child: Navigator(
+      //     //       onGenerateRoute: (RouteSettings settings) {
+      //     //         // print('onGenerateRoute: ${settings}');
+      //     //         if (settings.name == '/' || settings.name == 'search') {
+      //     //           return PageRouteBuilder(
+      //     //               pageBuilder: (_, __, ___) => SearchPage());
+      //     //         } else if (settings.name == 'cases') {
+      //     //           return PageRouteBuilder(
+      //     //               pageBuilder: (_, __, ___) => CasesPage());
+      //     //         } else if (settings.name == 'lists') {
+      //     //           return PageRouteBuilder(
+      //     //               pageBuilder: (_, __, ___) => ListsPage());
+      //     //         } else {
+      //     //           throw 'no page to show';
+      //     //         }
+      //     //       },
+      //     //     ))
+      //     );
     }
   }
 }

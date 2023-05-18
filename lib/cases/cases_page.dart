@@ -25,7 +25,7 @@ class CasesPage extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  CustomNavRail.getNavRail(),
+                  // CustomNavRail.getNavRail(),
                   Flexible(
                       child: Column(
                     mainAxisSize: MainAxisSize.max,
