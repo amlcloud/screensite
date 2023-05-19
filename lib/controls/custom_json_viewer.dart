@@ -483,28 +483,44 @@ class _JsonArrayViewerState extends State<JsonArrayViewer> {
       ));
     } else if (content is int) {
       return Expanded(
-          child: Text(
-        content.toString(),
-        style: Theme.of(context).textTheme.subtitle2,
-      ));
+          child: GestureDetector(
+              onTap: () {
+                copyToClipboard(content.toString());
+              },
+              child: Text(
+                content.toString(),
+                style: Theme.of(context).textTheme.subtitle2,
+              )));
     } else if (content is String) {
       return Expanded(
-          child: Text(
-        '\"' + content + '\"',
-        style: Theme.of(context).textTheme.subtitle2,
-      ));
+          child: GestureDetector(
+              onTap: () {
+                copyToClipboard(content);
+              },
+              child: Text(
+                content,
+                style: Theme.of(context).textTheme.subtitle2,
+              )));
     } else if (content is bool) {
       return Expanded(
-          child: Text(
-        content.toString(),
-        style: Theme.of(context).textTheme.subtitle2,
-      ));
+          child: GestureDetector(
+              onTap: () {
+                copyToClipboard(content.toString());
+              },
+              child: Text(
+                content.toString(),
+                style: Theme.of(context).textTheme.subtitle2,
+              )));
     } else if (content is double) {
       return Expanded(
-          child: Text(
-        content.toString(),
-        style: Theme.of(context).textTheme.subtitle2,
-      ));
+          child: GestureDetector(
+              onTap: () {
+                copyToClipboard(content.toString());
+              },
+              child: Text(
+                content.toString(),
+                style: Theme.of(context).textTheme.subtitle2,
+              )));
     } else if (content is List) {
       if (content.isEmpty) {
         return Text(
