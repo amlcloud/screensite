@@ -31,14 +31,15 @@ class CasesPage extends ConsumerWidget {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Row(
+                      Flexible(
+                          child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(child: CaseTableWidget('2')),
                         ],
-                      ),
+                      )),
                       Expanded(child: CaseChatWidget()),
                     ],
                   )),

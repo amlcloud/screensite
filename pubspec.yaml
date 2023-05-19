@@ -54,6 +54,7 @@ dependencies:
   state_notifier: ^0.7.2+1
   flutter_svg: ^1.1.6  
   flutter_dotenv: ^5.0.2
+  stack_trace: ^1.11.0
   common:
     git: 
       url: https://github.com/Super-Fast-Forward/flutter_firebase_framework.git

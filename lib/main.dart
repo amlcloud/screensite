@@ -12,6 +12,7 @@ import 'package:screensite/login_page.dart';
 import 'package:screensite/sandbox_app.dart';
 import 'package:screensite/search/search_page.dart';
 import 'package:screensite/theme.dart';
+import 'package:stack_trace/stack_trace.dart';
 import 'package:theme/theme_mode.dart';
 import 'package:widgets/routing.dart';
 
@@ -19,29 +20,45 @@ import 'cases/cases_page.dart';
 import 'firebase_options.dart';
 import 'landing_page.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+void main() {
+  Chain.capture(() async {
+    WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
 
-  if (kReleaseMode) {
-    await dotenv.load(fileName: ".env.production");
-  } else {
-    await dotenv.load(fileName: ".env.development");
-  }
+    if (kReleaseMode) {
+      await dotenv.load(fileName: ".env.production");
+    } else {
+      await dotenv.load(fileName: ".env.development");
+    }
 
-  runApp(SandboxLauncher2(
-    enabled: const String.fromEnvironment('SANDBOX') == 'true',
-    app: ProviderScope(child: MainApp()),
-    sandbox: SandboxApp(),
-    getInitialState: () =>
-        kDB.doc('sandbox/serge').get().then((doc) => doc.data()!['sandbox']),
-    saveState: (state) => {
-      kDB.doc('sandbox/serge').set({'sandbox': state})
-    },
-  ));
+    runApp(SandboxLauncher2(
+      enabled: const String.fromEnvironment('SANDBOX') == 'true',
+      app: ProviderScope(child: MainApp()),
+      sandbox: SandboxApp(),
+      getInitialState: () =>
+          kDB.doc('sandbox/serge').get().then((doc) => doc.data()!['sandbox']),
+      saveState: (state) => {
+        kDB.doc('sandbox/serge').set({'sandbox': state})
+      },
+    ));
+  }, onError: (error, Chain chain) {
+    // print('Caught error $error\nStack trace: ${Trace.format(new Chain.forTrace(chain))}');
+    print('ERROR: $error\n${chain.foldFrames((Frame p0) {
+      // print(
+      //     'fold uri:${p0.uri}, lib:${p0.library}, core:${p0.isCore}, location:${p0.location}, package:${p0.package}, member:${p0.member}');
+      return p0.location.contains('framework.dart') ||
+          p0.location.contains('dart-sdk') ||
+          p0.location.contains('_engine') ||
+          p0.location.contains('_internal') ||
+          p0.location.contains('flutter') ||
+          p0.location.contains('stack_trace') ||
+          p0.location.contains('.js') ||
+          (p0.member != null && p0.member == 'throw_');
+    }, terse: true)}');
+  });
 }
 
 class MainApp extends ConsumerWidget {
