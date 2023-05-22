@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:providers/generic.dart';
+import 'package:screensite/cases/cases_page.dart';
 
 import 'lists/api_widget.dart';
 import 'lists/list_details.dart';
@@ -21,10 +22,8 @@ class SandboxApp extends StatelessWidget {
         themeMode: ThemeMode.dark,
         title: "SANDBOX!",
         home: Scaffold(
-            body: SizedBox(
-                width: 800,
-                height: 600,
-                child: ListDetails('api.trade.gov', null)
+            body: SizedBox(width: 800, height: 600, child: CasesPage()
+                //ListDetails('api.trade.gov', null)
                 //ListDetails('api.trade.gov', _nsp.notifier)
                 )),
       ),

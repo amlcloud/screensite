@@ -5,7 +5,7 @@ import 'package:screensite/common.dart';
 import 'package:screensite/drawer.dart';
 
 import 'case_table_widget.dart';
-import 'chat_widget.dart';
+import 'case_chat_widget.dart';
 import 'matches_widget.dart';
 import 'package:screensite/side_nav_bar.dart';
 
