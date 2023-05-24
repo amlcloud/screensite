@@ -33,9 +33,15 @@ jobs:
         with:
           name: public
           path: build/web          
-      - name: Deploy to Firebase
+      - name: Deploy Website to Firebase
         uses: w9jds/firebase-action@master
         with:
           args: deploy --only hosting
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+      - name: Deploy Firestore rules to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only firestore:rules
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}          
