@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:providers/firestore.dart';
 import 'package:providers/generic.dart';
 
+import 'name_field_value.dart';
+
 class IndexingItemList extends ConsumerWidget {
   final String _entityId;
   final Map<String, dynamic> _item;
@@ -51,7 +53,7 @@ class IndexingItemList extends ConsumerWidget {
                                     if (_item[f.data()['value']] != null) {
                                       if (type == 'Array of objects') {
                                         final objects = _item[f.data()['value']];
-                                        return objects.map((obj) => obj['wholeName'].toString()).join(", ");
+                                        return objects.map((obj) => obj[nameFieldValue.text].toString()).join(", "); // 
                                       }
                                       else {
                                         return _item[f.data()['value']];

@@ -7,6 +7,7 @@ import 'package:widgets/doc_field_drop_down.dart';
 import 'package:providers/firestore.dart';
 import 'indexing_form.dart';
 import 'indexing_index_by_array.dart';
+import 'name_field_value.dart';
 
 class IndexingArrayOfObjectsFieldForm extends IndexingForm {
   final StateNotifierProvider<GenericStateNotifier<String?>, String?>
@@ -45,7 +46,7 @@ class IndexingArrayOfObjectsFieldForm extends IndexingForm {
                                 width: 80,
                                 child: Padding(
                                     padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
-                                    child: Text('Full Name'))),
+                                    child: Text('Names Field'))),
                             Flexible(
                                 flex: 1,
                                 child: DocFieldDropDown(
@@ -68,6 +69,23 @@ class IndexingArrayOfObjectsFieldForm extends IndexingForm {
                                                 .toList())))
                           ]))
                       .toList());
+                       children.add(
+                          Row(children: [
+                            Container(
+                              width: 80,
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
+                                child: Text('Name field name')
+                              )
+                            ),
+                            Flexible(
+                              flex: 1,
+                              child: TextField(
+                                controller: nameFieldValue,
+                              )
+                            )
+                          ]),
+                      );
                   children.add(IndexingIndexByArray(entityId, document.id));
                   return children;
                 }));
