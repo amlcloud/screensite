@@ -16,16 +16,18 @@ class SandboxApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ProviderScope(
       overrides: [],
-      child: MaterialApp(
-        theme: ThemeData.light(), // darkTheme,
-        darkTheme: ThemeData.dark(), // darkTheme,
-        themeMode: ThemeMode.dark,
-        title: "SANDBOX!",
-        home: Scaffold(
-            body: SizedBox(width: 800, height: 600, child: CasesPage()
-                //ListDetails('api.trade.gov', null)
-                //ListDetails('api.trade.gov', _nsp.notifier)
-                )),
+      child: DefaultTabController(
+        length: 3, //MyAppBar.tabs.length,
+        child: MaterialApp(
+            theme: ThemeData.light(), // darkTheme,
+            darkTheme: ThemeData.dark(), // darkTheme,
+            themeMode: ThemeMode.dark,
+            title: "SANDBOX!",
+            home: Scaffold(
+                body: SizedBox(width: 800, height: 600, child: CasesPage()
+                    //ListDetails('api.trade.gov', null)
+                    //ListDetails('api.trade.gov', _nsp.notifier)
+                    ))),
       ),
     );
   }

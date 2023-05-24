@@ -32,7 +32,7 @@ class ChatMessageWidget extends ConsumerWidget {
                       // Text(
                       //     formatDateTime(messageDoc.data()?['timeCreated']),
                       //     style: Theme.of(context).textTheme.labelSmall),
-                      Text(messageDoc.data()?['role'] ?? ''),
+                      // Text(messageDoc.data()?['role'] ?? ''),
                       CopyToClipboardWidget(
                           text: messageDoc.data()?['content'] ?? '',
                           child: Icon(Icons.copy))

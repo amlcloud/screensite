@@ -1,27 +1,20 @@
-import 'dart:async';
 import 'dart:convert';
-import 'package:common/dialogs.dart';
-import 'package:http/http.dart' as http;
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:common/common.dart';
+import 'package:common/dialogs.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 import 'package:providers/firestore.dart';
 import 'package:providers/generic.dart';
 import 'package:providers/watchers.dart';
 import 'package:widgets/col_stream_widget.dart';
-
 import 'package:widgets/doc_field_text_field.dart';
-import 'package:widgets/snp_text_edit.dart';
 
 import 'chat_message_widget.dart';
-
-final Map<String, String> headers = {
-  'Content-Type': 'application/json',
-  'Authorization': 'Bearer ${kOpenAIKey}',
-};
 
 class ChatWidget extends ConsumerWidget {
   FocusNode focusNode = FocusNode();
@@ -60,15 +53,16 @@ class ChatWidget extends ConsumerWidget {
           //     }
           //   },
           // ),
-          Expanded(flex: 20, child: buildMessages()),
+
+          // Expanded(flex: 20, child: DocFieldText(docRef, 'content')),
+          Expanded(child: buildMessages()),
           Flexible(
-              flex: 5,
               child: Container(
                   // color: Colors.purple,
                   child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: buildSendMessage(context, ref),
-              )))
+            padding: const EdgeInsets.all(8.0),
+            child: buildSendMessage(context, ref),
+          )))
           // Expanded(child: Container(color: Colors.red)),
           // Flexible(child: Container(color: Colors.blue)),
         ],
@@ -193,13 +187,19 @@ class ChatWidget extends ConsumerWidget {
 
     final promptPrefix = """
       Based on the text provided below, return JSON with the following fields:
-      - Full name: The full name of the person.
-      - Date of Birth: The date of birth of the person.
-      - Place of Birth or Residence: The place of birth of the person.
-      - Additional information: Any additional information about the person.
+      {
+        "name": "The full name of the person",
+        "data_of_birth": "The date of birth of the person".,
+        "place_of_birth": "The place of birth of the person.",
+        "info": "Any additional information about the person."
+      }
+
+      Return JSON text only, no additional comments.
 
       Text:
 """;
+
+    print('messagesText: $messagesText');
 
     final userDoc = await kDBUserRef().get();
     if (!userDoc.exists) {
@@ -212,25 +212,49 @@ class ChatWidget extends ConsumerWidget {
     }
     final openai_key = userDoc.get('openai_key');
 
+    final Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${openai_key}',
+    };
+
     final res =
         await http.post(Uri.parse('https://api.openai.com/v1/completions'),
             headers: headers,
             body: jsonEncode({
               "model": 'text-davinci-003',
               "prompt": promptPrefix + messagesText,
-              "max_tokens": 9,
+              "max_tokens": 200,
               "temperature": 0.6
             }));
     if (res.statusCode != 200) {
       // save error
+      print(res.body);
       docRef.update({'error': res.body});
       return;
     } else {
-      final json = jsonDecode(res.body);
-      final text = json['choices'][0]['text'];
-      final messageDocRef = await docRef.update({
-        'content': text,
-      });
+      print(res.body);
+      final bodyJson = jsonDecode(res.body);
+      final text = bodyJson['choices'][0]['text'];
+
+      print('JSON: $text');
+
+      try {
+        final jsonContent = jsonDecode(text);
+
+        await docRef.update({
+          'content': jsonContent,
+        });
+
+        if (jsonContent["name"] != null) {
+          await docRef.collection('search').add({
+            'target': jsonContent["name"],
+            'timeCreated': FieldValue.serverTimestamp(),
+            'author': FirebaseAuth.instance.currentUser!.uid,
+          });
+        }
+      } catch (e) {
+        await docRef.update({'error': e.toString()});
+      }
     }
 
     // docRef.collection('run').add({

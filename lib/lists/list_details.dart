@@ -71,7 +71,7 @@ class ListDetails extends ConsumerWidget {
                                 child: EntityListView(listId, selectedItem),
                               )),
                           Divider(),
-                          ListCount(listId),
+                          Expanded(child: ListCount(listId)),
                         ]),
                   ));
             });
