@@ -217,6 +217,8 @@ class ChatWidget extends ConsumerWidget {
       'Authorization': 'Bearer ${openai_key}',
     };
 
+    await docRef.update({'error': FieldValue.delete()});
+
     final res =
         await http.post(Uri.parse('https://api.openai.com/v1/completions'),
             headers: headers,
@@ -246,7 +248,11 @@ class ChatWidget extends ConsumerWidget {
         });
 
         if (jsonContent["name"] != null) {
-          await docRef.collection('search').add({
+          final searchDoc =
+              await docRef.collection('search').doc(jsonContent["name"]).get();
+          if (searchDoc.exists) return;
+
+          await docRef.collection('search').doc(jsonContent["name"]).set({
             'target': jsonContent["name"],
             'timeCreated': FieldValue.serverTimestamp(),
             'author': FirebaseAuth.instance.currentUser!.uid,
