@@ -109,7 +109,7 @@ class IndexingItemList extends ConsumerWidget {
                                               for (int j = 0;
                                                   j < _item[key].length;
                                                   j++) {
-                                                subset.add(_item[key][j]['wholeName']);
+                                                subset.add(_item[key][j][nameFieldValue.text]);
                                               }
                                             }
                                       }                                                                             
