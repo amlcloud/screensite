@@ -5,12 +5,14 @@ import 'package:providers/firestore.dart';
 import 'package:screensite/app_bar.dart';
 import 'package:screensite/drawer.dart';
 import 'package:widgets/doc_field_text.dart';
-import 'package:widgets/doc_print.dart';
 import 'package:widgets/doc_stream_widget.dart';
+
 import 'case_chat_widget.dart';
 import 'matches_widget.dart';
 
 class CasesPage extends ConsumerWidget {
+  static String get routeName => 'cases';
+  static String get routeLocation => '/$routeName';
   final TextEditingController searchCtrl = TextEditingController();
 
   @override

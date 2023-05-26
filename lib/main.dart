@@ -7,20 +7,15 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:providers/generic.dart';
 import 'package:sandbox/sandbox_launcher2.dart';
-import 'package:screensite/lists/lists_page.dart';
-import 'package:screensite/login_page.dart';
+import 'package:screensite/router.dart';
 import 'package:screensite/sandbox_app.dart';
 import 'package:screensite/search/search_page.dart';
 import 'package:screensite/theme.dart';
 import 'package:stack_trace/stack_trace.dart';
 import 'package:theme/theme_mode.dart';
-import 'package:widgets/routing.dart';
-
-import 'cases/cases_page.dart';
 import 'firebase_options.dart';
-import 'landing_page.dart';
 
-void main() {
+void main() async {
   Chain.capture(() async {
     WidgetsFlutterBinding.ensureInitialized();
 
@@ -68,29 +63,48 @@ class MainApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
     bool isDarkTheme = ref.watch(themeModeSNP);
-    return DefaultTabController(
-        initialIndex: 0,
-        length: 3,
-        child: MaterialApp(
-          title: 'Sanctions Screener',
-          themeMode: isDarkTheme ? ThemeMode.dark : ThemeMode.light,
-          theme: lightTheme,
-          darkTheme: ThemeData.dark().copyWith(
-              highlightColor: Colors.orange,
-              colorScheme:
-                  ColorScheme.dark().copyWith(secondary: Colors.orange)),
-          // home: TheApp(),
-          initialRoute: '/',
-          onGenerateRoute: generateRoutes({
-            '/': (context, settings) => LandingPage(),
-            // '/': (context, settings) => SearchPage(),
-            '/login': (context, settings) => LoginPage(),
-            '/search': (context, settings) => SearchPage(),
-            '/cases': (context, settings) => CasesPage(),
-            '/lists': (context, settings) => ListsPage(),
-          }),
-        ));
+    return
+        // DefaultTabController(
+        //     initialIndex: 0,
+        //     length: 3,
+        //     child:
+        // MaterialApp(
+        //   title: 'Sanctions Screener',
+        //   themeMode: isDarkTheme ? ThemeMode.dark : ThemeMode.light,
+        //   theme: lightTheme,
+        //   darkTheme: ThemeData.dark().copyWith(
+        //       // highlightColor: Colors.orange,
+        //       // colorScheme:
+        //       //     ColorScheme.dark().copyWith(secondary: Colors.orange)
+        //       ),
+
+        //   initialRoute: '/',
+        //   onGenerateRoute: generateRoutes({
+        //     '/': (context, settings) => LandingPage(),
+        //     // '/': (context, settings) => SearchPage(),
+        //     '/login': (context, settings) => LoginPage(),
+        //     '/search': (context, settings) => SearchPage(),
+        //     '/cases': (context, settings) => CasesPage(),
+        //     '/lists': (context, settings) => ListsPage(),
+        //   })),
+        DefaultTabController(
+            initialIndex: 0,
+            length: 3,
+            child: MaterialApp.router(
+              title: 'Sanctions Screener',
+              routeInformationParser: router.routeInformationParser,
+              routerDelegate: router.routerDelegate,
+              routeInformationProvider: router.routeInformationProvider,
+              themeMode: isDarkTheme ? ThemeMode.dark : ThemeMode.light,
+              theme: lightTheme,
+              darkTheme: ThemeData.dark().copyWith(
+                  // highlightColor: Colors.orange,
+                  // colorScheme:
+                  //     ColorScheme.dark().copyWith(secondary: Colors.orange)
+                  ),
+            ));
   }
 }
 
@@ -99,67 +113,3 @@ final isLoggedIn = StateNotifierProvider<GenericStateNotifier<bool>, bool>(
 
 final isLoading = StateNotifierProvider<GenericStateNotifier<bool>, bool>(
     (ref) => GenericStateNotifier<bool>(false));
-
-class TheApp extends ConsumerStatefulWidget {
-  const TheApp({Key? key}) : super(key: key);
-  @override
-  TheAppState createState() => TheAppState();
-}
-
-class TheAppState extends ConsumerState<TheApp> {
-  @override
-  void initState() {
-    super.initState();
-    ref.read(isLoading.notifier).value = true;
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      if (user == null) {
-        // Clear search history from state on display of login page
-        ref.read(selectedSearchResult.notifier).value = null;
-        ref.read(isLoggedIn.notifier).value = false;
-        ref.read(isLoading.notifier).value = false;
-      } else {
-        ref.read(selectedSearchResult.notifier).value = null;
-        ref.read(isLoggedIn.notifier).value = true;
-        ref.read(isLoading.notifier).value = false;
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (ref.watch(isLoading)) {
-      return Center(
-        child: Container(
-          alignment: Alignment(0.0, 0.0),
-          child: CircularProgressIndicator(),
-        ),
-      );
-    } else {
-      return Text('not loading');
-      // return Container();
-      // return Scaffold(
-      //     body: ref.watch(isLoggedIn) == false ? LoginPage() : SearchPage()
-      //     // DefaultTabController(
-      //     //     initialIndex: 0,
-      //     //     length: 3,
-      //     //     child: Navigator(
-      //     //       onGenerateRoute: (RouteSettings settings) {
-      //     //         // print('onGenerateRoute: ${settings}');
-      //     //         if (settings.name == '/' || settings.name == 'search') {
-      //     //           return PageRouteBuilder(
-      //     //               pageBuilder: (_, __, ___) => SearchPage());
-      //     //         } else if (settings.name == 'cases') {
-      //     //           return PageRouteBuilder(
-      //     //               pageBuilder: (_, __, ___) => CasesPage());
-      //     //         } else if (settings.name == 'lists') {
-      //     //           return PageRouteBuilder(
-      //     //               pageBuilder: (_, __, ___) => ListsPage());
-      //     //         } else {
-      //     //           throw 'no page to show';
-      //     //         }
-      //     //       },
-      //     //     ))
-      //     );
-    }
-  }
-}

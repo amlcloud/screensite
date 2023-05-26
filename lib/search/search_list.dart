@@ -11,8 +11,8 @@ final sortStateNotifierProvider =
         (ref) => GenericStateNotifier<String?>(null));
 
 class SearchHistory extends ConsumerWidget {
-  final AlwaysAliveProviderBase<GenericStateNotifier<DocumentReference?>>
-      _selectedItemNotifier;
+  final StateNotifierProvider<GenericStateNotifier<DocumentReference?>,
+      DocumentReference?> _selectedItemNotifier;
 
   const SearchHistory(this._selectedItemNotifier);
 

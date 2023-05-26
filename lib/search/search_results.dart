@@ -8,8 +8,8 @@ import 'package:widgets/doc_field_text.dart';
 
 class SearchResults extends ConsumerWidget {
   final DocumentSnapshot searchDoc;
-  final AlwaysAliveProviderBase<GenericStateNotifier<DocumentReference?>>
-      _selectedItemNotifier;
+  final StateNotifierProvider<GenericStateNotifier<DocumentReference?>,
+      DocumentReference?> _selectedItemNotifier;
 
   SearchResults(this.searchDoc, this._selectedItemNotifier);
 
@@ -44,7 +44,8 @@ class SearchResults extends ConsumerWidget {
               return sortedMapbyFieldName(results.docs, 'levScore').map((res) {
                 return GestureDetector(
                     onTap: () {
-                      ref.read(_selectedItemNotifier).value = res.data()['ref'];
+                      ref.read(_selectedItemNotifier.notifier).value =
+                          res.data()['ref'];
                     },
                     child: ListTile(
                         title: Text("Name: " + res.data()['target']),

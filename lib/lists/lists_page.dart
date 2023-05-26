@@ -19,6 +19,8 @@ final selectedItem = StateNotifierProvider<
     (ref) => GenericStateNotifier<Map<String, dynamic>?>(null));
 
 class ListsPage extends ConsumerWidget {
+  static String get routeName => 'lists';
+  static String get routeLocation => '/$routeName';
   final activeList =
       StateNotifierProvider<GenericStateNotifier<String?>, String?>(
           (ref) => GenericStateNotifier<String?>(null));
@@ -49,8 +51,7 @@ class ListsPage extends ConsumerWidget {
                     flex: 2,
                     child: ref.watch(activeList) == null
                         ? Container()
-                        : ListDetails(
-                            ref.watch(activeList)!, selectedItem.notifier),
+                        : ListDetails(ref.watch(activeList)!, selectedItem),
                   ),
                   Expanded(
                       flex: 2,

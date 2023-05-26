@@ -41,7 +41,7 @@ dependencies:
   cloud_firestore: ^4.0.1
   cloud_functions: ^4.0.1
   equatable: ^2.0.0
-  flutter_riverpod: ^1.0.4
+  flutter_riverpod: ^2.3.6
   quiver: ^3.1.0
   google_sign_in: ^5.3.3
   jiffy: ^5.0.0
@@ -55,6 +55,7 @@ dependencies:
   flutter_svg: ^1.1.6  
   flutter_dotenv: ^5.0.2
   stack_trace: ^1.11.0
+  go_router: ^7.1.1
   common:
     git: 
       url: https://github.com/Super-Fast-Forward/flutter_firebase_framework.git
@@ -63,10 +64,10 @@ dependencies:
     git: 
       url: https://github.com/Super-Fast-Forward/flutter_firebase_framework.git
       path: sandbox
-  providers:
-    git: 
-      url: https://github.com/Super-Fast-Forward/flutter_firebase_framework.git
-      path: providers
+  # providers:
+  #   git: 
+  #     url: https://github.com/Super-Fast-Forward/flutter_firebase_framework.git
+  #     path: providers
   auth:
     git: 
       url: https://github.com/Super-Fast-Forward/flutter_firebase_framework.git
@@ -79,9 +80,11 @@ dependencies:
     git: 
       url: https://github.com/Super-Fast-Forward/flutter_firebase_framework.git
       path: theme
-            
 
-      
+
+
+
+    
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -96,7 +99,7 @@ dev_dependencies:
   csv: ^5.0.0
   path_provider: ^2.0.2
   permission_handler: ^7.1.0
-  fluttertoast: ^8.0.9
+  # fluttertoast: ^8.0.9
   universal_html: ^2.0.8
   clipboard: 
 

@@ -8,6 +8,7 @@ service cloud.firestore {
       allow read:  if request.auth != null;      
     }
     match /case/{indexId} {
+
       allow read :  if request.auth != null;
       allow write,create,update,delete: if request.auth != null;
 
@@ -20,18 +21,39 @@ service cloud.firestore {
         allow read :  if request.auth != null;
         allow write,create,update,delete: if request.auth != null;
       }
+
     }
     match /index/{indexId} {
-      allow read :  if request.auth != null;
+      allow read: if request.auth != null;
       allow write,create,update,delete: if false;
     }
-    match /list/{listId}/{documents=**} {
-    	allow read :  if request.auth != null;
-      allow write,create,update,delete: if false;
-      
+    match /list/{listId} {
+    	allow read: if request.auth != null;
+      allow update: if isAdmin();
+
+      match /{document=**} {
+        allow read : if request.auth != null;
+        allow write: if false;
+      }
+
+      match /item/{itemId} {
+        allow read : if request.auth != null;
+        allow write: if false;
+      }
+
+      match /fields/{fieldId} {
+        allow read : if request.auth != null;
+        allow write: if false;
+      }
+
       match /indexConfigs/{configId} {
         allow read :  if request.auth != null;
         allow write,create,update,delete: if isAdmin();
+
+        match /entityIndexFields/{eiId} {
+          allow read :  if request.auth != null;
+          allow write,create,update,delete: if isAdmin();
+        }
       } 
     }    
     match /user/{userId}/{documents=**} {

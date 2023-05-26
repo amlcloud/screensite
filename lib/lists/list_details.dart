@@ -22,8 +22,8 @@ import 'list_indexing_widget.dart';
 
 class ListDetails extends ConsumerWidget {
   final String listId;
-  final AlwaysAliveProviderBase<GenericStateNotifier<Map<String, dynamic>?>>?
-      selectedItem;
+  final StateNotifierProvider<GenericStateNotifier<Map<String, dynamic>?>,
+      Map<String, dynamic>?>? selectedItem;
 
   final TextEditingController idCtrl = TextEditingController(),
       nameCtrl = TextEditingController(),

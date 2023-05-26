@@ -12,8 +12,8 @@ final selectedEntityList =
 class EntityListView extends ConsumerStatefulWidget {
   const EntityListView(this.entityId, this.selectedItem);
   final String entityId;
-  final AlwaysAliveProviderBase<GenericStateNotifier<Map<String, dynamic>?>>?
-      selectedItem;
+  final StateNotifierProvider<GenericStateNotifier<Map<String, dynamic>?>,
+      Map<String, dynamic>?>? selectedItem;
 
   @override
   ConsumerState<EntityListView> createState() => _EntityListViewState();
@@ -104,7 +104,7 @@ class _EntityListViewState extends ConsumerState<EntityListView> {
           onTap: () {
             ref.read(selectedEntityList.notifier).value = index;
             if (widget.selectedItem != null)
-              ref.read(widget.selectedItem!).value = Map.fromEntries(
+              ref.read(widget.selectedItem!.notifier).value = Map.fromEntries(
                   entityDoc.data().entries.toList()
                     ..sort((e1, e2) => e1.key.compareTo(e2.key)));
           }),

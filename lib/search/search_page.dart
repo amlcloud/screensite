@@ -22,6 +22,9 @@ final selectedRef = StateNotifierProvider<
 const MINIMUM_SEARCH_LENGTH = 7;
 
 class SearchPage extends ConsumerWidget {
+  static String get routeName => 'search';
+  static String get routeLocation => '/$routeName';
+
   final TextEditingController searchCtrl = TextEditingController();
 
   final now = DateTime.now(); //
@@ -126,7 +129,7 @@ class SearchPage extends ConsumerWidget {
                               })
                         ],
                       ),
-                      Expanded(child: SearchHistory(selectedRef.notifier)),
+                      Expanded(child: SearchHistory(selectedRef)),
                     ],
                   )),
                   Expanded(
@@ -138,7 +141,7 @@ class SearchPage extends ConsumerWidget {
                                   FirebaseFirestore.instance.doc(
                                     'search/${ref.watch(selectedSearchResult)}',
                                   ),
-                                  selectedRef.notifier))),
+                                  selectedRef))),
                   Expanded(
                       child: Card(
                           child: Column(

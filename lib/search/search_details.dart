@@ -15,8 +15,8 @@ final activeEntity =
 
 class SearchDetails extends ConsumerWidget {
   final DocumentReference entityId;
-  final AlwaysAliveProviderBase<GenericStateNotifier<DocumentReference?>>
-      _selectedItemNotifier;
+  final StateNotifierProvider<GenericStateNotifier<DocumentReference?>,
+      DocumentReference?> _selectedItemNotifier;
 
   final TextEditingController idCtrl = TextEditingController(),
       nameCtrl = TextEditingController(),
@@ -37,27 +37,29 @@ class SearchDetails extends ConsumerWidget {
               return Container(
                   decoration: RoundedCornerContainer.containerStyle,
                   child: SingleChildScrollView(
-                      child: Column(                        
+                      child: Column(
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children:[
-                          Text('Searched Target: ${searchDoc.data()!['target']}'
-                              ), //kk
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                                'Searched Target: ${searchDoc.data()!['target']}'), //kk
 
-                      ElevatedButton(
-                      child: Text("Copy"),
-                      onPressed: () async 
-                       {
-                       await Clipboard.setData(ClipboardData(text: 'target'));
-                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                       content: Text('Copied: ${searchDoc.data()!['target']}')));
-                       })]),
-                        
+                            ElevatedButton(
+                                child: Text("Copy"),
+                                onPressed: () async {
+                                  await Clipboard.setData(
+                                      ClipboardData(text: 'target'));
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text(
+                                              'Copied: ${searchDoc.data()!['target']}')));
+                                })
+                          ]),
                       Text(
                           'Search Time: ${timeCreated != null ? Jiffy(timeCreated.toDate()).format("h:mm a, do MMM, yyyy") : ''}'),
                       SearchResults(searchDoc, _selectedItemNotifier),
-                      ],
+                    ],
                   )));
             });
   }
