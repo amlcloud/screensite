@@ -87,7 +87,8 @@ class SearchPage extends ConsumerWidget {
                                           "Please input $MINIMUM_SEARCH_LENGTH or more alpha-numeric, space or dash characters";
                                       return isValid() &&
                                               searchCtrl.text.length <
-                                                  MINIMUM_SEARCH_LENGTH
+                                                  MINIMUM_SEARCH_LENGTH &&
+                                              searchCtrl.text.isNotEmpty
                                           ? message
                                           : isValid()
                                               ? null
