@@ -48,7 +48,8 @@ class SearchResults extends ConsumerWidget {
                           res.data()['ref'];
                     },
                     child: ListTile(
-                        title: Text("Name: " + res.data()['target']),
+                        title: Text("Name: " +
+                            res.data()['target'].replaceAll(" undefined", "")),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
