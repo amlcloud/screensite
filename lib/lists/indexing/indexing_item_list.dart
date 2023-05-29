@@ -53,7 +53,7 @@ class IndexingItemList extends ConsumerWidget {
                                     if (_item[f.data()['value']] != null) {
                                       if (type == 'Array of objects') {
                                         final objects = _item[f.data()['value']];
-                                        return objects.map((obj) => obj[nameFieldValue.text].toString()).join(", "); // 
+                                        return objects.map((obj) => obj[nameFieldValue.text] != null ? obj[nameFieldValue.text].toString() : obj[nameFieldValue.text]=' ').join(", ");
                                       }
                                       else {
                                         return _item[f.data()['value']];
