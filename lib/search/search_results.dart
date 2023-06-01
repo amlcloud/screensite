@@ -58,9 +58,8 @@ class SearchResults extends ConsumerWidget {
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Match score: " +
-                                matchScore.toStringAsFixed(2) +
-                                " %"),
+                            Text(
+                                "Match score: ${matchScore.toStringAsFixed(2)} %"),
                             Text("Levscore: " +
                                 res.data()['levScore'].toString()),
                             Text("List id: " +
