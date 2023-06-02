@@ -27,74 +27,82 @@ class CasesPage extends ConsumerWidget {
             child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   // CustomNavRail.getNavRail(),
                   Flexible(
+                      flex: 1,
                       child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Flexible(
-                          child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Expanded(
-                              child:
-                                  // CaseTableWidget('2')
-                                  //DocPrintWidget(kDB.doc('/case/123'))
-                                  DocStreamWidget(
-                                      docSP(kDB.doc('/case/123').path),
-                                      (c, doc) {
-                            return DataTable(
-                                columns: const <DataColumn>[
-                                  DataColumn(
-                                    label: Expanded(
-                                      child: Text(
-                                        'Name',
-                                        style: TextStyle(
-                                            fontStyle: FontStyle.italic),
-                                      ),
-                                    ),
-                                  ),
-                                  DataColumn(
-                                    label: Expanded(
-                                      child: Text(
-                                        'Value',
-                                        style: TextStyle(
-                                            fontStyle: FontStyle.italic),
-                                      ),
-                                    ),
-                                  ),
+                          Flexible(
+                              flex: 1,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                      child:
+                                          // CaseTableWidget('2')
+                                          //DocPrintWidget(kDB.doc('/case/123'))
+                                          DocStreamWidget(
+                                              docSP(kDB.doc('/case/123').path),
+                                              (c, doc) {
+                                    return DataTable(
+                                        columns: const <DataColumn>[
+                                          DataColumn(
+                                            label: Expanded(
+                                              child: Text(
+                                                'Name',
+                                                style: TextStyle(
+                                                    fontStyle:
+                                                        FontStyle.italic),
+                                              ),
+                                            ),
+                                          ),
+                                          DataColumn(
+                                            label: Expanded(
+                                              child: Text(
+                                                'Value',
+                                                style: TextStyle(
+                                                    fontStyle:
+                                                        FontStyle.italic),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                        rows: (doc.data()?['content']
+                                                as Map<String, dynamic>)
+                                            .entries
+                                            .map((e) => DataRow(
+                                                  cells: <DataCell>[
+                                                    DataCell(Text(e.key)),
+                                                    DataCell(Text(
+                                                        e.value.toString())),
+                                                  ],
+                                                ))
+                                            .toList());
+                                    // return Text(doc.id);
+                                  })),
                                 ],
-                                rows: (doc.data()?['content']
-                                        as Map<String, dynamic>)
-                                    .entries
-                                    .map((e) => DataRow(
-                                          cells: <DataCell>[
-                                            DataCell(Text(e.key)),
-                                            DataCell(Text(e.value.toString())),
-                                          ],
-                                        ))
-                                    .toList());
-                            // return Text(doc.id);
-                          })),
+                              )),
+                          Spacer(),
+                          Flexible(
+                              flex: 1,
+                              child: SizedBox(
+                                  height: 300, child: CaseChatWidget())),
                         ],
                       )),
-                      Expanded(child: CaseChatWidget()),
-                      Expanded(
-                          child: DocFieldText(kDB.doc('/case/123'), 'error',
-                              style: TextStyle(color: Colors.red)))
-                    ],
-                  )),
                   Expanded(
+                      flex: 1,
                       child: Card(
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                        Expanded(child: MatchesWidget(kDB.doc('/case/123')))
-                      ])))
+                            Expanded(child: MatchesWidget(kDB.doc('/case/123')))
+                          ])))
                 ])));
   }
 }

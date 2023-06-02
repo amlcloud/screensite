@@ -15,6 +15,7 @@ import 'package:widgets/col_stream_widget.dart';
 import 'package:widgets/doc_field_text_field.dart';
 
 import 'chat_message_widget.dart';
+import 'openai.dart';
 
 class ChatWidget extends ConsumerWidget {
   FocusNode focusNode = FocusNode();
@@ -56,13 +57,12 @@ class ChatWidget extends ConsumerWidget {
 
           // Expanded(flex: 20, child: DocFieldText(docRef, 'content')),
           Expanded(child: buildMessages()),
-          Flexible(
-              child: Container(
-                  // color: Colors.purple,
-                  child: Padding(
+          Container(
+              // color: Colors.purple,
+              child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: buildSendMessage(context, ref),
-          )))
+          ))
           // Expanded(child: Container(color: Colors.red)),
           // Flexible(child: Container(color: Colors.blue)),
         ],
@@ -201,23 +201,9 @@ class ChatWidget extends ConsumerWidget {
 
     print('messagesText: $messagesText');
 
-    final userDoc = await kDBUserRef().get();
-    if (!userDoc.exists) {
-      showConfirmDialog(
-          context,
-          'No OpenAI Key specified',
-          Text('please contact administrator to set you up with an OpenAI key'),
-          () => {});
-      return;
-    }
-    final openai_key = userDoc.get('openai_key');
+    final headers = await prepareOpenAIHeaders();
 
-    final Map<String, String> headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${openai_key}',
-    };
-
-    await docRef.update({'error': FieldValue.delete()});
+    await docRef.set({'error': FieldValue.delete()}, SetOptions(merge: true));
 
     final res =
         await http.post(Uri.parse('https://api.openai.com/v1/completions'),
@@ -257,9 +243,10 @@ class ChatWidget extends ConsumerWidget {
             'timeCreated': FieldValue.serverTimestamp(),
             'author': FirebaseAuth.instance.currentUser!.uid,
           });
+          await docRef.update({'target': jsonContent["name"]});
         }
       } catch (e) {
-        await docRef.update({'error': e.toString()});
+        await docRef.update({'error': e.toString() + '\n' + text});
       }
     }
 

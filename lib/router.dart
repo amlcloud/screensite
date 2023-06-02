@@ -28,7 +28,7 @@ CustomTransitionPage buildPageWithDefaultTransition<T>({
 }
 
 final routerProvider = Provider<GoRouter>((ref) {
-  final authState = ref.watch(authProvider);
+  final AsyncValue<User?> authState = ref.watch(authProvider);
 
   return GoRouter(
     navigatorKey: _key,
@@ -94,9 +94,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       // Returning `null` means "we are not authorized"
       final isAuth = authState.valueOrNull != null;
 
-      final isSplash = state.location == SearchPage.routeLocation;
-      if (isSplash) {
-        return isAuth ? SearchPage.routeLocation : LoginPage.routeLocation;
+      if (!isAuth) {
+        return LoginPage.routeLocation;
       }
 
       final isLoggingIn = state.location == LoginPage.routeLocation;
