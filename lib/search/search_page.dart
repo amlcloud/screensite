@@ -80,21 +80,14 @@ class SearchPage extends ConsumerWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
                             child: Text(
                               "Sanction Search",
-                              style: TextStyle(
-                                fontSize: 24.0,
-                                color: Theme.of(context).colorScheme.onSurface,
-                                // fontWeight: FontWeight.bold,
-                              ),
+                              style:Theme.of(context).textTheme.titleLarge,
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
                             child: Text(
                               "Enter known information on an individual or entity to find the closest match and review their information.",
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                color: Theme.of(context).colorScheme.onSurface,
-                              ),
+                              style: Theme.of(context).textTheme.labelMedium,
                             ),
                           ),
                         ],
@@ -143,9 +136,9 @@ class SearchPage extends ConsumerWidget {
                           ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 backgroundColor:
-                                    Theme.of(context).colorScheme.secondary,
+                                    Theme.of(context).colorScheme.primary,
                                 foregroundColor:
-                                    Theme.of(context).colorScheme.onSecondary,
+                                    Theme.of(context).colorScheme.onPrimary,
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 16.0, vertical: 16.0),
                                 shape: RoundedRectangleBorder(
@@ -154,9 +147,6 @@ class SearchPage extends ConsumerWidget {
                               ),
                               child: Text(
                                 "Search",
-                                style: TextStyle(
-                                  fontSize: 16.0,
-                                ),
                               ),
                               onPressed: () async {
                                 // if (searchCtrl.text.isEmpty) return;
