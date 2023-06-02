@@ -8,31 +8,57 @@ import 'package:widgets/doc_print.dart';
 import 'package:widgets/doc_stream_widget.dart';
 
 class MatchesWidget extends ConsumerWidget {
-  final DR docRef;
+  final DR caseDocRef;
   final TextEditingController searchCtrl = TextEditingController();
 
-  MatchesWidget(this.docRef);
+  MatchesWidget(this.caseDocRef);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SingleChildScrollView(
         child: Card(
-            child: ColStreamWidget<Widget>(
-                colSP(docRef.collection('search').path),
-                (context, snapshot, items) => Column(children: items),
-                (context, doc) => Column(
-                      children: [
-                        Text(doc.data()!['target']),
-                        ColStreamWidget<Widget>(
-                            colSP(doc.reference.collection('res').path),
-                            (context, snapshot, items) =>
-                                Column(children: items),
-                            (context, doc) => DocStreamWidget(
-                                docSP((doc.data()!['ref'] as DocumentReference)
-                                    .path),
-                                (context, sanctionDoc) =>
-                                    DocPrintWidget(sanctionDoc.reference)))
-                      ],
-                    ))));
+            child: DocStreamWidget(
+                docSP(caseDocRef.path),
+                (context, caseDoc) => caseDoc.data()?['target'] == null
+                    ? Text('No matches')
+                    : DocStreamWidget(
+                        docSP(caseDocRef
+                            .collection('search')
+                            .doc(caseDoc.data()?['target'])
+                            .path),
+                        (context, doc) => Column(
+                              children: [
+                                Text(doc.data()!['target']),
+                                ColStreamWidget<Widget>(
+                                    colSP(doc.reference.collection('res').path),
+                                    (context, snapshot, items) =>
+                                        Column(children: items),
+                                    (context, doc) => DocStreamWidget(
+                                        docSP((doc.data()!['ref']
+                                                as DocumentReference)
+                                            .path),
+                                        (context, sanctionDoc) =>
+                                            DocPrintWidget(
+                                                sanctionDoc.reference)))
+                              ],
+                            )))
+            // ColStreamWidget<Widget>(
+            //     colSP(docRef.collection('search').path),
+            //     (context, snapshot, items) => Column(children: items),
+            //     (context, doc) => Column(
+            //           children: [
+            //             Text(doc.data()!['target']),
+            //             ColStreamWidget<Widget>(
+            //                 colSP(doc.reference.collection('res').path),
+            //                 (context, snapshot, items) =>
+            //                     Column(children: items),
+            //                 (context, doc) => DocStreamWidget(
+            //                     docSP((doc.data()!['ref'] as DocumentReference)
+            //                         .path),
+            //                     (context, sanctionDoc) =>
+            //                         DocPrintWidget(sanctionDoc.reference)))
+            //           ],
+            //         ))
+            ));
   }
 }

@@ -56,13 +56,12 @@ class ChatWidget extends ConsumerWidget {
 
           // Expanded(flex: 20, child: DocFieldText(docRef, 'content')),
           Expanded(child: buildMessages()),
-          Flexible(
-              child: Container(
-                  // color: Colors.purple,
-                  child: Padding(
+          Container(
+              // color: Colors.purple,
+              child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: buildSendMessage(context, ref),
-          )))
+          ))
           // Expanded(child: Container(color: Colors.red)),
           // Flexible(child: Container(color: Colors.blue)),
         ],
@@ -217,7 +216,7 @@ class ChatWidget extends ConsumerWidget {
       'Authorization': 'Bearer ${openai_key}',
     };
 
-    await docRef.update({'error': FieldValue.delete()});
+    await docRef.set({'error': FieldValue.delete()}, SetOptions(merge: true));
 
     final res =
         await http.post(Uri.parse('https://api.openai.com/v1/completions'),
@@ -257,9 +256,10 @@ class ChatWidget extends ConsumerWidget {
             'timeCreated': FieldValue.serverTimestamp(),
             'author': FirebaseAuth.instance.currentUser!.uid,
           });
+          await docRef.update({'target': jsonContent["name"]});
         }
       } catch (e) {
-        await docRef.update({'error': e.toString()});
+        await docRef.update({'error': e.toString() + '\n' + text});
       }
     }
 

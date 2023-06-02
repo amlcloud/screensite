@@ -1,5 +1,4 @@
 import 'package:common/common.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,15 +8,19 @@ import 'package:providers/generic.dart';
 import 'package:sandbox/sandbox_launcher2.dart';
 import 'package:screensite/router.dart';
 import 'package:screensite/sandbox_app.dart';
-import 'package:screensite/search/search_page.dart';
 import 'package:screensite/theme.dart';
 import 'package:stack_trace/stack_trace.dart';
+import 'package:theme/config.dart';
 import 'package:theme/theme_mode.dart';
+
 import 'firebase_options.dart';
 
 void main() async {
   Chain.capture(() async {
     WidgetsFlutterBinding.ensureInitialized();
+
+    ThemeModeConfig.enableSave = true;
+    ThemeModeConfig.defaultToLightTheme = true;
 
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
@@ -41,18 +44,7 @@ void main() async {
     ));
   }, onError: (error, Chain chain) {
     // print('Caught error $error\nStack trace: ${Trace.format(new Chain.forTrace(chain))}');
-    print('ERROR: $error\n${chain.foldFrames((Frame p0) {
-      // print(
-      //     'fold uri:${p0.uri}, lib:${p0.library}, core:${p0.isCore}, location:${p0.location}, package:${p0.package}, member:${p0.member}');
-      return p0.location.contains('framework.dart') ||
-          p0.location.contains('dart-sdk') ||
-          p0.location.contains('_engine') ||
-          p0.location.contains('_internal') ||
-          p0.location.contains('flutter') ||
-          p0.location.contains('stack_trace') ||
-          p0.location.contains('.js') ||
-          (p0.member != null && p0.member == 'throw_');
-    }, terse: true)}');
+    print('ERROR: $error\n${condenseError(error, chain)}');
   });
 }
 
@@ -65,6 +57,7 @@ class MainApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
     bool isDarkTheme = ref.watch(themeModeSNP);
+    print('theme: ${isDarkTheme}');
     return
         // DefaultTabController(
         //     initialIndex: 0,
