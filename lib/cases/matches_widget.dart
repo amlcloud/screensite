@@ -47,83 +47,9 @@ class MatchesWidget extends ConsumerWidget {
                                                 DocPrintWidget(
                                                     sanctionDoc.reference),
                                                 ElevatedButton(
-                                                    onPressed: () async {
-                                                      final headers =
-                                                          await prepareOpenAIHeaders();
-
-                                                      final res = await http.post(
-                                                          Uri.parse(
-                                                              'https://api.openai.com/v1/chat/completions'),
-                                                          headers: headers,
-                                                          body: jsonEncode({
-                                                            "model":
-                                                                "gpt-3.5-turbo",
-                                                            "messages": [
-                                                              {
-                                                                "role": "user",
-                                                                "content":
-                                                                    "Say this is a test!"
-                                                              }
-                                                            ],
-                                                            "max_tokens": 200,
-                                                            "temperature": 0.6
-                                                          }));
-
-                                                      if (res.statusCode !=
-                                                          200) {
-                                                        // save error
-                                                        print(res.body);
-                                                        sanctionDoc.reference
-                                                            .update({
-                                                          'error': res.body
-                                                        });
-                                                        return;
-                                                      } else {
-                                                        dynamic message = null;
-
-                                                        final response = json
-                                                            .decode(res.body);
-                                                        if (response != null &&
-                                                            response.containsKey(
-                                                                'choices') &&
-                                                            response['choices']
-                                                                    .length >
-                                                                0 &&
-                                                            response['choices']
-                                                                    [0]
-                                                                .containsKey(
-                                                                    'message')) {
-                                                          message = response[
-                                                                  'choices'][0]
-                                                              ['message'];
-                                                          // Perform further actions using 'text' variable
-                                                        } else {
-                                                          print(
-                                                              'no answer from assistant');
-                                                          return;
-                                                        }
-
-                                                        print(
-                                                            'message is: ${message}');
-
-                                                        String messageText =
-                                                            message['content'];
-
-                                                        final messagesRef =
-                                                            sanctionDoc
-                                                                .reference
-                                                                .collection(
-                                                                    'messages')
-                                                                .add({
-                                                          'role': 'assistant',
-                                                          'timeCreated': FieldValue
-                                                              .serverTimestamp(),
-                                                          'content':
-                                                              messageText,
-                                                          // 'prompt': prompt
-                                                        });
-                                                      }
-                                                    },
+                                                    onPressed: () =>
+                                                        sendMessage(sanctionDoc,
+                                                            caseDoc),
                                                     child: Text('Investigate')),
                                                 ColStreamWidget<Widget>(
                                                     colSP(sanctionDoc.reference
@@ -156,5 +82,79 @@ class MatchesWidget extends ConsumerWidget {
             //           ],
             //         ))
             ));
+  }
+
+  void sendMessage(DS sanctionDoc, DS caseDoc) async {
+    final headers = await prepareOpenAIHeaders();
+
+    final messagesRef = sanctionDoc.reference.collection('messages');
+
+    final messagesCol = await messagesRef.get();
+
+    if (messagesCol.size == 0) {
+      await messagesRef.add({
+        'role': 'system',
+        'timeCreated': FieldValue.serverTimestamp(),
+        'content':
+            'You are a sanctions investigator. You need to compare the information about the customer with the information in the sanction document and decide whether the customer is the same person as the person in the sanction document.'
+      });
+      await messagesRef.add({
+        'role': 'user',
+        'timeCreated': FieldValue.serverTimestamp(),
+        'content':
+            """Here is my customer information: ${caseDoc.data()?['target']}\n\nHere is the information in the sanction document: ${sanctionDoc.data()?['target']}"""
+      });
+    }
+
+    final messages = messagesCol.docs.map((e) => e.data()).toList();
+
+    final res =
+        await http.post(Uri.parse('https://api.openai.com/v1/chat/completions'),
+            headers: headers,
+            body: jsonEncode({
+              "model": "gpt-3.5-turbo",
+              "messages": messages,
+              // [
+              //   {
+              //     "role": "user",
+              //     "content":
+              //         "Say this is a test!"
+              //   }
+              // ],
+              "max_tokens": 200,
+              "temperature": 0.6
+            }));
+
+    if (res.statusCode != 200) {
+      // save error
+      print(res.body);
+      sanctionDoc.reference.update({'error': res.body});
+      return;
+    } else {
+      dynamic message = null;
+
+      final response = json.decode(res.body);
+      if (response != null &&
+          response.containsKey('choices') &&
+          response['choices'].length > 0 &&
+          response['choices'][0].containsKey('message')) {
+        message = response['choices'][0]['message'];
+        // Perform further actions using 'text' variable
+      } else {
+        print('no answer from assistant');
+        return;
+      }
+
+      print('message is: ${message}');
+
+      String messageText = message['content'];
+
+      messagesRef.add({
+        'role': 'assistant',
+        'timeCreated': FieldValue.serverTimestamp(),
+        'content': messageText,
+        // 'prompt': prompt
+      });
+    }
   }
 }
