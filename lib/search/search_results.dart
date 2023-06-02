@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +43,11 @@ class SearchResults extends ConsumerWidget {
                 ];
               }
               return sortedMapbyFieldName(results.docs, 'levScore').map((res) {
+                num maxLengthOfString = max(
+                    res.data()['target'].length, searchDoc['target'].length);
+                num matchScore =
+                    (1 - res.data()['levScore'] / maxLengthOfString) *
+                        100; // Formula to calculate match score from lev score
                 return GestureDetector(
                     onTap: () {
                       ref.read(_selectedItemNotifier.notifier).value =
@@ -52,6 +58,8 @@ class SearchResults extends ConsumerWidget {
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Text(
+                                "Match score: ${matchScore.toStringAsFixed(2)} %"),
                             Text("Levscore: " +
                                 res.data()['levScore'].toString()),
                             Text("List id: " +
