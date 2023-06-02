@@ -73,36 +73,81 @@ class SearchPage extends ConsumerWidget {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                            child: Text(
+                              "Sanction Search",
+                              style:Theme.of(context).textTheme.titleLarge,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                            child: Text(
+                              "Enter known information on an individual or entity to find the closest match and review their information.",
+                              style: Theme.of(context).textTheme.labelMedium,
+                            ),
+                          ),
+                        ],
+                      ),
                       Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(
-                              child: Form(
-                                  key: _formKey,
-                                  child: TextFormField(
-                                    validator: (value) {
-                                      String message =
-                                          "Please input $MINIMUM_SEARCH_LENGTH or more alpha-numeric, space or dash characters";
-                                      return isValid() &&
-                                              searchCtrl.text.length <
-                                                  MINIMUM_SEARCH_LENGTH &&
-                                              searchCtrl.text.isNotEmpty
-                                          ? message
-                                          : isValid()
-                                              ? null
-                                              : message;
-                                    },
-                                    onChanged: (v) {
-                                      _formKey.currentState?.validate();
-                                    },
-                                    controller: searchCtrl,
-                                    onFieldSubmitted: (value) async =>
-                                        setSearchValue(),
-                                  ))),
+                            child: Form(
+                              key: _formKey,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 16.0, vertical: 12.0),
+                                child: TextFormField(
+                                  validator: (value) {
+                                    String message =
+                                        "Please input $MINIMUM_SEARCH_LENGTH or more alpha-numeric, space or dash characters";
+                                    return isValid() &&
+                                            searchCtrl.text.length <
+                                                MINIMUM_SEARCH_LENGTH &&
+                                            searchCtrl.text.isNotEmpty
+                                        ? message
+                                        : isValid()
+                                            ? null
+                                            : message;
+                                  },
+                                  onChanged: (v) {
+                                    _formKey.currentState?.validate();
+                                  },
+                                  controller: searchCtrl,
+                                  onFieldSubmitted: (value) async =>
+                                      setSearchValue(),
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.search),
+                                    border: OutlineInputBorder(),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 16.0, vertical: 12.0),
+                                    hintText: 'Enter Name Here',
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                           ElevatedButton(
-                              child: Text("Search"),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.primary,
+                                foregroundColor:
+                                    Theme.of(context).colorScheme.onPrimary,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 16.0, vertical: 16.0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                              ),
+                              child: Text(
+                                "Search",
+                              ),
                               onPressed: () async {
                                 // if (searchCtrl.text.isEmpty) return;
                                 // var url = Uri.parse(
