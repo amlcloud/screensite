@@ -15,6 +15,7 @@ import 'package:widgets/col_stream_widget.dart';
 import 'package:widgets/doc_field_text_field.dart';
 
 import 'chat_message_widget.dart';
+import 'openai.dart';
 
 class ChatWidget extends ConsumerWidget {
   FocusNode focusNode = FocusNode();
@@ -200,21 +201,7 @@ class ChatWidget extends ConsumerWidget {
 
     print('messagesText: $messagesText');
 
-    final userDoc = await kDBUserRef().get();
-    if (!userDoc.exists) {
-      showConfirmDialog(
-          context,
-          'No OpenAI Key specified',
-          Text('please contact administrator to set you up with an OpenAI key'),
-          () => {});
-      return;
-    }
-    final openai_key = userDoc.get('openai_key');
-
-    final Map<String, String> headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${openai_key}',
-    };
+    final headers = await prepareOpenAIHeaders();
 
     await docRef.set({'error': FieldValue.delete()}, SetOptions(merge: true));
 
