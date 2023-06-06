@@ -1,14 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:providers/firestore.dart';
+import 'package:providers/generic.dart';
 import 'package:screensite/app_bar.dart';
 import 'package:screensite/drawer.dart';
 import 'package:widgets/doc_field_text.dart';
 import 'package:widgets/doc_stream_widget.dart';
 
 import 'case_chat_widget.dart';
+import 'investigation_widget.dart';
 import 'matches_widget.dart';
+
+final SNP<DR?> activeSearchResDocRef = snp(null);
 
 class CasesPage extends ConsumerWidget {
   static String get routeName => 'cases';
@@ -102,7 +107,16 @@ class CasesPage extends ConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                             Expanded(child: MatchesWidget(kDB.doc('/case/123')))
-                          ])))
+                          ]))),
+                  Expanded(
+                      flex: 1,
+                      child: ref.watch(activeSearchResDocRef) == null
+                          ? Container()
+                          : InvestigationWidget(kDB.doc('/case/123'),
+                              ref.watch(activeSearchResDocRef)!
+                              // kDB.doc(
+                              //     '/case/123/search/Aamir Ali Choudry/res/dfat.gov.au|Aamir Ali Choudry')
+                              ))
                 ])));
   }
 }
