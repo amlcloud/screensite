@@ -80,14 +80,14 @@ class SearchPage extends ConsumerWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
                             child: Text(
                               "Sanction Search",
-                              style:Theme.of(context).textTheme.titleLarge,
+                              style:Theme.of(context).textTheme.headlineMedium,
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
                             child: Text(
                               "Enter known information on an individual or entity to find the closest match and review their information.",
-                              style: Theme.of(context).textTheme.labelMedium,
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ),
                         ],
