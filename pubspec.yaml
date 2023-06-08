@@ -59,8 +59,8 @@ dependencies:
     git:
       url: https://github.com/Super-Fast-Forward/flutter_firebase_framework.git
       path: sandbox
-  providers: 
-    git: 
+  providers:
+    git:
       url: https://github.com/Super-Fast-Forward/flutter_firebase_framework.git
       path: providers
   auth:
@@ -112,8 +112,8 @@ flutter:
   assets:
     - assets/Logo_Dark.svg
     - assets/Logo_Light.svg
-    - assets/.env.development
-    - assets/.env.production
+    - assets/env.development
+    - assets/env.production
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
