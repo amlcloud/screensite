@@ -8,6 +8,9 @@ import 'chat_widget.dart';
 class CaseChatWidget extends ConsumerWidget {
   final TextEditingController searchCtrl = TextEditingController();
 
+  final DR caseRef;
+  CaseChatWidget(this.caseRef);
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
@@ -15,9 +18,8 @@ class CaseChatWidget extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(child: Card(child: ChatWidget(kDB.doc('/case/123')))),
-          DocFieldText(kDB.doc('/case/123'), 'error',
-              style: TextStyle(color: Colors.red))
+          Expanded(child: Card(child: ChatWidget(caseRef))),
+          DocFieldText(caseRef, 'error', style: TextStyle(color: Colors.red))
         ]);
   }
 }
