@@ -19,7 +19,7 @@ final selectedRef = StateNotifierProvider<
         GenericStateNotifier<DocumentReference?>, DocumentReference?>(
     (ref) => GenericStateNotifier<DocumentReference?>(null));
 
-const MINIMUM_SEARCH_LENGTH = 7;
+const MINIMUM_SEARCH_LENGTH = 5;
 
 class SearchPage extends ConsumerWidget {
   static String get routeName => 'search';
@@ -31,10 +31,10 @@ class SearchPage extends ConsumerWidget {
 
   final _formKey = GlobalKey<FormState>();
 
-  final _regexp = RegExp('[^A-Za-z0-9- ]');
+  final _regexp = RegExp('.*');
 
   bool isValid() {
-    return !_regexp.hasMatch(searchCtrl.text);
+    return searchCtrl.text.length >= MINIMUM_SEARCH_LENGTH;
   }
 
   void setSearchValue() {
@@ -106,7 +106,7 @@ class SearchPage extends ConsumerWidget {
                                 child: TextFormField(
                                   validator: (value) {
                                     String message =
-                                        "Please input $MINIMUM_SEARCH_LENGTH or more alpha-numeric, space or dash characters";
+                                        "Please input $MINIMUM_SEARCH_LENGTH or more characters";
                                     return isValid() &&
                                             searchCtrl.text.length <
                                                 MINIMUM_SEARCH_LENGTH &&
