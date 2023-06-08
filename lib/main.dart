@@ -27,9 +27,9 @@ void main() async {
     );
 
     if (kReleaseMode) {
-      await dotenv.load(fileName: "env.production");
+      await dotenv.load(fileName: "assets/env.production");
     } else {
-      await dotenv.load(fileName: "env.development");
+      await dotenv.load(fileName: "assets/env.development");
     }
 
     runApp(SandboxLauncher2(
