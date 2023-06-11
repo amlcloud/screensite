@@ -80,100 +80,103 @@ class SearchPage extends ConsumerWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
                             child: Text(
                               "Sanction Search",
-                              style:Theme.of(context).textTheme.titleLarge,
+                              style:Theme.of(context).textTheme.headlineMedium,
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
                             child: Text(
                               "Enter known information on an individual or entity to find the closest match and review their information.",
-                              style: Theme.of(context).textTheme.labelMedium,
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ),
                         ],
                       ),
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Form(
-                              key: _formKey,
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 16.0, vertical: 12.0),
-                                child: TextFormField(
-                                  validator: (value) {
-                                    String message =
-                                        "Please input $MINIMUM_SEARCH_LENGTH or more characters";
-                                    return isValid() &&
-                                            searchCtrl.text.length <
-                                                MINIMUM_SEARCH_LENGTH &&
-                                            searchCtrl.text.isNotEmpty
-                                        ? message
-                                        : isValid()
-                                            ? null
-                                            : message;
-                                  },
-                                  onChanged: (v) {
-                                    _formKey.currentState?.validate();
-                                  },
-                                  controller: searchCtrl,
-                                  onFieldSubmitted: (value) async =>
-                                      setSearchValue(),
-                                  decoration: InputDecoration(
-                                    prefixIcon: Icon(Icons.search),
-                                    border: OutlineInputBorder(),
-                                    contentPadding: EdgeInsets.symmetric(
-                                        horizontal: 16.0, vertical: 12.0),
-                                    hintText: 'Enter Name Here',
+                      Container(
+                        height: 100,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Flexible(
+                              child: Form(
+                                key: _formKey,
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 16.0, vertical: 12.0),
+                                  child: TextFormField(
+                                    validator: (value) {
+                                      String message =
+                                          "Please input $MINIMUM_SEARCH_LENGTH or more characters";
+                                      return isValid() &&
+                                              searchCtrl.text.length <
+                                                  MINIMUM_SEARCH_LENGTH &&
+                                              searchCtrl.text.isNotEmpty
+                                          ? message
+                                          : isValid()
+                                              ? null
+                                              : message;
+                                    },
+                                    onChanged: (v) {
+                                      _formKey.currentState?.validate();
+                                    },
+                                    controller: searchCtrl,
+                                    onFieldSubmitted: (value) async =>
+                                        setSearchValue(),
+                                    decoration: InputDecoration(
+                                      prefixIcon: Icon(Icons.search),
+                                      border: OutlineInputBorder(),
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 16.0, vertical: 12.0),
+                                      hintText: 'Enter Name Here',
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.primary,
-                                foregroundColor:
-                                    Theme.of(context).colorScheme.onPrimary,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 16.0, vertical: 16.0),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  foregroundColor:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 16.0, vertical: 16.0),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
                                 ),
-                              ),
-                              child: Text(
-                                "Search",
-                              ),
-                              onPressed: () async {
-                                // if (searchCtrl.text.isEmpty) return;
-                                // var url = Uri.parse(
-                                //     'https://screen-od6zwjoy2a-an.a.run.app/?name=${searchCtrl.text.toLowerCase()}');
-                                // var response = await http.post(url, body: {
-                                //   // 'name': 'doodle',
-                                //   // 'color': 'blue'
-                                // });
-                                // print(
-                                //     'Response status: ${response.statusCode}');
-                                // print('Response body: ${response.body}');
-
-                                // FirebaseFirestore.instance
-                                //     .collection('search')
-                                //     .doc(searchCtrl.text)
-                                //     .set({
-                                //   'target': searchCtrl.text,
-                                //   'timeCreated':
-                                //       FieldValue.serverTimestamp(),
-                                //   'author': FirebaseAuth
-                                //       .instance.currentUser!.uid,
-                                // });
-
-                                setSearchValue();
-                              })
-                        ],
+                                child: Text(
+                                  "Search",
+                                ),
+                                onPressed: () async {
+                                  // if (searchCtrl.text.isEmpty) return;
+                                  // var url = Uri.parse(
+                                  //     'https://screen-od6zwjoy2a-an.a.run.app/?name=${searchCtrl.text.toLowerCase()}');
+                                  // var response = await http.post(url, body: {
+                                  //   // 'name': 'doodle',
+                                  //   // 'color': 'blue'
+                                  // });
+                                  // print(
+                                  //     'Response status: ${response.statusCode}');
+                                  // print('Response body: ${response.body}');
+                      
+                                  // FirebaseFirestore.instance
+                                  //     .collection('search')
+                                  //     .doc(searchCtrl.text)
+                                  //     .set({
+                                  //   'target': searchCtrl.text,
+                                  //   'timeCreated':
+                                  //       FieldValue.serverTimestamp(),
+                                  //   'author': FirebaseAuth
+                                  //       .instance.currentUser!.uid,
+                                  // });
+                      
+                                  setSearchValue();
+                                })
+                          ],
+                        ),
                       ),
                       Expanded(child: SearchHistory(selectedRef)),
                     ],

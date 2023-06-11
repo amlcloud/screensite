@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:screensite/search/search_page.dart';
 
+import 'cases/case_page.dart';
 import 'cases/cases_page.dart';
 import 'lists/lists_page.dart';
 import 'login_page.dart';
@@ -60,17 +61,39 @@ final routerProvider = Provider<GoRouter>((ref) {
         ),
       ),
       GoRoute(
-        path: CasesPage.routeLocation,
-        name: CasesPage.routeName,
-        builder: (context, state) {
-          return CasesPage();
-        },
-        pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
-          context: context,
-          state: state,
-          child: CasesPage(),
-        ),
-      ),
+          path: CasesPage.routeLocation,
+          name: CasesPage.routeName,
+          builder: (context, state) {
+            return CasesPage();
+          },
+          pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: CasesPage(),
+              ),
+          routes: [
+            GoRoute(
+              path: ':caseId', //CasePage.routeName,
+              name: CasePage.routeName,
+              builder: (context, state) {
+                print(
+                    "state: ${(state.extra as Map<String, dynamic>)['caseId']}");
+                // get id from state
+                // final id = state.queryParameters['caseId'] ?? "";
+                return CasePage(
+                    (state.extra as Map<String, dynamic>)['caseId']);
+              },
+              pageBuilder: (context, state) {
+                // final id = state.queryParameters['caseId'] ?? "";
+
+                return buildPageWithDefaultTransition<void>(
+                    context: context,
+                    state: state,
+                    child: CasePage(
+                        (state.extra as Map<String, dynamic>)['caseId']));
+              },
+            ),
+          ]),
       GoRoute(
         path: LoginPage.routeLocation,
         name: LoginPage.routeName,

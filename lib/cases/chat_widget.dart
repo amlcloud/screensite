@@ -222,7 +222,17 @@ class ChatWidget extends ConsumerWidget {
     } else {
       print(res.body);
       final bodyJson = jsonDecode(res.body);
-      final text = bodyJson['choices'][0]['text'];
+      var text = bodyJson['choices'][0]['text'];
+
+      // // remove first line of the text if it doesn't have open curly bracket in it (JSON format)
+      // if (!text.startsWith('{')) {
+      //   text = text.split('\n').sublist(1).join('\n');
+      // }
+
+      // extract substring representing JSON content from the text
+      final jsonStartIndex = text.indexOf('{');
+      final jsonEndIndex = text.lastIndexOf('}');
+      text = text.substring(jsonStartIndex, jsonEndIndex + 1);
 
       print('JSON: $text');
 

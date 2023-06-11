@@ -21,6 +21,9 @@ final lightTheme = ThemeData(
       titleSmall: TextStyle(
         color: Color.fromARGB(255, 28, 27, 27), //for text widget in appbar
       ),
+      headlineMedium: TextStyle(
+        color: const Color.fromARGB(255, 0, 0, 0),//headlines
+      ),
       bodyMedium: TextStyle(
         color: Color.fromARGB(255, 255, 153, 10), //change link color to orange
       )),
@@ -46,6 +49,9 @@ final darkTheme = ThemeData(
     textTheme: TextTheme(
         titleSmall: TextStyle(
           color: Color.fromARGB(255, 255, 255, 255), //for text widget in appbar
+        ),
+        headlineMedium: TextStyle(
+          color: Color.fromARGB(255, 255, 255, 255),//headlines
         ),
         bodyMedium: TextStyle(
           color:

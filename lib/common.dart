@@ -49,9 +49,9 @@ List<Jiffy> generateDays(Jiffy start, Jiffy end) {
 const WIDE_SCREEN_WIDTH = 600;
 
 String generateCurlUrl(String action, String resource) {
-  return "curl -X ${action} -H 'Content-Type:application/json' '${dotenv.env['API_URL']}/${dotenv.env['SANCTION_LIST_RESOURCE']}?list=${resource}' ";
+  return "curl -X ${action} -H 'Content-Type:application/json' '${dotenv.get('API_URL')}/${dotenv.get('SANCTION_LIST_RESOURCE')}?list=${resource}' ";
 }
 
 String generateBrowserUrl(String resource) {
-  return "${dotenv.env['API_URL']}/${dotenv.env['SANCTION_LIST_RESOURCE']}?list=${resource}";
+  return "${dotenv.get('API_URL')}/${dotenv.get('SANCTION_LIST_RESOURCE')}?list=${resource}";
 }
