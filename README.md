@@ -3,9 +3,11 @@
 Sanctions Screening App
 
 Purpose:
+
 - Provide sanctions screening via UI: results ranked by match score (0.95-100%)
 
 Intended features:
+
 - Screen an entity (person/item or organisation) against all open sanctions lists.
 - Look at up-to-date sanctions lists in one location.
 
@@ -34,3 +36,7 @@ If you are new to it, please have a read through the website and the tutorial he
 
 The support for Firestore was added using this guide:
 https://firebase.google.com/docs/flutter/setup?platform=web
+
+## Automation
+
+flutter drive --driver=test_driver/integration_test.dart --target=integration_test/app_test.dart -d chrome --web-port=4444 --browser-name=chrome
