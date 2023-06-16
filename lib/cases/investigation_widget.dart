@@ -116,7 +116,7 @@ class InvestigationWidget extends ConsumerWidget {
   Future<void> postMessages(CR messagesRef, DR searchResDocRef) async {
     final headers = await prepareOpenAIHeaders();
 
-    final messagesCol = await messagesRef.get();
+    final messagesCol = await messagesRef.orderBy('timeCreated').get();
 
     final messages = messagesCol.docs.map((e) {
       final data = e.data();
@@ -125,6 +125,7 @@ class InvestigationWidget extends ConsumerWidget {
       //   // Convert Timestamp to Unix milliseconds (int).
       //   data['timeCreated'] = data['timeCreated'].millisecondsSinceEpoch;
       // }
+
       return data;
     }).toList();
 
@@ -134,7 +135,8 @@ class InvestigationWidget extends ConsumerWidget {
         await http.post(Uri.parse('https://api.openai.com/v1/chat/completions'),
             headers: headers,
             body: jsonEncode({
-              "model": "gpt-3.5-turbo",
+              "model": "gpt-3.5-turbo-0613",
+              //"gpt-3.5-turbo",
               "messages": messages,
               // [
               //   {
@@ -143,7 +145,7 @@ class InvestigationWidget extends ConsumerWidget {
               //         "Say this is a test!"
               //   }
               // ],
-              "max_tokens": 200,
+              "max_tokens": 500,
               "temperature": 0.6
             }));
 
