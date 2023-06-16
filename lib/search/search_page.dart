@@ -31,7 +31,7 @@ class SearchPage extends ConsumerWidget {
 
   final _formKey = GlobalKey<FormState>();
 
-  final _regexp = RegExp('.*');
+  // final _regexp = RegExp('.*');
 
   bool isValid() {
     return searchCtrl.text.length >= MINIMUM_SEARCH_LENGTH;
@@ -41,7 +41,7 @@ class SearchPage extends ConsumerWidget {
     if (!isValid()) return;
     if (searchCtrl.text.isEmpty ||
         searchCtrl.text.length < MINIMUM_SEARCH_LENGTH) return;
-    var text = searchCtrl.text.replaceAll(_regexp, '');
+    var text = searchCtrl.text;
     FirebaseFirestore.instance
         .collection('user')
         .doc(FirebaseAuth.instance.currentUser!.uid)
