@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -52,8 +54,14 @@ class IndexingItemList extends ConsumerWidget {
                                       Text('Actual values: ${data.docs.map((f) {
                                     if (_item[f.data()['value']] != null) {
                                       if (type == 'Array of objects') {
-                                        final objects = _item[f.data()['value']];
-                                        final filtered = objects.map((obj) => obj[nameFieldValue.text] != null ? obj[nameFieldValue.text].toString() : obj[nameFieldValue.text]='');
+                                        final objects =
+                                            _item[f.data()['value']];
+                                        final filtered = objects.map((obj) =>
+                                            obj[nameFieldValue.text] != null
+                                                ? obj[nameFieldValue.text]
+                                                    .toString()
+                                                : obj[nameFieldValue.text] =
+                                                    '');
                                         List<String> nonEmptyValues = [];
                                         for (var value in filtered) {
                                           if (value.isNotEmpty) {
@@ -61,8 +69,7 @@ class IndexingItemList extends ConsumerWidget {
                                           }
                                         }
                                         return nonEmptyValues;
-                                      }
-                                      else {
+                                      } else {
                                         return _item[f.data()['value']];
                                       }
                                     } else {
@@ -105,21 +112,21 @@ class IndexingItemList extends ConsumerWidget {
                                           }
                                         }
                                       }
-                                    }
-                                    else if (type == 'Array of objects') {
+                                    } else if (type == 'Array of objects') {
                                       for (int i = 0;
                                           i < config.docs.length;
-                                          i++) { 
-                                            String key =
+                                          i++) {
+                                        String key =
                                             config.docs[i].data()['value'];
-                                            if (_item.containsKey(key)) {
-                                              for (int j = 0;
-                                                  j < _item[key].length;
-                                                  j++) {
-                                                subset.add(_item[key][j][nameFieldValue.text]);
-                                              }
-                                            }
-                                      }                                                                             
+                                        if (_item.containsKey(key)) {
+                                          for (int j = 0;
+                                              j < _item[key].length;
+                                              j++) {
+                                            subset.add(_item[key][j]
+                                                [nameFieldValue.text]);
+                                          }
+                                        }
+                                      }
                                     }
                                     return ref
                                         .watch(
@@ -154,16 +161,25 @@ class IndexingItemList extends ConsumerWidget {
                                                       .replaceAll(
                                                           RegExp(r'[^a-z0-9]'),
                                                           ''))
-                                                  .toSet();                                                 
-                                              return setEquals(
-                                                      removedCharactersSubset
-                                                          .intersection(
-                                                              removedCharactersSet),
-                                                      removedCharactersSubset)
-                                                  ? Icon(Icons.check,
-                                                      color: Colors.green)
-                                                  : Icon(Icons.close,
-                                                      color: Colors.red);
+                                                  .toSet();
+
+                                              final setIntersection =
+                                                  removedCharactersSubset
+                                                      .intersection(
+                                                          removedCharactersSet);
+                                              final setEqualsResult = setEquals(
+                                                  setIntersection,
+                                                  removedCharactersSubset);
+                                              if (setEqualsResult &&
+                                                  setIntersection
+                                                      .elementAt(0)
+                                                      .isNotEmpty) {
+                                                return Icon(Icons.check,
+                                                    color: Colors.green);
+                                              } else {
+                                                return Icon(Icons.close,
+                                                    color: Colors.red);
+                                              }
                                             });
                                   })
                         ]))
