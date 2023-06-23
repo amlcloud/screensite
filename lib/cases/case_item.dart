@@ -53,7 +53,7 @@ class CaseItem extends ConsumerWidget {
               },
               child: Column(
                 children: [
-                  DocFieldText(caseRef, 'name'),
+                  DocFieldText(caseRef, 'target'),
                 ],
               )),
         ),

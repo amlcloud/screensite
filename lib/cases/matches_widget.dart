@@ -3,10 +3,12 @@ import 'package:common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:providers/firestore.dart';
+import 'package:screensite/controls/json_viewer.dart';
 import 'package:widgets/col_stream_widget.dart';
 import 'package:widgets/doc_print.dart';
 import 'package:widgets/doc_stream_widget.dart';
 
+import '../controls/custom_json_viewer.dart';
 import 'case_page.dart';
 import 'cases_page.dart';
 
@@ -31,7 +33,8 @@ class MatchesWidget extends ConsumerWidget {
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text(doc.data()!['target']),
+                            Text(
+                                'Matches found for: "${doc.data()!['target']}"'),
                             // SizedBox(
                             //     height: 1800,
                             Container(
@@ -68,21 +71,25 @@ class MatchesWidget extends ConsumerWidget {
                                                           MainAxisAlignment
                                                               .start,
                                                       children: [
-                                                        // Text(searchResDoc
-                                                        //     .reference
-                                                        //     .path)
+                                                        Text(
+                                                            searchResDoc
+                                                                .get('target'),
+                                                            style: TextStyle(
+                                                                fontSize: 20)),
                                                         DocStreamWidget(
                                                             docSP((searchResDoc
                                                                             .data()![
                                                                         'ref']
                                                                     as DR)
                                                                 .path),
-                                                            (context,
-                                                                    sanctionDoc) =>
-                                                                Flexible(
-                                                                    child: DocPrintWidget(
-                                                                        sanctionDoc
-                                                                            .reference)))
+                                                            (context, sanctionDoc) => Flexible(
+                                                                child: CustomJsonViewer(
+                                                                    sanctionDoc
+                                                                        .data())
+                                                                // DocPrintWidget(
+                                                                //     sanctionDoc
+                                                                //         .reference)
+                                                                ))
                                                       ],
                                                     )))))))
                           ],

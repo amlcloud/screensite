@@ -42,7 +42,10 @@ class InvestigationWidget extends ConsumerWidget {
                                   onPressed: () => startInvestigationMessage(
                                       searchResDoc, caseDoc),
                                   child: Text('Investigate')),
-                              Text(searchResDocRef.path),
+                              Text(
+                                searchResDocRef.path,
+                                style: Theme.of(context).textTheme.labelSmall,
+                              ),
                               ColStreamWidget<Widget>(
                                   colSPfiltered2(
                                       searchResDoc.reference
@@ -60,6 +63,8 @@ class InvestigationWidget extends ConsumerWidget {
                                           shrinkWrap: true,
                                           itemCount: items.length,
                                           itemBuilder: (context, index) {
+                                            if (index == 0 || index == 1)
+                                              return Container();
                                             return items[index];
                                           }),
                                   (context, doc) => Container(

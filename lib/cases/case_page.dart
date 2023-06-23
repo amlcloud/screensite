@@ -51,6 +51,7 @@ class CasePage extends ConsumerWidget {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      Expanded(child: Text('Case: ${caseDocRef.id}')),
                       Flexible(
                           flex: 1,
                           child: Row(
