@@ -49,7 +49,7 @@ class SearchDetails extends ConsumerWidget {
                                 child: Text("Copy"),
                                 onPressed: () async {
                                   await Clipboard.setData(
-                                      ClipboardData(text: 'target'));
+                                      ClipboardData(text: searchDoc.data()!['target'].toString()));
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                           content: Text(
