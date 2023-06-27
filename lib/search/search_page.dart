@@ -97,7 +97,7 @@ class SearchPage extends ConsumerWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Flexible(
                               child: Form(
@@ -135,46 +135,49 @@ class SearchPage extends ConsumerWidget {
                                 ),
                               ),
                             ),
-                            ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      Theme.of(context).colorScheme.primary,
-                                  foregroundColor:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 16.0, vertical: 16.0),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8.0),
+                            Container(
+                              margin: EdgeInsets.only(top: 16.0),
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.primary,
+                                    foregroundColor:
+                                        Theme.of(context).colorScheme.onPrimary,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 16.0, vertical: 16.0),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
                                   ),
-                                ),
-                                child: Text(
-                                  "Search",
-                                ),
-                                onPressed: () async {
-                                  // if (searchCtrl.text.isEmpty) return;
-                                  // var url = Uri.parse(
-                                  //     'https://screen-od6zwjoy2a-an.a.run.app/?name=${searchCtrl.text.toLowerCase()}');
-                                  // var response = await http.post(url, body: {
-                                  //   // 'name': 'doodle',
-                                  //   // 'color': 'blue'
-                                  // });
-                                  // print(
-                                  //     'Response status: ${response.statusCode}');
-                                  // print('Response body: ${response.body}');
-                      
-                                  // FirebaseFirestore.instance
-                                  //     .collection('search')
-                                  //     .doc(searchCtrl.text)
-                                  //     .set({
-                                  //   'target': searchCtrl.text,
-                                  //   'timeCreated':
-                                  //       FieldValue.serverTimestamp(),
-                                  //   'author': FirebaseAuth
-                                  //       .instance.currentUser!.uid,
-                                  // });
-                      
-                                  setSearchValue();
-                                })
+                                  child: Text(
+                                    "Search",
+                                  ),
+                                  onPressed: () async {
+                                    // if (searchCtrl.text.isEmpty) return;
+                                    // var url = Uri.parse(
+                                    //     'https://screen-od6zwjoy2a-an.a.run.app/?name=${searchCtrl.text.toLowerCase()}');
+                                    // var response = await http.post(url, body: {
+                                    //   // 'name': 'doodle',
+                                    //   // 'color': 'blue'
+                                    // });
+                                    // print(
+                                    //     'Response status: ${response.statusCode}');
+                                    // print('Response body: ${response.body}');
+                                                  
+                                    // FirebaseFirestore.instance
+                                    //     .collection('search')
+                                    //     .doc(searchCtrl.text)
+                                    //     .set({
+                                    //   'target': searchCtrl.text,
+                                    //   'timeCreated':
+                                    //       FieldValue.serverTimestamp(),
+                                    //   'author': FirebaseAuth
+                                    //       .instance.currentUser!.uid,
+                                    // });
+                                                  
+                                    setSearchValue();
+                                  }),
+                            )
                           ],
                         ),
                       ),
