@@ -69,8 +69,10 @@ class SearchPage extends ConsumerWidget {
                 children: [
                   //CustomNavRail.getNavRail(),
                   Flexible(
-                      child: Column(
+                    flex: 2,
+                    child: Column(
                     mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Column(
@@ -181,38 +183,47 @@ class SearchPage extends ConsumerWidget {
                           ],
                         ),
                       ),
-                      Expanded(child: SearchHistory(selectedRef)),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Expanded(
+                            child: ref.watch(selectedSearchResult) == null
+                                ? Container()
+                                : Padding(
+                                    padding: EdgeInsets.all(8),
+                                    child: SearchDetails(
+                                        FirebaseFirestore.instance.doc(
+                                          'search/${ref.watch(selectedSearchResult)}',
+                                        ),
+                                        selectedRef))),
+                                                          Expanded(
+                        child: Card(
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                          Expanded(
+                              child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: ref.watch(selectedRef) == null
+                                        ? Container()
+                                        : SearchResultsItem(
+                                            ref.watch(selectedRef)!))
+                              ],
+                            ),
+                          ))
+                        ]))),
+                          ],
+                        ),
+                      ),
+                  
                     ],
                   )),
-                  Expanded(
-                      child: ref.watch(selectedSearchResult) == null
-                          ? Container()
-                          : Padding(
-                              padding: EdgeInsets.all(8),
-                              child: SearchDetails(
-                                  FirebaseFirestore.instance.doc(
-                                    'search/${ref.watch(selectedSearchResult)}',
-                                  ),
-                                  selectedRef))),
-                  Expanded(
-                      child: Card(
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                        Expanded(
-                            child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: ref.watch(selectedRef) == null
-                                      ? Container()
-                                      : SearchResultsItem(
-                                          ref.watch(selectedRef)!))
-                            ],
-                          ),
-                        ))
-                      ])))
+
+                  Expanded(child: SearchHistory(selectedRef)),
+                  
                 ])));
   }
 }
