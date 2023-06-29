@@ -28,8 +28,10 @@ class SearchResults extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) => Column(
       children: ref
-          .watch(colSP(
-              'user/${FirebaseAuth.instance.currentUser!.uid}/search/${searchDoc.id}/res'))
+          .watch(
+            colSP(
+                'user/${FirebaseAuth.instance.currentUser!.uid}/search/${searchDoc.id}/res'),
+          )
           .when(
             loading: () => [],
             error: (e, s) => [ErrorWidget(e)],

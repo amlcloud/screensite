@@ -46,6 +46,15 @@ class SearchDetails extends ConsumerWidget {
                                 'Searched Target: ${searchDoc.data()!['target']}'), //kk
 
                             ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Theme.of(context).colorScheme.onSurface,
+                                  foregroundColor: Theme.of(context).colorScheme.surface,
+                                  // padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(8.0),
+                                  ),
+                                ),
                                 child: Text("Copy"),
                                 onPressed: () async {
                                   await Clipboard.setData(
@@ -56,6 +65,7 @@ class SearchDetails extends ConsumerWidget {
                                               'Copied: ${searchDoc.data()!['target']}')));
                                 })
                           ]),
+                          SizedBox(height: 10,),
                       Text(
                           'Search Time: ${timeCreated != null ? Jiffy(timeCreated.toDate()).format("h:mm a, do MMM, yyyy") : ''}'),
                       SearchResults(searchDoc, _selectedItemNotifier),

@@ -62,6 +62,15 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
           children: _getList(),
         ),
         ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Theme.of(context).colorScheme.onSurface,
+            foregroundColor: Theme.of(context).colorScheme.surface,
+            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+            shape: RoundedRectangleBorder(
+              borderRadius:
+                  BorderRadius.circular(8.0),
+            ),
+          ),        
           onPressed: () {
             copyToClipboard(jsonEncode(widget.jsonObj));
           },
