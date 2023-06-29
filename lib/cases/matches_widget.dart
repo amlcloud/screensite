@@ -7,6 +7,7 @@ import 'package:screensite/controls/json_viewer.dart';
 import 'package:widgets/col_stream_widget.dart';
 import 'package:widgets/doc_print.dart';
 import 'package:widgets/doc_stream_widget.dart';
+import 'package:widgets/doc_field_text.dart';
 
 import '../controls/custom_json_viewer.dart';
 import 'case_page.dart';
@@ -76,6 +77,24 @@ class MatchesWidget extends ConsumerWidget {
                                                                 .get('target'),
                                                             style: TextStyle(
                                                                 fontSize: 20)),
+                                                        Row(
+                                                          children: [
+                                                            Text(
+                                                                "List ID: ${searchResDoc.data()!['ref'].parent.parent.id}")
+                                                          ],
+                                                        ),
+                                                        Row(
+                                                          children: [
+                                                            Text("List Name: "),
+                                                            DocFieldText(
+                                                                searchResDoc
+                                                                    .data()![
+                                                                        'ref']
+                                                                    .parent
+                                                                    .parent,
+                                                                'name'),
+                                                          ],
+                                                        ),
                                                         DocStreamWidget(
                                                             docSP((searchResDoc
                                                                             .data()![
