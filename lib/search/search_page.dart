@@ -37,25 +37,26 @@ class SearchPage extends ConsumerWidget {
     return searchCtrl.text.length >= MINIMUM_SEARCH_LENGTH;
   }
 
-  void setSearchValue() {
-    if (!isValid()) return;
-    if (searchCtrl.text.isEmpty ||
-        searchCtrl.text.length < MINIMUM_SEARCH_LENGTH) return;
-    var text = searchCtrl.text;
-    FirebaseFirestore.instance
-        .collection('user')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('search')
-        .add({
-      'target': text,
-      'timeCreated': FieldValue.serverTimestamp(),
-      'author': FirebaseAuth.instance.currentUser!.uid,
-    });
-    searchCtrl.clear();
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    void setSearchValue() async {
+      if (!isValid()) return;
+      if (searchCtrl.text.isEmpty ||
+          searchCtrl.text.length < MINIMUM_SEARCH_LENGTH) return;
+      var text = searchCtrl.text;
+      final newSearchDocRef = await FirebaseFirestore.instance
+          .collection('user')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('search')
+          .add({
+        'target': text,
+        'timeCreated': FieldValue.serverTimestamp(),
+        'author': FirebaseAuth.instance.currentUser!.uid,
+      });
+      ref.read(selectedSearchResult.notifier).value = newSearchDocRef.id;
+      searchCtrl.clear();
+    }
+
     return Scaffold(
         appBar: MyAppBar.getBar(context, ref),
         drawer: (MediaQuery.of(context).size.width < WIDE_SCREEN_WIDTH)
@@ -146,9 +147,14 @@ class SearchPage extends ConsumerWidget {
                                   margin: EdgeInsets.only(top: 16.0),
                                   child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: Theme.of(context).colorScheme.onSurface,
-                                        foregroundColor: Theme.of(context).colorScheme.surface,
-                                        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface,
+                                        foregroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .surface,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 24, vertical: 20),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(8.0),
@@ -186,44 +192,47 @@ class SearchPage extends ConsumerWidget {
                               ],
                             ),
                           ),
-                          Expanded(                            
+                          Expanded(
                             child: Container(
-                              margin: EdgeInsets.symmetric(horizontal:16.0),
+                              margin: EdgeInsets.symmetric(horizontal: 16.0),
                               child: Row(
-                                
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
-                                    child: Card(
-                                      child: SingleChildScrollView(
-                                        child: Column(
-                                          
-                                          mainAxisSize: MainAxisSize.max,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          
-                                          children: [
-                                            Container(
-                                                
-                                                padding: EdgeInsets.all(16.0),
-                                                child: Text(
-                                                  "Matches",
-                                                  style: Theme.of(context).textTheme.titleLarge,
-                                                )),
-                                            ref.watch(selectedSearchResult) == null
-                                                ? Container(height: double.maxFinite,)
-                                                : Padding(
-                                                    padding: EdgeInsets.all(8),
-                                                    child: SingleChildScrollView(
-                                                      child: SearchDetails(
-                                                          FirebaseFirestore.instance.doc(
-                                                            'search/${ref.watch(selectedSearchResult)}',
-                                                          ),
-                                                          selectedRef),
-                                                    )),
-                                          ],
-                                        ),
+                                      child: Card(
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                              padding: EdgeInsets.all(16.0),
+                                              child: Text(
+                                                "Matches",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleLarge,
+                                              )),
+                                          ref.watch(selectedSearchResult) ==
+                                                  null
+                                              ? Container(
+                                                  height: double.maxFinite,
+                                                )
+                                              : Padding(
+                                                  padding: EdgeInsets.all(8),
+                                                  child: SingleChildScrollView(
+                                                    child: SearchDetails(
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .doc(
+                                                          'search/${ref.watch(selectedSearchResult)}',
+                                                        ),
+                                                        selectedRef),
+                                                  )),
+                                        ],
                                       ),
-                                    
+                                    ),
                                   )),
                                   Expanded(
                                       child: Card(
@@ -235,7 +244,9 @@ class SearchPage extends ConsumerWidget {
                                             padding: EdgeInsets.all(16.0),
                                             child: Text(
                                               "Profile Information",
-                                              style: Theme.of(context).textTheme.titleLarge,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleLarge,
                                             )),
                                         Flexible(
                                             flex: 3,
@@ -243,7 +254,8 @@ class SearchPage extends ConsumerWidget {
                                               child: Column(
                                                 children: [
                                                   Padding(
-                                                      padding: EdgeInsets.all(10),
+                                                      padding:
+                                                          EdgeInsets.all(10),
                                                       child: ref.watch(
                                                                   selectedRef) ==
                                                               null
@@ -274,8 +286,7 @@ class SearchPage extends ConsumerWidget {
                               padding: const EdgeInsets.all(16.0),
                               child: Text(
                                 "Search History",
-                                style:
-                                    Theme.of(context).textTheme.titleLarge,
+                                style: Theme.of(context).textTheme.titleLarge,
                               ),
                             ),
                           ),
