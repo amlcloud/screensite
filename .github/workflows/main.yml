@@ -1,4 +1,4 @@
-name: Build and Deploy Auto
+name: Build, Deploy, Run Automation
 on:
   push:
     branches:
