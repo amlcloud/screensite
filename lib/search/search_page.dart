@@ -76,30 +76,7 @@ class SearchPage extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0, vertical: 12.0),
-                                child: Text(
-                                  "Sanction Search",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineMedium,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0, vertical: 12.0),
-                                child: Text(
-                                  "Enter known information on an individual or entity to find the closest match and review their information.",
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium,
-                                ),
-                              ),
-                            ],
-                          ),
+                          SearchPageInfo(),
                           Container(
                             height: 100,
                             child: Row(
@@ -107,88 +84,8 @@ class SearchPage extends ConsumerWidget {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Flexible(
-                                  child: Form(
-                                    key: _formKey,
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 16.0, vertical: 12.0),
-                                      child: TextFormField(
-                                        validator: (value) {
-                                          String message =
-                                              "Please input $MINIMUM_SEARCH_LENGTH or more characters";
-                                          return isValid() &&
-                                                  searchCtrl.text.length <
-                                                      MINIMUM_SEARCH_LENGTH &&
-                                                  searchCtrl.text.isNotEmpty
-                                              ? message
-                                              : isValid()
-                                                  ? null
-                                                  : message;
-                                        },
-                                        onChanged: (v) {
-                                          _formKey.currentState?.validate();
-                                        },
-                                        controller: searchCtrl,
-                                        onFieldSubmitted: (value) async =>
-                                            setSearchValue(),
-                                        decoration: InputDecoration(
-                                          prefixIcon: Icon(Icons.search),
-                                          border: OutlineInputBorder(),
-                                          contentPadding: EdgeInsets.symmetric(
-                                              horizontal: 16.0, vertical: 12.0),
-                                          hintText: 'Enter Name Here',
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 16.0),
-                                  child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Theme.of(context)
-                                            .colorScheme
-                                            .onSurface,
-                                        foregroundColor: Theme.of(context)
-                                            .colorScheme
-                                            .surface,
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 24, vertical: 20),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                        ),
-                                      ),
-                                      child: Text(
-                                        "Search",
-                                      ),
-                                      onPressed: () async {
-                                        // if (searchCtrl.text.isEmpty) return;
-                                        // var url = Uri.parse(
-                                        //     'https://screen-od6zwjoy2a-an.a.run.app/?name=${searchCtrl.text.toLowerCase()}');
-                                        // var response = await http.post(url, body: {
-                                        //   // 'name': 'doodle',
-                                        //   // 'color': 'blue'
-                                        // });
-                                        // print(
-                                        //     'Response status: ${response.statusCode}');
-                                        // print('Response body: ${response.body}');
-
-                                        // FirebaseFirestore.instance
-                                        //     .collection('search')
-                                        //     .doc(searchCtrl.text)
-                                        //     .set({
-                                        //   'target': searchCtrl.text,
-                                        //   'timeCreated':
-                                        //       FieldValue.serverTimestamp(),
-                                        //   'author': FirebaseAuth
-                                        //       .instance.currentUser!.uid,
-                                        // });
-
-                                        setSearchValue();
-                                      }),
-                                )
+                                SearchBar(setSearchValue),
+                                SearchButton(context, setSearchValue)
                               ],
                             ),
                           ),
@@ -198,75 +95,8 @@ class SearchPage extends ConsumerWidget {
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Expanded(
-                                      child: Card(
-                                    child: SingleChildScrollView(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                              padding: EdgeInsets.all(16.0),
-                                              child: Text(
-                                                "Matches",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleLarge,
-                                              )),
-                                          ref.watch(selectedSearchResult) ==
-                                                  null
-                                              ? Container(
-                                                  height: double.maxFinite,
-                                                )
-                                              : Padding(
-                                                  padding: EdgeInsets.all(8),
-                                                  child: SingleChildScrollView(
-                                                    child: SearchDetails(
-                                                        FirebaseFirestore
-                                                            .instance
-                                                            .doc(
-                                                          'search/${ref.watch(selectedSearchResult)}',
-                                                        ),
-                                                        selectedRef),
-                                                  )),
-                                        ],
-                                      ),
-                                    ),
-                                  )),
-                                  Expanded(
-                                      child: Card(
-                                          child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                        Container(
-                                            padding: EdgeInsets.all(16.0),
-                                            child: Text(
-                                              "Profile Information",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleLarge,
-                                            )),
-                                        Flexible(
-                                            flex: 3,
-                                            child: SingleChildScrollView(
-                                              child: Column(
-                                                children: [
-                                                  Padding(
-                                                      padding:
-                                                          EdgeInsets.all(10),
-                                                      child: ref.watch(
-                                                                  selectedRef) ==
-                                                              null
-                                                          ? Container()
-                                                          : SearchResultsItem(
-                                                              ref.watch(
-                                                                  selectedRef)!))
-                                                ],
-                                              ),
-                                            ))
-                                      ]))),
+                                  Matches(),
+                                  ProfileInformation(),
                                 ],
                               ),
                             ),
@@ -274,28 +104,250 @@ class SearchPage extends ConsumerWidget {
                         ],
                       )),
 
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 40.0, vertical: 20.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Text(
-                                "Search History",
-                                style: Theme.of(context).textTheme.titleLarge,
-                              ),
-                            ),
-                          ),
-                          SearchHistory(selectedRef),
-                        ],
-                      ),
-                    ),
-                  ),
+                  SearchHistoryWidget(),
                 ])));
+  }
+
+  Container SearchButton(BuildContext context, void setSearchValue()) {
+    return Container(
+                                margin: EdgeInsets.only(top: 16.0),
+                                child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface,
+                                      foregroundColor: Theme.of(context)
+                                          .colorScheme
+                                          .surface,
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 24, vertical: 20),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      "Search",
+                                    ),
+                                    onPressed: () async {
+                                      // if (searchCtrl.text.isEmpty) return;
+                                      // var url = Uri.parse(
+                                      //     'https://screen-od6zwjoy2a-an.a.run.app/?name=${searchCtrl.text.toLowerCase()}');
+                                      // var response = await http.post(url, body: {
+                                      //   // 'name': 'doodle',
+                                      //   // 'color': 'blue'
+                                      // });
+                                      // print(
+                                      //     'Response status: ${response.statusCode}');
+                                      // print('Response body: ${response.body}');
+
+                                      // FirebaseFirestore.instance
+                                      //     .collection('search')
+                                      //     .doc(searchCtrl.text)
+                                      //     .set({
+                                      //   'target': searchCtrl.text,
+                                      //   'timeCreated':
+                                      //       FieldValue.serverTimestamp(),
+                                      //   'author': FirebaseAuth
+                                      //       .instance.currentUser!.uid,
+                                      // });
+
+                                      setSearchValue();
+                                    }),
+                              );
+  }
+
+  Flexible SearchBar(void setSearchValue()) {
+    return Flexible(
+                                child: Form(
+                                  key: _formKey,
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 16.0, vertical: 12.0),
+                                    child: TextFormField(
+                                      validator: (value) {
+                                        String message =
+                                            "Please input $MINIMUM_SEARCH_LENGTH or more characters";
+                                        return isValid() &&
+                                                searchCtrl.text.length <
+                                                    MINIMUM_SEARCH_LENGTH &&
+                                                searchCtrl.text.isNotEmpty
+                                            ? message
+                                            : isValid()
+                                                ? null
+                                                : message;
+                                      },
+                                      onChanged: (v) {
+                                        _formKey.currentState?.validate();
+                                      },
+                                      controller: searchCtrl,
+                                      onFieldSubmitted: (value) async =>
+                                          setSearchValue(),
+                                      decoration: InputDecoration(
+                                        prefixIcon: Icon(Icons.search),
+                                        border: OutlineInputBorder(),
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: 16.0, vertical: 12.0),
+                                        hintText: 'Enter Name Here',
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+  }
+}
+
+class SearchPageInfo extends StatelessWidget {
+  const SearchPageInfo({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(
+              horizontal: 16.0, vertical: 12.0),
+          child: Text(
+            "Sanction Search",
+            style: Theme.of(context)
+                .textTheme
+                .headlineMedium,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+              horizontal: 16.0, vertical: 12.0),
+          child: Text(
+            "Enter known information on an individual or entity to find the closest match and review their information.",
+            style:
+                Theme.of(context).textTheme.titleMedium,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class SearchHistoryWidget extends ConsumerWidget {
+  const SearchHistoryWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+            horizontal: 40.0, vertical: 20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  "Search History",
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ),
+            ),
+            SearchHistory(selectedRef),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ProfileInformation extends ConsumerWidget {
+  const ProfileInformation({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Expanded(
+        child: Card(
+            child: Column(
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
+                children: [
+          Container(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                "Profile Information",
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge,
+              )),
+          Flexible(
+              flex: 3,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Padding(
+                        padding:
+                            EdgeInsets.all(10),
+                        child: ref.watch(
+                                    selectedRef) ==
+                                null
+                            ? Container()
+                            : SearchResultsItem(
+                                ref.watch(
+                                    selectedRef)!))
+                  ],
+                ),
+              ))
+        ])));
+  }
+}
+
+class Matches extends ConsumerWidget {
+  const Matches({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Expanded(
+        child: Card(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment:
+              CrossAxisAlignment.start,
+          children: [
+            Container(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  "Matches",
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge,
+                )),
+            ref.watch(selectedSearchResult) ==
+                    null
+                ? Container(
+                    height: double.maxFinite,
+                  )
+                : Padding(
+                    padding: EdgeInsets.all(8),
+                    child: SingleChildScrollView(
+                      child: SearchDetails(
+                          FirebaseFirestore
+                              .instance
+                              .doc(
+                            'search/${ref.watch(selectedSearchResult)}',
+                          ),
+                          selectedRef),
+                    )),
+          ],
+        ),
+      ),
+    ));
   }
 }
 
