@@ -8,6 +8,10 @@ import 'package:screensite/common.dart';
 import 'package:screensite/search/search_details.dart';
 import 'package:screensite/search/search_list.dart';
 import 'package:screensite/search/search_results_item.dart';
+import 'package:screensite/search/search_page_header.dart';
+import 'package:screensite/search/search_history_ui.dart';
+import 'package:screensite/search/profile_information_ui.dart';
+import 'package:screensite/search/matches_ui.dart';
 import 'package:screensite/drawer.dart';
 import 'package:screensite/side_nav_bar.dart';
 
@@ -76,7 +80,7 @@ class SearchPage extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          SearchPageInfo(),
+                          SearchPageHeader(),
                           Container(
                             height: 100,
                             child: Row(
@@ -84,8 +88,8 @@ class SearchPage extends ConsumerWidget {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SearchBar(setSearchValue),
-                                SearchButton(context, setSearchValue)
+                                buildSearchBar(setSearchValue),
+                                buildSearchButton(context, setSearchValue)
                               ],
                             ),
                           ),
@@ -95,8 +99,8 @@ class SearchPage extends ConsumerWidget {
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Matches(),
-                                  ProfileInformation(),
+                                  MatchesUI(),
+                                  ProfileInformationUI(),
                                 ],
                               ),
                             ),
@@ -104,11 +108,11 @@ class SearchPage extends ConsumerWidget {
                         ],
                       )),
 
-                  SearchHistoryWidget(),
+                  SearchHistoryUI(),
                 ])));
   }
 
-  Container SearchButton(BuildContext context, void setSearchValue()) {
+  Container buildSearchButton(BuildContext context, void setSearchValue()) {
     return Container(
                                 margin: EdgeInsets.only(top: 16.0),
                                 child: ElevatedButton(
@@ -157,7 +161,7 @@ class SearchPage extends ConsumerWidget {
                               );
   }
 
-  Flexible SearchBar(void setSearchValue()) {
+  Flexible buildSearchBar(void setSearchValue()) {
     return Flexible(
                                 child: Form(
                                   key: _formKey,
@@ -194,160 +198,6 @@ class SearchPage extends ConsumerWidget {
                                   ),
                                 ),
                               );
-  }
-}
-
-class SearchPageInfo extends StatelessWidget {
-  const SearchPageInfo({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(
-              horizontal: 16.0, vertical: 12.0),
-          child: Text(
-            "Sanction Search",
-            style: Theme.of(context)
-                .textTheme
-                .headlineMedium,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(
-              horizontal: 16.0, vertical: 12.0),
-          child: Text(
-            "Enter known information on an individual or entity to find the closest match and review their information.",
-            style:
-                Theme.of(context).textTheme.titleMedium,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class SearchHistoryWidget extends ConsumerWidget {
-  const SearchHistoryWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-            horizontal: 40.0, vertical: 20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  "Search History",
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-              ),
-            ),
-            SearchHistory(selectedRef),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class ProfileInformation extends ConsumerWidget {
-  const ProfileInformation({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Expanded(
-        child: Card(
-            child: Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
-                children: [
-          Container(
-              padding: EdgeInsets.all(16.0),
-              child: Text(
-                "Profile Information",
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge,
-              )),
-          Flexible(
-              flex: 3,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Padding(
-                        padding:
-                            EdgeInsets.all(10),
-                        child: ref.watch(
-                                    selectedRef) ==
-                                null
-                            ? Container()
-                            : SearchResultsItem(
-                                ref.watch(
-                                    selectedRef)!))
-                  ],
-                ),
-              ))
-        ])));
-  }
-}
-
-class Matches extends ConsumerWidget {
-  const Matches({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Expanded(
-        child: Card(
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment:
-              CrossAxisAlignment.start,
-          children: [
-            Container(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  "Matches",
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge,
-                )),
-            ref.watch(selectedSearchResult) ==
-                    null
-                ? Container(
-                    height: double.maxFinite,
-                  )
-                : Padding(
-                    padding: EdgeInsets.all(8),
-                    child: SingleChildScrollView(
-                      child: SearchDetails(
-                          FirebaseFirestore
-                              .instance
-                              .doc(
-                            'search/${ref.watch(selectedSearchResult)}',
-                          ),
-                          selectedRef),
-                    )),
-          ],
-        ),
-      ),
-    ));
   }
 }
 
