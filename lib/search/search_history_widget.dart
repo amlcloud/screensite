@@ -13,8 +13,8 @@ final selectedRef = StateNotifierProvider<
     (ref) => GenericStateNotifier<DocumentReference?>(null));
 
 
-class SearchHistoryUI extends ConsumerWidget {
-  const SearchHistoryUI({
+class SearchHistoryWidget extends ConsumerWidget {
+  const SearchHistoryWidget({
     super.key,
   });
 

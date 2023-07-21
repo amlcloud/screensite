@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:screensite/search/search_results_item.dart';
 import 'package:screensite/search/search_history_widget.dart';
 
-class ProfileInformationUI extends ConsumerWidget {
-  const ProfileInformationUI({
+class ProfileInformationWidget extends ConsumerWidget {
+  const ProfileInformationWidget({
     super.key,
   });
 

@@ -99,8 +99,8 @@ class SearchPage extends ConsumerWidget {
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  MatchesUI(),
-                                  ProfileInformationUI(),
+                                  MatchesWidget(),
+                                  ProfileInformationWidget(),
                                 ],
                               ),
                             ),
@@ -108,7 +108,7 @@ class SearchPage extends ConsumerWidget {
                         ],
                       )),
 
-                  SearchHistoryUI(),
+                  SearchHistoryWidget(),
                 ])));
   }
 

@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:screensite/search/search_details.dart';
 import 'package:screensite/search/search_history_widget.dart';
 
-class MatchesUI extends ConsumerWidget {
-  const MatchesUI({
+class MatchesWidget extends ConsumerWidget {
+  const MatchesWidget({
     super.key,
   });
 
