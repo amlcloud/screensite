@@ -9,9 +9,9 @@ import 'package:screensite/search/search_details.dart';
 import 'package:screensite/search/search_list.dart';
 import 'package:screensite/search/search_results_item.dart';
 import 'package:screensite/search/search_page_header.dart';
-import 'package:screensite/search/search_history_ui.dart';
-import 'package:screensite/search/profile_information_ui.dart';
-import 'package:screensite/search/matches_ui.dart';
+import 'package:screensite/search/search_history_widget.dart';
+import 'package:screensite/search/profile_information_widget.dart';
+import 'package:screensite/search/matches_widget.dart';
 import 'package:screensite/drawer.dart';
 import 'package:screensite/side_nav_bar.dart';
 
