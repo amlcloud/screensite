@@ -1,16 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:providers/generic.dart';
 import 'package:screensite/search/search_list.dart';
-
-final selectedSearchResult =
-    StateNotifierProvider<GenericStateNotifier<String?>, String?>(
-        (ref) => GenericStateNotifier<String?>(null));
-
-final selectedRef = StateNotifierProvider<
-        GenericStateNotifier<DocumentReference?>, DocumentReference?>(
-    (ref) => GenericStateNotifier<DocumentReference?>(null));
+import 'package:screensite/search/search_page.dart';
 
 
 class SearchHistoryWidget extends ConsumerWidget {

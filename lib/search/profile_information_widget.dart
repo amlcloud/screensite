@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:screensite/search/search_results_item.dart';
-import 'package:screensite/search/search_history_widget.dart';
+import 'package:screensite/search/search_page.dart';
 
 class ProfileInformationWidget extends ConsumerWidget {
   const ProfileInformationWidget({
