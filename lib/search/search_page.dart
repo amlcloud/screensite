@@ -1,23 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:common/common.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:providers/generic.dart';
 import 'package:screensite/app_bar.dart';
-import 'package:screensite/common.dart';
+
 import 'package:screensite/search/search_details.dart';
 import 'package:screensite/search/search_list.dart';
 import 'package:screensite/search/search_results_item.dart';
 import 'package:screensite/drawer.dart';
 import 'package:screensite/side_nav_bar.dart';
+import 'package:widgets/doc_print.dart';
 
-final selectedSearchResult =
+final selectedSearchId =
     StateNotifierProvider<GenericStateNotifier<String?>, String?>(
         (ref) => GenericStateNotifier<String?>(null));
 
-final selectedRef = StateNotifierProvider<
-        GenericStateNotifier<DocumentReference?>, DocumentReference?>(
-    (ref) => GenericStateNotifier<DocumentReference?>(null));
+final selectedSearchResultId =
+    StateNotifierProvider<GenericStateNotifier<String?>, String?>(
+        (ref) => GenericStateNotifier<String?>(null));
+
+final _searchResultsSancDocRef =
+    StateNotifierProvider<GenericStateNotifier<DR?>, DR?>(
+        (ref) => GenericStateNotifier<DR?>(null));
 
 const MINIMUM_SEARCH_LENGTH = 5;
 
@@ -199,40 +205,38 @@ class SearchPage extends ConsumerWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
-                                      child: Card(
-                                    child: SingleChildScrollView(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                              padding: EdgeInsets.all(16.0),
-                                              child: Text(
-                                                "Matches",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleLarge,
-                                              )),
-                                          ref.watch(selectedSearchResult) ==
-                                                  null
-                                              ? Container(
-                                                  height: double.maxFinite,
-                                                )
-                                              : Padding(
-                                                  padding: EdgeInsets.all(8),
-                                                  child: SingleChildScrollView(
-                                                    child: SearchDetails(
-                                                        FirebaseFirestore
-                                                            .instance
-                                                            .doc(
-                                                          'search/${ref.watch(selectedSearchResult)}',
-                                                        ),
-                                                        selectedRef),
-                                                  )),
-                                        ],
-                                      ),
+                                    child: Card(
+                                      child: SingleChildScrollView(
+                                        child: Column(
+                                          
+                                          mainAxisSize: MainAxisSize.max,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          
+                                          children: [
+                                            Container(
+                                                
+                                                padding: EdgeInsets.all(16.0),
+                                                child: Text(
+                                                  "Matches",
+                                                  style: Theme.of(context).textTheme.titleLarge,
+                                                )),
+                                          ref.watch(selectedSearchId) == null
+                                                ? Container(height: double.maxFinite,)
+                                                : Padding(
+                                                    padding: EdgeInsets.all(8),
+                                                    child: SingleChildScrollView(
+                                                      child: SearchDetails(
+                                                          FirebaseFirestore.instance.doc(
+                                                          'search/${ref.watch(selectedSearchId)}',
+                                                          ),
+                                                        _searchResultsSancDocRef),
+                                                    )),
+                                                
+                                          ],
+                                        ),
+                                                           
                                     ),
+                                      
                                   )),
                                   Expanded(
                                       child: Card(
@@ -257,12 +261,17 @@ class SearchPage extends ConsumerWidget {
                                                       padding:
                                                           EdgeInsets.all(10),
                                                       child: ref.watch(
-                                                                  selectedRef) ==
+                                                                  _searchResultsSancDocRef) ==
                                                               null
                                                           ? Container()
                                                           : SearchResultsItem(
                                                               ref.watch(
-                                                                  selectedRef)!))
+                                                                  _searchResultsSancDocRef)!,
+                                                              FirebaseFirestore
+                                                                  .instance
+                                                                  .doc(
+                                                                'user/${FirebaseAuth.instance.currentUser!.uid}/search/${ref.watch(selectedSearchId)}/res/${ref.watch(selectedSearchResultId)}',
+                                                              )))
                                                 ],
                                               ),
                                             ))
@@ -290,7 +299,7 @@ class SearchPage extends ConsumerWidget {
                               ),
                             ),
                           ),
-                          SearchHistory(selectedRef),
+                          SearchHistory(_searchResultsSancDocRef),
                         ],
                       ),
                     ),

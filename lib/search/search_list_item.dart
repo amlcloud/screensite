@@ -44,7 +44,7 @@ class SearchListItem extends ConsumerWidget {
                       : Text(Jiffy(searchDoc.data()!['timeCreated'].toDate())
                           .format("hh:mm a, do MMM, yyyy")),
                   onTap: () {
-                    ref.read(selectedSearchResult.notifier).value =
+                    ref.read(selectedSearchId.notifier).value =
                         searchRef.id;
                     ref.read(_selectedItemNotifier.notifier).value = null;
                   },
