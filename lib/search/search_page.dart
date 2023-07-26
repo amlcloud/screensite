@@ -59,7 +59,7 @@ class SearchPage extends ConsumerWidget {
         'timeCreated': FieldValue.serverTimestamp(),
         'author': FirebaseAuth.instance.currentUser!.uid,
       });
-      ref.read(selectedSearchResult.notifier).value = newSearchDocRef.id;
+      ref.read(selectedSearchResultId.notifier).value = newSearchDocRef.id;
       searchCtrl.clear();
     }
 
