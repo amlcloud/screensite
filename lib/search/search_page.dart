@@ -15,6 +15,8 @@ import 'package:screensite/search/matches_widget.dart';
 import 'package:screensite/drawer.dart';
 import 'package:screensite/side_nav_bar.dart';
 
+typedef VoidFunction = void Function();
+
 final selectedSearchResult =
     StateNotifierProvider<GenericStateNotifier<String?>, String?>(
         (ref) => GenericStateNotifier<String?>(null));
@@ -30,36 +32,13 @@ class SearchPage extends ConsumerWidget {
   static String get routeLocation => '/$routeName';
 
   final TextEditingController searchCtrl = TextEditingController();
-
   final now = DateTime.now(); //
-
   final _formKey = GlobalKey<FormState>();
-
   // final _regexp = RegExp('.*');
-
-  bool isValid() {
-    return searchCtrl.text.length >= MINIMUM_SEARCH_LENGTH;
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    void setSearchValue() async {
-      if (!isValid()) return;
-      if (searchCtrl.text.isEmpty ||
-          searchCtrl.text.length < MINIMUM_SEARCH_LENGTH) return;
-      var text = searchCtrl.text;
-      final newSearchDocRef = await FirebaseFirestore.instance
-          .collection('user')
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .collection('search')
-          .add({
-        'target': text,
-        'timeCreated': FieldValue.serverTimestamp(),
-        'author': FirebaseAuth.instance.currentUser!.uid,
-      });
-      ref.read(selectedSearchResult.notifier).value = newSearchDocRef.id;
-      searchCtrl.clear();
-    }
+    VoidFunction setSearchValue = setSearchValueFunction(searchCtrl, ref);
 
     return Scaffold(
         appBar: MyAppBar.getBar(context, ref),
@@ -112,92 +91,88 @@ class SearchPage extends ConsumerWidget {
                 ])));
   }
 
+  bool isValid(String searchText) {
+    return searchText.length >= MINIMUM_SEARCH_LENGTH;
+  }
+
+  VoidFunction setSearchValueFunction(
+      TextEditingController searchCtrl, WidgetRef ref) {
+    void setSearchValue() async {
+      if (!isValid(searchCtrl.text)) return;
+      if (searchCtrl.text.isEmpty ||
+          searchCtrl.text.length < MINIMUM_SEARCH_LENGTH) return;
+      var text = searchCtrl.text;
+      final newSearchDocRef = await FirebaseFirestore.instance
+          .collection('user')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('search')
+          .add({
+        'target': text,
+        'timeCreated': FieldValue.serverTimestamp(),
+        'author': FirebaseAuth.instance.currentUser!.uid,
+      });
+      ref.read(selectedSearchResult.notifier).value = newSearchDocRef.id;
+      searchCtrl.clear();
+    }
+
+    return setSearchValue;
+  }
+
   Container buildSearchButton(BuildContext context, void setSearchValue()) {
     return Container(
-                                margin: EdgeInsets.only(top: 16.0),
-                                child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Theme.of(context)
-                                          .colorScheme
-                                          .onSurface,
-                                      foregroundColor: Theme.of(context)
-                                          .colorScheme
-                                          .surface,
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 24, vertical: 20),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                      ),
-                                    ),
-                                    child: Text(
-                                      "Search",
-                                    ),
-                                    onPressed: () async {
-                                      // if (searchCtrl.text.isEmpty) return;
-                                      // var url = Uri.parse(
-                                      //     'https://screen-od6zwjoy2a-an.a.run.app/?name=${searchCtrl.text.toLowerCase()}');
-                                      // var response = await http.post(url, body: {
-                                      //   // 'name': 'doodle',
-                                      //   // 'color': 'blue'
-                                      // });
-                                      // print(
-                                      //     'Response status: ${response.statusCode}');
-                                      // print('Response body: ${response.body}');
-
-                                      // FirebaseFirestore.instance
-                                      //     .collection('search')
-                                      //     .doc(searchCtrl.text)
-                                      //     .set({
-                                      //   'target': searchCtrl.text,
-                                      //   'timeCreated':
-                                      //       FieldValue.serverTimestamp(),
-                                      //   'author': FirebaseAuth
-                                      //       .instance.currentUser!.uid,
-                                      // });
-
-                                      setSearchValue();
-                                    }),
-                              );
+      margin: EdgeInsets.only(top: 16.0),
+      child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Theme.of(context).colorScheme.onSurface,
+            foregroundColor: Theme.of(context).colorScheme.surface,
+            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+          ),
+          child: Text(
+            "Search",
+          ),
+          onPressed: () async {
+          setSearchValue();
+          }),
+    );
   }
 
   Flexible buildSearchBar(void setSearchValue()) {
     return Flexible(
-                                child: Form(
-                                  key: _formKey,
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 16.0, vertical: 12.0),
-                                    child: TextFormField(
-                                      validator: (value) {
-                                        String message =
-                                            "Please input $MINIMUM_SEARCH_LENGTH or more characters";
-                                        return isValid() &&
-                                                searchCtrl.text.length <
-                                                    MINIMUM_SEARCH_LENGTH &&
-                                                searchCtrl.text.isNotEmpty
-                                            ? message
-                                            : isValid()
-                                                ? null
-                                                : message;
-                                      },
-                                      onChanged: (v) {
-                                        _formKey.currentState?.validate();
-                                      },
-                                      controller: searchCtrl,
-                                      onFieldSubmitted: (value) async =>
-                                          setSearchValue(),
-                                      decoration: InputDecoration(
-                                        prefixIcon: Icon(Icons.search),
-                                        border: OutlineInputBorder(),
-                                        contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 16.0, vertical: 12.0),
-                                        hintText: 'Enter Name Here',
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
+      child: Form(
+        key: _formKey,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+          child: TextFormField(
+            validator: (value) {
+              String message =
+                  "Please input $MINIMUM_SEARCH_LENGTH or more characters";
+              return isValid(searchCtrl.text) &&
+                      searchCtrl.text.length < MINIMUM_SEARCH_LENGTH &&
+                      searchCtrl.text.isNotEmpty
+                  ? message
+                  : isValid(searchCtrl.text)
+                      ? null
+                      : message;
+            },
+            onChanged: (v) {
+              _formKey.currentState?.validate();
+            },
+            controller: searchCtrl,
+            onFieldSubmitted: (value) async => setSearchValue(),
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.search),
+              border: OutlineInputBorder(),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+              hintText: 'Enter Name Here',
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 
