@@ -59,7 +59,7 @@ class SearchPage extends ConsumerWidget {
         'timeCreated': FieldValue.serverTimestamp(),
         'author': FirebaseAuth.instance.currentUser!.uid,
       });
-      ref.read(selectedSearchResultId.notifier).value = newSearchDocRef.id;
+      ref.read(selectedSearchId.notifier).value = newSearchDocRef.id;
       searchCtrl.clear();
     }
 
@@ -205,38 +205,39 @@ class SearchPage extends ConsumerWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
-                                    child: Card(
-                                      child: SingleChildScrollView(
-                                        child: Column(
-                                          
-                                          mainAxisSize: MainAxisSize.max,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          
-                                          children: [
-                                            Container(
-                                                
-                                                padding: EdgeInsets.all(16.0),
-                                                child: Text(
-                                                  "Matches",
-                                                  style: Theme.of(context).textTheme.titleLarge,
-                                                )),
+                                      child: Card(
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                              padding: EdgeInsets.all(16.0),
+                                              child: Text(
+                                                "Matches",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleLarge,
+                                              )),
                                           ref.watch(selectedSearchId) == null
-                                                ? Container(height: double.maxFinite,)
-                                                : Padding(
-                                                    padding: EdgeInsets.all(8),
-                                                    child: SingleChildScrollView(
-                                                      child: SearchDetails(
-                                                          FirebaseFirestore.instance.doc(
+                                              ? Container(
+                                                  height: double.maxFinite,
+                                                )
+                                              : Padding(
+                                                  padding: EdgeInsets.all(8),
+                                                  child: SingleChildScrollView(
+                                                    child: SearchDetails(
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .doc(
                                                           'search/${ref.watch(selectedSearchId)}',
-                                                          ),
+                                                        ),
                                                         _searchResultsSancDocRef),
-                                                    )),
-                                                
-                                          ],
-                                        ),
-                                                           
+                                                  )),
+                                        ],
+                                      ),
                                     ),
-                                      
                                   )),
                                   Expanded(
                                       child: Card(
