@@ -20,11 +20,16 @@ class SwitchJSON extends ConsumerWidget {
     final isSwitched = ref.watch(SwitchJsonStateProvider);
     return Column(
       children: [
+        Container(
+            child: (isSwitched == false)
+                ? CustomJsonViewer(selectedItem)
+                // Widget with prittier data should go here, so its a placeholder for now
+                : JsonViewer(selectedItem)),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'JSON data',
+              'View Raw Data',
               style: TextStyle(color: Colors.black),
             ),
             Switch(
@@ -35,11 +40,7 @@ class SwitchJSON extends ConsumerWidget {
             )
           ],
         ),
-        Container(
-            child: (isSwitched == false)
-                ? CustomJsonViewer(selectedItem)
-                // Widget with prittier data should go here, so its a placeholder for now
-                : JsonViewer(selectedItem)),
+        
       ],
     );
   }

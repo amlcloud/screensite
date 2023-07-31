@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:providers/firestore.dart';
 import 'package:providers/generic.dart';
+import 'package:screensite/search/search_page.dart';
 import 'package:widgets/doc_field_text.dart';
 
 class SearchResults extends ConsumerWidget {
@@ -54,6 +55,7 @@ class SearchResults extends ConsumerWidget {
                     onTap: () {
                       ref.read(_selectedItemNotifier.notifier).value =
                           res.data()['ref'];
+                      ref.read(selectedSearchResultId.notifier).value = res.id;
                     },
                     child: ListTile(
                         title: Text("Name: " + res.data()['target']),
@@ -61,7 +63,7 @@ class SearchResults extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                                "Match score: ${matchScore.toStringAsFixed(2)} %"),
+                                "Match score: ${matchScore.toStringAsFixed(0)} %"),
                             Text("Levscore: " +
                                 res.data()['levScore'].toString()),
                             Text("List id: " +
