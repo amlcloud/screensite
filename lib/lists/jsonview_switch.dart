@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../controls/custom_json_viewer.dart';
+import '../controls/custom_json_viewer_v2.dart';
 import '../controls/json_viewer.dart';
 
 // Statefull widget for JSON Viewer, shows data in JSON format or User friendly format depending on users choice
@@ -22,7 +23,9 @@ class SwitchJSON extends ConsumerWidget {
       children: [
         Container(
             child: (isSwitched == false)
-                ? CustomJsonViewer(selectedItem)
+                // Uncomment line below to see new version of customJsonViewer
+                ? CustomJsonViewerV2(selectedItem)
+                //? CustomJsonViewer(selectedItem)
                 // Widget with prittier data should go here, so its a placeholder for now
                 : JsonViewer(selectedItem)),
         Row(
@@ -40,7 +43,6 @@ class SwitchJSON extends ConsumerWidget {
             )
           ],
         ),
-        
       ],
     );
   }
