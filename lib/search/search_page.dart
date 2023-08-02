@@ -17,7 +17,7 @@ import 'package:screensite/side_nav_bar.dart';
 
 typedef VoidFunction = void Function();
 
-final selectedSearchResult =
+final selectedSearchResultId =
     StateNotifierProvider<GenericStateNotifier<String?>, String?>(
         (ref) => GenericStateNotifier<String?>(null));
 
@@ -111,7 +111,7 @@ class SearchPage extends ConsumerWidget {
         'timeCreated': FieldValue.serverTimestamp(),
         'author': FirebaseAuth.instance.currentUser!.uid,
       });
-      ref.read(selectedSearchResult.notifier).value = newSearchDocRef.id;
+      ref.read(selectedSearchResultId.notifier).value = newSearchDocRef.id;
       searchCtrl.clear();
     }
 
