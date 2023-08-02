@@ -38,7 +38,6 @@ class SearchPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    VoidFunction setSearchValue = setSearchValueFunction(searchCtrl, ref);
 
     return Scaffold(
         appBar: MyAppBar.getBar(context, ref),
@@ -67,8 +66,8 @@ class SearchPage extends ConsumerWidget {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                buildSearchBar(setSearchValue),
-                                buildSearchButton(context, setSearchValue)
+                                buildSearchBar(ref),
+                                buildSearchButton(context,ref),
                               ],
                             ),
                           ),
@@ -95,9 +94,8 @@ class SearchPage extends ConsumerWidget {
     return searchText.length >= MINIMUM_SEARCH_LENGTH;
   }
 
-  VoidFunction setSearchValueFunction(
-      TextEditingController searchCtrl, WidgetRef ref) {
-    void setSearchValue() async {
+
+  void setSearchValue(WidgetRef ref) async {
       if (!isValid(searchCtrl.text)) return;
       if (searchCtrl.text.isEmpty ||
           searchCtrl.text.length < MINIMUM_SEARCH_LENGTH) return;
@@ -115,10 +113,7 @@ class SearchPage extends ConsumerWidget {
       searchCtrl.clear();
     }
 
-    return setSearchValue;
-  }
-
-  Container buildSearchButton(BuildContext context, void setSearchValue()) {
+  Container buildSearchButton(BuildContext context,WidgetRef ref) {
     return Container(
       margin: EdgeInsets.only(top: 16.0),
       child: ElevatedButton(
@@ -134,12 +129,12 @@ class SearchPage extends ConsumerWidget {
             "Search",
           ),
           onPressed: () async {
-          setSearchValue();
+          setSearchValue(ref);
           }),
     );
   }
 
-  Flexible buildSearchBar(void setSearchValue()) {
+  Flexible buildSearchBar(WidgetRef ref) {
     return Flexible(
       child: Form(
         key: _formKey,
@@ -161,7 +156,7 @@ class SearchPage extends ConsumerWidget {
               _formKey.currentState?.validate();
             },
             controller: searchCtrl,
-            onFieldSubmitted: (value) async => setSearchValue(),
+            onFieldSubmitted: (value) async => setSearchValue(ref),
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.search),
               border: OutlineInputBorder(),
