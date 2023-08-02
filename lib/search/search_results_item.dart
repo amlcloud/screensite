@@ -58,7 +58,9 @@ class SearchResultsItem extends ConsumerWidget {
                                       doc.data()!['target'].length) *
                               100;
                           return Text(
-                              'Match Score: ${matchScore.toStringAsFixed(0)} %');
+                            'Match Score: ${matchScore.toStringAsFixed(0)} %',
+                            style: Theme.of(context).textTheme.titleSmall,
+                          );
                         }))
                       ],
                     ),
