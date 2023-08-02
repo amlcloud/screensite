@@ -27,7 +27,7 @@ class MatchesWidget extends ConsumerWidget {
                       .textTheme
                       .titleLarge,
                 )),
-            ref.watch(selectedSearchResultId) ==
+            ref.watch(selectedSearchId) ==
                     null
                 ? Container(
                     height: double.maxFinite,
@@ -39,7 +39,7 @@ class MatchesWidget extends ConsumerWidget {
                           FirebaseFirestore
                               .instance
                               .doc(
-                            'search/${ref.watch(selectedSearchResultId)}',
+                            'search/${ref.watch(selectedSearchId)}',
                           ),
                           selectedRef),
                     )),
