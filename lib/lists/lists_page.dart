@@ -21,7 +21,7 @@ final selectedItem = StateNotifierProvider<
 class ListsPage extends ConsumerWidget {
   static String get routeName => 'lists';
   static String get routeLocation => '/$routeName';
-  final activeList =
+  final selectedList =
       StateNotifierProvider<GenericStateNotifier<String?>, String?>(
           (ref) => GenericStateNotifier<String?>(null));
 
@@ -59,10 +59,11 @@ class ListsPage extends ConsumerWidget {
                     child: ref.watch(selectedItem) == null
                         ? Container()
                         : SwitchJSON(ref.watch(selectedItem))),
-                ref.watch(activeList) == null || ref.watch(selectedItem) == null
+                ref.watch(selectedList) == null ||
+                        ref.watch(selectedItem) == null
                     ? Container()
-                    : IndexingItemList(ref.watch(activeList)!,
-                        ref.watch(selectedItem)!, activeList)
+                    : IndexingItemList(ref.watch(selectedList)!,
+                        ref.watch(selectedItem)!, selectedList)
               ],
             ),
           ))
@@ -72,9 +73,9 @@ class ListsPage extends ConsumerWidget {
   Expanded buildListDetailsColumn(WidgetRef ref) {
     return Expanded(
       flex: 2,
-      child: ref.watch(activeList) == null
+      child: ref.watch(selectedList) == null
           ? Container()
-          : ListDetails(ref.watch(activeList)!, selectedItem),
+          : ListDetails(ref.watch(selectedList)!, selectedItem),
     );
   }
 
@@ -84,7 +85,7 @@ class ListsPage extends ConsumerWidget {
         child: SingleChildScrollView(
             child: Column(
           children: [
-            Lists(activeList),
+            Lists(selectedList),
           ],
         )));
   }
