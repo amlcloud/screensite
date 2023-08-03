@@ -182,7 +182,7 @@ class JsonObjectViewerStateV2 extends State<JsonObjectViewerV2> {
                                 : entry.key,
                             style: Theme.of(context).textTheme.titleSmall,
                           ),
-                          // style: TextStyle(color: Colors.purple[900])),
+  
                           onTap: () {
                             setState(() {
                               openFlag[entry.key] =
@@ -268,12 +268,13 @@ class JsonObjectViewerStateV2 extends State<JsonObjectViewerV2> {
     return true;
   }
 
+  // Old code from V1
   getValueWidget(MapEntry entry) {
     if (entry.value == null) {
       return Expanded(
           child: Text(
-        '',
-        style: Theme.of(context).textTheme.titleSmall,
+        '', style: Theme.of(context).textTheme.titleSmall,
+        // style: TextStyle(color: Color.fromARGB(255, 13, 13, 13)),
       ));
     } else if (entry.value is int) {
       return Expanded(
@@ -287,16 +288,14 @@ class JsonObjectViewerStateV2 extends State<JsonObjectViewerV2> {
               )));
     } else if (entry.value is String) {
       return Expanded(
-        child: GestureDetector(
-          onTap: () {
-            copyToClipboard(entry.value.toString());
-          },
-          child: Text(
-            entry.value,
-            style: Theme.of(context).textTheme.titleSmall,
-          ),
-        ),
-      );
+          child: GestureDetector(
+              onTap: () {
+                copyToClipboard(entry.value.toString());
+              },
+              child: Text(
+                entry.value,
+                style: Theme.of(context).textTheme.titleSmall,
+              )));
     } else if (entry.value is bool) {
       return Expanded(
           child: GestureDetector(
@@ -324,35 +323,25 @@ class JsonObjectViewerStateV2 extends State<JsonObjectViewerV2> {
               copyToClipboard("");
             },
             child: Text(
-              '',
+              'Empty',
               style: Theme.of(context).textTheme.titleSmall,
             ));
       } else {
         return InkWell(
-            child: Expanded(
-              flex: 0,
-              child: GestureDetector(
-                  onTap: () {
-                    copyToClipboard(entry.value.toString());
-                  },
-                  child: Text('')
-
-                  // Container(
-                  //   padding: EdgeInsets.all(7),
-                  //   margin: EdgeInsets.fromLTRB(0, 0, 5, 0),
-                  //   decoration: BoxDecoration(
-                  //       color: Theme.of(context).colorScheme.inverseSurface,
-                  //       borderRadius: BorderRadius.circular(40)),
-                  //   child: Text(
-                  //     entry.value.length.toString(),
-                  //     style: TextStyle(
-                  //         color: Theme.of(context).colorScheme.surface,
-                  //         fontSize:
-                  //             Theme.of(context).textTheme.titleSmall?.fontSize),
-                  //   ),
-                  // )
-                  ),
-            ),
+            child: GestureDetector(
+                onTap: () {
+                  // Clipboard.setData(ClipboardData(
+                  //     text:
+                  //         'Array<${getTypeName(entry.value[0])}>[${entry.value.length}]'));
+                  // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  //   content: Text('Text copied to clipboard'),
+                  // ));
+                },
+                child: Text(
+                  // 'Array<${getTypeName(entry.value[0])}>[${entry.value.length}]',
+                  " ",
+                  style: Theme.of(context).textTheme.titleSmall,
+                )),
             onTap: () {
               setState(() {
                 openFlag[entry.key] = !(openFlag[entry.key] ?? false);
@@ -362,10 +351,17 @@ class JsonObjectViewerStateV2 extends State<JsonObjectViewerV2> {
     }
     return InkWell(
         child: GestureDetector(
+            onTap: () {
+              // Clipboard.setData(ClipboardData(text: 'Object'));
+              // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              //   content: Text('Text copied to clipboard'),
+              // ));
+            },
             child: Text(
-          '',
-          style: Theme.of(context).textTheme.titleSmall,
-        )),
+              '',
+              style: Theme.of(context).textTheme.titleSmall,
+              // style: TextStyle(color: Colors.grey),
+            )),
         onTap: () {
           setState(() {
             openFlag[entry.key] = !(openFlag[entry.key] ?? false);
