@@ -193,38 +193,81 @@ class SearchPage extends ConsumerWidget {
                                 
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                 // Matches section
                                   Expanded(
                                     child: Card(
-                                      child: SingleChildScrollView(
-                                        child: Column(
-                                          
-                                          mainAxisSize: MainAxisSize.max,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          
-                                          children: [
-                                            Container(
-                                                
-                                                padding: EdgeInsets.all(16.0),
-                                                child: Text(
-                                                  "Matches",
-                                                  style: Theme.of(context).textTheme.titleLarge,
-                                                )),
-                                            ref.watch(selectedSearchResult) == null
-                                                ? Container(height: double.maxFinite,)
-                                                : Padding(
-                                                    padding: EdgeInsets.all(8),
-                                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                              padding: EdgeInsets.all(16.0),
+                                              child: Text(
+                                                "Matches",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleLarge,
+                                              )),
+                                          Expanded(
+                                            child: ref.watch(
+                                                        selectedSearchResult) ==
+                                                    null
+                                                ? Container(
+                                                    height: double.maxFinite)
+                                                : SingleChildScrollView(
+                                                    child: Padding(
+                                                      padding:
+                                                          EdgeInsets.all(8),
                                                       child: SearchDetails(
-                                                          FirebaseFirestore.instance.doc(
-                                                            'search/${ref.watch(selectedSearchResult)}',
-                                                          ),
-                                                          selectedRef),
-                                                    )),
-                                          ],
-                                        ),
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .doc(
+                                                          'search/${ref.watch(selectedSearchResult)}',
+                                                        ),
+                                                        selectedRef,
+                                                      ),
+                                                    ),
+                                                  ),
+                                          ),
+                                        ],
                                       ),
+                                    ),
+                                  ),
+
+                                  
+
+                                  // Expanded(
+                                  //   child: Card(
+                                  //     child: SingleChildScrollView(
+                                  //       child: Column(
+                                          
+                                  //         mainAxisSize: MainAxisSize.max,
+                                  //         crossAxisAlignment: CrossAxisAlignment.start,
+                                          
+                                  //         children: [
+                                  //           Container(
+                                                
+                                  //               padding: EdgeInsets.all(16.0),
+                                  //               child: Text(
+                                  //                 "Matches",
+                                  //                 style: Theme.of(context).textTheme.titleLarge,
+                                  //               )),
+                                  //           ref.watch(selectedSearchResult) == null
+                                  //               ? Container(height: double.maxFinite,)
+                                  //               : Padding(
+                                  //                   padding: EdgeInsets.all(8),
+                                  //                   child: SingleChildScrollView(
+                                  //                     child: SearchDetails(
+                                  //                         FirebaseFirestore.instance.doc(
+                                  //                           'search/${ref.watch(selectedSearchResult)}',
+                                  //                         ),
+                                  //                         selectedRef),
+                                  //                   )),
+                                  //         ],
+                                  //       ),
+                                  //     ),
                                     
-                                  )),
+                                  // )),
                                   Expanded(
                                       child: Card(
                                           child: Column(
@@ -266,21 +309,23 @@ class SearchPage extends ConsumerWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 40.0, vertical: 20.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Text(
-                                "Search History",
-                                style:
-                                    Theme.of(context).textTheme.titleLarge,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Text(
+                                  "Search History",
+                                  style:
+                                      Theme.of(context).textTheme.titleLarge,
+                                ),
                               ),
                             ),
-                          ),
-                          SearchHistory(selectedRef),
-                        ],
+                            SearchHistory(selectedRef),
+                          ],
+                        ),
                       ),
                     ),
                   ),
