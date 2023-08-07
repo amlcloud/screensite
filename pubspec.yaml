@@ -31,7 +31,8 @@ dependencies:
     sdk: flutter
   firebase_core: ^2.3.0
   firebase_auth: 4.6.3
-  # firebase_auth_web: ^5.5.3
+  firebase_auth_web: 5.5.3
+  firebase_auth_platform_interface: 6.15.3
   cloud_firestore: ^4.0.1
   cloud_functions: ^4.0.1
   equatable: ^2.0.0
@@ -91,7 +92,6 @@ dev_dependencies:
   csv: ^5.0.0
   path_provider: ^2.0.2
   permission_handler: ^7.1.0
-  # fluttertoast: ^8.0.9
   universal_html: ^2.0.8
   clipboard:
 

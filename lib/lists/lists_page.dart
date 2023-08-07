@@ -21,7 +21,7 @@ final selectedItem = StateNotifierProvider<
 class ListsPage extends ConsumerWidget {
   static String get routeName => 'lists';
   static String get routeLocation => '/$routeName';
-  final activeList =
+  final selectedList =
       StateNotifierProvider<GenericStateNotifier<String?>, String?>(
           (ref) => GenericStateNotifier<String?>(null));
 
@@ -38,46 +38,55 @@ class ListsPage extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  // CustomNavRail.getNavRail(),
-                  Expanded(
-                      flex: 1,
-                      child: SingleChildScrollView(
-                          child: Column(
-                        children: [
-                          Lists(activeList),
-                        ],
-                      ))),
-                  Expanded(
-                    flex: 2,
-                    child: ref.watch(activeList) == null
-                        ? Container()
-                        : ListDetails(ref.watch(activeList)!, selectedItem),
-                  ),
-                  Expanded(
-                      flex: 2,
-                      child: Card(
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                            Expanded(
-                                child: SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  Padding(
-                                      padding: EdgeInsets.all(10),
-                                      child: ref.watch(selectedItem) == null
-                                          ? Container()
-                                          : SwitchJSON(
-                                              ref.watch(selectedItem))),
-                                  ref.watch(activeList) == null ||
-                                          ref.watch(selectedItem) == null
-                                      ? Container()
-                                      : IndexingItemList(ref.watch(activeList)!,
-                                          ref.watch(selectedItem)!, activeList)
-                                ],
-                              ),
-                            ))
-                          ])))
+                  buildSanctionListsColumn(),
+                  buildListDetailsColumn(ref),
+                  buildItemDetailsPreviewColumn(ref)
                 ])));
+  }
+
+  Expanded buildItemDetailsPreviewColumn(WidgetRef ref) {
+    return Expanded(
+        flex: 2,
+        child: Card(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Expanded(
+              child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                    padding: EdgeInsets.all(10),
+                    child: ref.watch(selectedItem) == null
+                        ? Container()
+                        : SwitchJSON(ref.watch(selectedItem))),
+                ref.watch(selectedList) == null ||
+                        ref.watch(selectedItem) == null
+                    ? Container()
+                    : IndexingItemList(ref.watch(selectedList)!,
+                        ref.watch(selectedItem)!, selectedList)
+              ],
+            ),
+          ))
+        ])));
+  }
+
+  Expanded buildListDetailsColumn(WidgetRef ref) {
+    return Expanded(
+      flex: 2,
+      child: ref.watch(selectedList) == null
+          ? Container()
+          : ListDetails(ref.watch(selectedList)!, selectedItem),
+    );
+  }
+
+  Expanded buildSanctionListsColumn() {
+    return Expanded(
+        flex: 1,
+        child: SingleChildScrollView(
+            child: Column(
+          children: [
+            Lists(selectedList),
+          ],
+        )));
   }
 }

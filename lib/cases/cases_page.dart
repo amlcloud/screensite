@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,19 +23,29 @@ class CasesPage extends ConsumerWidget {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            ElevatedButton(
-                onPressed: () {
-                  kDB
-                      .collection('user/${kUSR!.uid}/case')
-                      .add({'name': 'new case', 'status': 'draft'});
-                },
-                child: Text('New case')),
-            Expanded(
-                child: Padding(
-              padding: const EdgeInsets.only(top: 8.0, bottom: 0.0),
-              child: SingleChildScrollView(child: CasesList()),
-            )),
+            buildNewCaseButton(),
+            buildCasesList(),
           ],
         ));
+  }
+
+  Expanded buildCasesList() {
+    return Expanded(
+        child: Padding(
+      padding: const EdgeInsets.only(top: 8.0, bottom: 0.0),
+      child: SingleChildScrollView(child: CasesList()),
+    ));
+  }
+
+  ElevatedButton buildNewCaseButton() {
+    return ElevatedButton(
+        onPressed: () {
+          kDB.collection('user/${kUSR!.uid}/case').add({
+            'name': 'new case',
+            'status': 'draft',
+            'timeCreated': FieldValue.serverTimestamp(),
+          });
+        },
+        child: Text('New case'));
   }
 }

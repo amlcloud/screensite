@@ -55,26 +55,23 @@ class ListDetails extends ConsumerWidget {
                           ListIndexingWidget(listId: listId),
                           Divider(),
                           buildSourcesLinks(context, ref),
-
                           Divider(),
                           ListIndicesWidget(listId),
                           Divider(),
-                          //Timeline(entityId),
-                          /*Expanded(
-                                flex: 10,
-                                child: EntityList(entityId),
-                              ),*/
-                          //DataExportButton(entityId),
-                          Expanded(
-                              flex: 10,
-                              child: SingleChildScrollView(
-                                child: EntityListView(listId, selectedItem),
-                              )),
+                          buildEntityList(),
                           Divider(),
                           Expanded(child: ListCount(listId)),
                         ]),
                   ));
             });
+  }
+
+  Expanded buildEntityList() {
+    return Expanded(
+        flex: 10,
+        child: SingleChildScrollView(
+          child: EntityListView(listId, selectedItem),
+        ));
   }
 
   Widget _buildHeader(BuildContext context, WidgetRef ref) {

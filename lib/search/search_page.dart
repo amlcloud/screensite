@@ -1,23 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:common/common.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:providers/generic.dart';
 import 'package:screensite/app_bar.dart';
-import 'package:screensite/common.dart';
+
 import 'package:screensite/search/search_details.dart';
 import 'package:screensite/search/search_list.dart';
 import 'package:screensite/search/search_results_item.dart';
 import 'package:screensite/drawer.dart';
 import 'package:screensite/side_nav_bar.dart';
+import 'package:widgets/doc_print.dart';
 
-final selectedSearchResult =
+final selectedSearchId =
     StateNotifierProvider<GenericStateNotifier<String?>, String?>(
         (ref) => GenericStateNotifier<String?>(null));
 
-final selectedRef = StateNotifierProvider<
-        GenericStateNotifier<DocumentReference?>, DocumentReference?>(
-    (ref) => GenericStateNotifier<DocumentReference?>(null));
+final selectedSearchResultId =
+    StateNotifierProvider<GenericStateNotifier<String?>, String?>(
+        (ref) => GenericStateNotifier<String?>(null));
+
+final _searchResultsSancDocRef =
+    StateNotifierProvider<GenericStateNotifier<DR?>, DR?>(
+        (ref) => GenericStateNotifier<DR?>(null));
 
 const MINIMUM_SEARCH_LENGTH = 5;
 
@@ -37,25 +43,26 @@ class SearchPage extends ConsumerWidget {
     return searchCtrl.text.length >= MINIMUM_SEARCH_LENGTH;
   }
 
-  void setSearchValue() {
-    if (!isValid()) return;
-    if (searchCtrl.text.isEmpty ||
-        searchCtrl.text.length < MINIMUM_SEARCH_LENGTH) return;
-    var text = searchCtrl.text;
-    FirebaseFirestore.instance
-        .collection('user')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('search')
-        .add({
-      'target': text,
-      'timeCreated': FieldValue.serverTimestamp(),
-      'author': FirebaseAuth.instance.currentUser!.uid,
-    });
-    searchCtrl.clear();
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    void setSearchValue() async {
+      if (!isValid()) return;
+      if (searchCtrl.text.isEmpty ||
+          searchCtrl.text.length < MINIMUM_SEARCH_LENGTH) return;
+      var text = searchCtrl.text;
+      final newSearchDocRef = await FirebaseFirestore.instance
+          .collection('user')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('search')
+          .add({
+        'target': text,
+        'timeCreated': FieldValue.serverTimestamp(),
+        'author': FirebaseAuth.instance.currentUser!.uid,
+      });
+      ref.read(selectedSearchId.notifier).value = newSearchDocRef.id;
+      searchCtrl.clear();
+    }
+
     return Scaffold(
         appBar: MyAppBar.getBar(context, ref),
         drawer: (MediaQuery.of(context).size.width < WIDE_SCREEN_WIDTH)
@@ -146,9 +153,14 @@ class SearchPage extends ConsumerWidget {
                                   margin: EdgeInsets.only(top: 16.0),
                                   child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: Theme.of(context).colorScheme.onSurface,
-                                        foregroundColor: Theme.of(context).colorScheme.surface,
-                                        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface,
+                                        foregroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .surface,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 24, vertical: 20),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(8.0),
@@ -186,11 +198,10 @@ class SearchPage extends ConsumerWidget {
                               ],
                             ),
                           ),
-                          Expanded(                            
+                          Expanded(
                             child: Container(
-                              margin: EdgeInsets.symmetric(horizontal:16.0),
+                              margin: EdgeInsets.symmetric(horizontal: 16.0),
                               child: Row(
-                                
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   // Matches section
@@ -210,7 +221,7 @@ class SearchPage extends ConsumerWidget {
                                               )),
                                           Expanded(
                                             child: ref.watch(
-                                                        selectedSearchResult) ==
+                                                        selectedSearchId) ==
                                                     null
                                                 ? Container(
                                                     height: double.maxFinite)
@@ -222,9 +233,9 @@ class SearchPage extends ConsumerWidget {
                                                         FirebaseFirestore
                                                             .instance
                                                             .doc(
-                                                          'search/${ref.watch(selectedSearchResult)}',
+                                                          'search/${ref.watch(selectedSearchId)}',
                                                         ),
-                                                        selectedRef,
+                                                        _searchResultsSancDocRef,
                                                       ),
                                                     ),
                                                   ),
@@ -233,6 +244,7 @@ class SearchPage extends ConsumerWidget {
                                       ),
                                     ),
                                   ),
+
                                   Expanded(
                                       child: Card(
                                           child: Column(
@@ -243,7 +255,9 @@ class SearchPage extends ConsumerWidget {
                                             padding: EdgeInsets.all(16.0),
                                             child: Text(
                                               "Profile Information",
-                                              style: Theme.of(context).textTheme.titleLarge,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleLarge,
                                             )),
                                         Flexible(
                                             flex: 3,
@@ -251,14 +265,20 @@ class SearchPage extends ConsumerWidget {
                                               child: Column(
                                                 children: [
                                                   Padding(
-                                                      padding: EdgeInsets.all(10),
+                                                      padding:
+                                                          EdgeInsets.all(10),
                                                       child: ref.watch(
-                                                                  selectedRef) ==
+                                                                  _searchResultsSancDocRef) ==
                                                               null
                                                           ? Container()
                                                           : SearchResultsItem(
                                                               ref.watch(
-                                                                  selectedRef)!))
+                                                                  _searchResultsSancDocRef)!,
+                                                              FirebaseFirestore
+                                                                  .instance
+                                                                  .doc(
+                                                                'user/${FirebaseAuth.instance.currentUser!.uid}/search/${ref.watch(selectedSearchId)}/res/${ref.watch(selectedSearchResultId)}',
+                                                              )))
                                                 ],
                                               ),
                                             ))
@@ -282,12 +302,11 @@ class SearchPage extends ConsumerWidget {
                               padding: const EdgeInsets.all(16.0),
                               child: Text(
                                 "Search History",
-                                style:
-                                    Theme.of(context).textTheme.titleLarge,
+                                style: Theme.of(context).textTheme.titleLarge,
                               ),
                             ),
                           ),
-                          SearchHistory(selectedRef),
+                          SearchHistory(_searchResultsSancDocRef),
                         ],
                       ),
                     ),

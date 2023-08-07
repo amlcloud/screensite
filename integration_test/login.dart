@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:screensite/main.dart';
+import 'package:screensite/main_app_widget.dart';
 
 Future<void> loginTest(WidgetTester tester) async {
   print('starting login test');

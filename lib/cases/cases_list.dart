@@ -43,6 +43,13 @@ class CasesList extends ConsumerWidget {
           .toList());
 
   List<Widget> _buildAppsByStatus() {
+    // kDB
+    //     .collection('user/${kUSR!.uid}/case')
+    //     .orderBy('timeCreated')
+    //     .where('status', isEqualTo: 'draft')
+    //     .get()
+    //     .then((value) => print(value.docs.length));
+
     return [
       STATUS.draft,
       STATUS.investigating,
@@ -50,17 +57,16 @@ class CasesList extends ConsumerWidget {
     ]
         .map(
           (e) => ColStreamWidget<Widget>(
-            colSPfiltered(
-              'user/${kUSR!.uid}/case',
-              queries: [
-                QueryParam(
-                  'status',
-                  Map<Symbol, dynamic>.from(
-                    {const Symbol('isEqualTo'): getStatusKey(e)},
+            colSPfiltered('user/${kUSR!.uid}/case',
+                queries: [
+                  QueryParam(
+                    'status',
+                    Map<Symbol, dynamic>.from(
+                      {const Symbol('isEqualTo'): getStatusKey(e)},
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+                orderBy: 'timeCreated'),
             (context, data, items) => Padding(
               padding: const EdgeInsets.only(top: 8.0, bottom: 8),
               child: Column(

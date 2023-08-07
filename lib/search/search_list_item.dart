@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:providers/firestore.dart';
 import 'package:providers/generic.dart';
 import 'package:screensite/search/search_page.dart';
+import 'package:jiffy/jiffy.dart';
 
 class SearchListItem extends ConsumerWidget {
   final DocumentReference searchRef;
@@ -12,6 +13,15 @@ class SearchListItem extends ConsumerWidget {
       DocumentReference?> _selectedItemNotifier;
 
   const SearchListItem(this.searchRef, this._selectedItemNotifier);
+
+  bool isLessThan24HoursAgo(DateTime timeCreated) {
+    Duration difference = DateTime.now().difference(timeCreated);
+
+    if (difference.inHours < 24) {
+      return true;
+    }
+    return false;
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,19 +33,18 @@ class SearchListItem extends ConsumerWidget {
               children: [
                 ListTile(
                   title: Text(searchDoc.data()!['target'] ?? ''),
-                  trailing: Text(searchDoc.data()!['resultsCount'].toString()),
-                  // subtitle: Text(entityDoc.data()!['desc'] ?? 'desc'),
-                  // trailing: Column(children: <Widget>[
-                  //   Text(searchDoc.data()!['target'] ?? ''),
-                  //   // buildDeleteEntityButton(
-                  //   //     context,
-                  //   //     FirebaseFirestore.instance
-                  //   //         .collection('batch')
-                  //   //         .doc(batchId),
-                  //   //     Icon(Icons.delete))
-                  // ]),
+                  trailing: Text(
+                      "${searchDoc.data()!['resultsCount'].toString()} Results"),
+                  subtitle: isLessThan24HoursAgo(
+                          searchDoc.data()!['timeCreated'].toDate())
+                      ? Text(Jiffy(
+                              Jiffy(searchDoc.data()!['timeCreated'].toDate())
+                                  .format())
+                          .fromNow())
+                      : Text(Jiffy(searchDoc.data()!['timeCreated'].toDate())
+                          .format("hh:mm a, do MMM, yyyy")),
                   onTap: () {
-                    ref.read(selectedSearchResult.notifier).value =
+                    ref.read(selectedSearchId.notifier).value =
                         searchRef.id;
                     ref.read(_selectedItemNotifier.notifier).value = null;
                   },
