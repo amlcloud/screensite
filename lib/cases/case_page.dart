@@ -7,6 +7,8 @@ import 'package:screensite/app_bar.dart';
 import 'package:screensite/drawer.dart';
 import 'package:widgets/doc_stream_widget.dart';
 
+import 'case_status.dart';
+
 import 'case_chat_widget.dart';
 import 'investigation_widget.dart';
 import 'matches_widget.dart';
@@ -24,6 +26,17 @@ class CasePage extends ConsumerWidget {
   CasePage(this.caseId)
       : caseDocRef = kDB.doc('/user/${kUSR!.uid}/case/$caseId') {
     print(caseId);
+  }
+
+  void updateDocumentWithStatus(DR caseDocRef, STATUS selectedStatus) async {
+    try {
+      // Call the update method with a map containing the field and its new value.
+      await caseDocRef.update({
+        'status': getStatusKey(selectedStatus),
+      });
+    } catch (e) {
+      rethrow; // Rethrow the exception to be caught by the caller.
+    }
   }
 
   @override
@@ -52,6 +65,31 @@ class CasePage extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Expanded(child: Text('Case: ${caseDocRef.id}')),
+                      // Dropdown button for selecting the status
+
+                      DropdownButton<STATUS>(
+                        isExpanded: true,
+                        value: STATUS.draft,
+                        items: getAllStatuses()
+                            .map<DropdownMenuItem<STATUS>>((STATUS value) {
+                          return DropdownMenuItem<STATUS>(
+                            value:
+                                value, // Use the enum value as the value for the DropdownMenuItem
+                            child: Text(value
+                                .name), // Use the extension to get the name of the status
+                          );
+                        }).toList(),
+                        onChanged: (newValue) async {
+                          try {
+                            updateDocumentWithStatus(caseDocRef, newValue!);
+
+                            print('Document updated successfully.');
+                          } catch (e) {
+                            print('Error updating document: $e');
+                          }
+                        },
+                      ),
+
                       Flexible(
                           flex: 1,
                           child: Row(
