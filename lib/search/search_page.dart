@@ -204,11 +204,10 @@ class SearchPage extends ConsumerWidget {
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  // Matches section
                                   Expanded(
-                                      child: Card(
-                                    child: SingleChildScrollView(
+                                    child: Card(
                                       child: Column(
-                                        mainAxisSize: MainAxisSize.max,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
@@ -220,25 +219,32 @@ class SearchPage extends ConsumerWidget {
                                                     .textTheme
                                                     .titleLarge,
                                               )),
-                                          ref.watch(selectedSearchId) == null
-                                              ? Container(
-                                                  height: double.maxFinite,
-                                                )
-                                              : Padding(
-                                                  padding: EdgeInsets.all(8),
-                                                  child: SingleChildScrollView(
-                                                    child: SearchDetails(
+                                          Expanded(
+                                            child: ref.watch(
+                                                        selectedSearchId) ==
+                                                    null
+                                                ? Container(
+                                                    height: double.maxFinite)
+                                                : SingleChildScrollView(
+                                                    child: Padding(
+                                                      padding:
+                                                          EdgeInsets.all(8),
+                                                      child: SearchDetails(
                                                         FirebaseFirestore
                                                             .instance
                                                             .doc(
                                                           'search/${ref.watch(selectedSearchId)}',
                                                         ),
-                                                        _searchResultsSancDocRef),
-                                                  )),
+                                                        _searchResultsSancDocRef,
+                                                      ),
+                                                    ),
+                                                  ),
+                                          ),
                                         ],
                                       ),
                                     ),
-                                  )),
+                                  ),
+
                                   Expanded(
                                       child: Card(
                                           child: Column(
