@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:providers/firestore.dart';
@@ -44,8 +43,7 @@ class SearchListItem extends ConsumerWidget {
                       : Text(Jiffy(searchDoc.data()!['timeCreated'].toDate())
                           .format("hh:mm a, do MMM, yyyy")),
                   onTap: () {
-                    ref.read(selectedSearchId.notifier).value =
-                        searchRef.id;
+                    ref.read(selectedSearchId.notifier).value = searchRef.id;
                     ref.read(_selectedItemNotifier.notifier).value = null;
                   },
                 )

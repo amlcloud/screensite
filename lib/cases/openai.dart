@@ -1,5 +1,4 @@
 import 'package:common/common.dart';
-import 'package:common/dialogs.dart';
 
 Future<Map<String, String>> prepareOpenAIHeaders() async {
   final userDoc = await kDBUserRef().get();

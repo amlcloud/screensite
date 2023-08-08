@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../extensions/string_validations.dart';
-import 'package:screensite/theme.dart';
 import 'dart:convert';
 
 // Make an enum to check for type
@@ -182,7 +181,6 @@ class JsonObjectViewerStateV2 extends State<JsonObjectViewerV2> {
                                 : entry.key,
                             style: Theme.of(context).textTheme.titleSmall,
                           ),
-  
                           onTap: () {
                             setState(() {
                               openFlag[entry.key] =

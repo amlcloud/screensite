@@ -1,9 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:screensite/main.dart';
 
 class ThemeStateNotifier extends StateNotifier<bool> {
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -32,9 +29,3 @@ class ThemeStateNotifier extends StateNotifier<bool> {
     }
   }
 }
-
-// final themeStateNotifierProvider =
-//     StateNotifierProvider<ThemeStateNotifier, bool>((ref) {
-//   bool loginState = ref.watch(isLoggedIn);
-//   return ThemeStateNotifier(loginState);
-// }, dependencies: [isLoggedIn]);
