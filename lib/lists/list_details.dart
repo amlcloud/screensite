@@ -1,24 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:common/common.dart';
-import 'package:common/dialogs.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:providers/firestore.dart';
-import 'package:providers/generic.dart';
-import 'package:screensite/lists/list_entitylistview.dart';
-import 'package:screensite/lists/list_indexing.dart';
-import 'package:screensite/theme.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:widgets/copy_to_clipboard_widget.dart';
-import 'package:widgets/doc_field_text.dart';
-import 'package:widgets/doc_field_text_field.dart';
-import 'package:widgets/doc_stream_widget.dart';
-
 import '../common.dart';
 import 'list_count.dart';
 import 'list_indexing_widget.dart';
+import 'list_exports.dart';
 
 class ListDetails extends ConsumerWidget {
   final String listId;
