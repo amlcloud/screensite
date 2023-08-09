@@ -28,10 +28,6 @@ class CasePage extends ConsumerWidget {
     print(caseId);
   }
 
-  void updateDocumentWithStatus(DR caseDocRef, STATUS selectedStatus) async {
-    await caseDocRef.update({'status': getStatusKey(selectedStatus)});
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
@@ -71,8 +67,9 @@ class CasePage extends ConsumerWidget {
                               ),
                             )
                             .toList(),
-                        onChanged: (newValue) {
-                          updateDocumentWithStatus(caseDocRef, newValue!);
+                        onChanged: (newValue) async {
+                          await caseDocRef
+                              .update({'status': getStatusKey(newValue!)});
                           print('Document updated successfully.');
                         },
                       ),
