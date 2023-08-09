@@ -1,13 +1,4 @@
-import 'package:cloud_functions/cloud_functions.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:providers/firestore.dart';
-import 'package:providers/generic.dart';
-import 'package:providers/watchers.dart';
-
-import 'indexing/indexing_progress.dart';
-import 'indexing/indexing_status.dart';
+import 'list_exports.dart';
 
 class ListIndexingWidget extends ConsumerWidget {
   ListIndexingWidget({

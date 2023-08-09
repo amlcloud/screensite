@@ -1,13 +1,5 @@
 import 'dart:async';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:jiffy/jiffy.dart';
-import 'package:providers/firestore.dart';
-import 'package:providers/generic.dart';
-import 'package:screensite/lists/list_entitylistview.dart';
-import 'package:screensite/lists/lists_page.dart';
+import 'list_exports.dart';
 
 final selectedListItem =
     StateNotifierProvider<GenericStateNotifier<String?>, String?>(
