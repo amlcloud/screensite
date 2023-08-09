@@ -29,14 +29,7 @@ class CasePage extends ConsumerWidget {
   }
 
   void updateDocumentWithStatus(DR caseDocRef, STATUS selectedStatus) async {
-    try {
-      // Call the update method with a map containing the field and its new value.
-      await caseDocRef.update({
-        'status': getStatusKey(selectedStatus),
-      });
-    } catch (e) {
-      rethrow; // Rethrow the exception to be caught by the caller.
-    }
+    await caseDocRef.update({'status': getStatusKey(selectedStatus)});
   }
 
   @override
@@ -71,22 +64,16 @@ class CasePage extends ConsumerWidget {
                         isExpanded: true,
                         value: STATUS.draft,
                         items: getAllStatuses()
-                            .map<DropdownMenuItem<STATUS>>((STATUS value) {
-                          return DropdownMenuItem<STATUS>(
-                            value:
-                                value, // Use the enum value as the value for the DropdownMenuItem
-                            child: Text(value
-                                .name), // Use the extension to get the name of the status
-                          );
-                        }).toList(),
-                        onChanged: (newValue) async {
-                          try {
-                            updateDocumentWithStatus(caseDocRef, newValue!);
-
-                            print('Document updated successfully.');
-                          } catch (e) {
-                            print('Error updating document: $e');
-                          }
+                            .map<DropdownMenuItem<STATUS>>(
+                              (STATUS value) => DropdownMenuItem<STATUS>(
+                                value: value,
+                                child: Text(value.name),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (newValue) {
+                          updateDocumentWithStatus(caseDocRef, newValue!);
+                          print('Document updated successfully.');
                         },
                       ),
 
