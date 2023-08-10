@@ -7,6 +7,8 @@ import 'package:screensite/app_bar.dart';
 import 'package:screensite/drawer.dart';
 import 'package:widgets/doc_stream_widget.dart';
 
+import 'case_status.dart';
+
 import 'case_chat_widget.dart';
 import 'investigation_widget.dart';
 import 'matches_widget.dart';
@@ -52,6 +54,26 @@ class CasePage extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Expanded(child: Text('Case: ${caseDocRef.id}')),
+                      // Dropdown button for selecting the status
+
+                      DropdownButton<STATUS>(
+                        isExpanded: true,
+                        value: STATUS.draft,
+                        items: getAllStatuses()
+                            .map<DropdownMenuItem<STATUS>>(
+                              (STATUS value) => DropdownMenuItem<STATUS>(
+                                value: value,
+                                child: Text(value.name),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (newValue) async {
+                          await caseDocRef
+                              .update({'status': getStatusKey(newValue!)});
+                          print('Document updated successfully.');
+                        },
+                      ),
+
                       Flexible(
                           flex: 1,
                           child: Row(

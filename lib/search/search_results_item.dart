@@ -1,16 +1,12 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:providers/firestore.dart';
 import 'package:screensite/lists/jsonview_switch.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:screensite/search/search_page.dart';
+
 import 'package:widgets/doc_field_text.dart';
-import 'package:common/firestore.dart';
-import 'package:widgets/doc_print.dart';
+
 import 'package:widgets/doc_stream_widget.dart';
 
 class SearchResultsItem extends ConsumerWidget {

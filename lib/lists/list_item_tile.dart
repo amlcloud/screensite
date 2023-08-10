@@ -1,15 +1,5 @@
 import 'dart:async';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:jiffy/jiffy.dart';
-import 'package:providers/firestore.dart';
-import 'package:providers/generic.dart';
-import 'package:screensite/lists/list_entitylistview.dart';
-import 'package:screensite/lists/lists_page.dart';
-
-import '../common.dart';
+import 'list_exports.dart';
 
 final selectedListItem =
     StateNotifierProvider<GenericStateNotifier<String?>, String?>(
@@ -34,51 +24,56 @@ class _ListItemState extends ConsumerState<ListItemTile> {
         loading: () => Container(),
         error: (e, s) => ErrorWidget(e),
         data: (entityDoc) => (entityDoc.exists == false)
-            ? Center(child: Text('No entity data exists'))  
-            : (entityDoc.data()?.containsKey('isVisible') == true && entityDoc.data()?['isVisible'] == false)
+            ? Center(child: Text('No entity data exists'))
+            : (entityDoc.data()?.containsKey('isVisible') == true &&
+                    entityDoc.data()?['isVisible'] == false)
                 ? Container()
-            : Card(
-                child:
-                    Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                ListTile(
-                  selected: ref.watch(selectedListItem) == widget.entityId
-                      ? true
-                      : false,
-                  selectedTileColor: Theme.of(context).colorScheme.secondary,
-                  title: Text(
-                    (entityDoc.data()!['uiName'] != null)
-                        ? entityDoc.data()!['uiName']
-                        : (entityDoc.data()!['name'] != null)
-                            ? entityDoc.data()!['name']
-                            : 'undefined list name',
-                  ),
+                : Card(
+                    child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                        ListTile(
+                          selected:
+                              ref.watch(selectedListItem) == widget.entityId
+                                  ? true
+                                  : false,
+                          selectedTileColor:
+                              Theme.of(context).colorScheme.secondary,
+                          title: Text(
+                            (entityDoc.data()!['uiName'] != null)
+                                ? entityDoc.data()!['uiName']
+                                : (entityDoc.data()!['name'] != null)
+                                    ? entityDoc.data()!['name']
+                                    : 'undefined list name',
+                          ),
 //                   subtitle: Text(
 //                       '''Last changed on ${Jiffy(entityDoc.data()!['lastUpdateTime'].toDate()).format(DISPLAY_DATE_TIME_FORMAT)}
 // Last updated on ${Jiffy(entityDoc.data()!['lastUpdateTime'].toDate()).format(DISPLAY_DATE_TIME_FORMAT)}'''),
 
-                  subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children:[
-                        Text(
-                           style: Theme.of(context).textTheme.bodySmall,
-                       'Changed: ${Jiffy(entityDoc.data()!['lastUpdateTime'].toDate()).format("yy/MM/dd HH:mm")}',
-                         ),
-                        Text( 
-                          style: Theme.of(context).textTheme.bodySmall,
-                          'Updated: ${Jiffy(entityDoc.data()!['lastUpdateTime'].toDate()).format("yy/MM/dd HH:mm")}'),
-                         // style: Theme.of(context).textTheme.caption, 
-                      ],
-                    ),                  
-                    isThreeLine: true,
-                  onTap: () {
-                    ref.read(selectedItem.notifier).value = null;
-                    ref.read(selectedEntityList.notifier).value = null;
-                    ref.read(selectedListItem.notifier).value = widget.entityId;
-                    ref.read(widget.activeList.notifier).value =
-                        widget.entityId;
-                  },
-                ),
-              ])));
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                style: Theme.of(context).textTheme.bodySmall,
+                                'Changed: ${Jiffy(entityDoc.data()!['lastUpdateTime'].toDate()).format("yy/MM/dd HH:mm")}',
+                              ),
+                              Text(
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                  'Updated: ${Jiffy(entityDoc.data()!['lastUpdateTime'].toDate()).format("yy/MM/dd HH:mm")}'),
+                              // style: Theme.of(context).textTheme.caption,
+                            ],
+                          ),
+                          isThreeLine: true,
+                          onTap: () {
+                            ref.read(selectedItem.notifier).value = null;
+                            ref.read(selectedEntityList.notifier).value = null;
+                            ref.read(selectedListItem.notifier).value =
+                                widget.entityId;
+                            ref.read(widget.activeList.notifier).value =
+                                widget.entityId;
+                          },
+                        ),
+                      ])));
   }
 
   Future<bool> CheckSelected() async {

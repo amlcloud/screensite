@@ -133,23 +133,15 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
     }
   }
 
-  static isInkWell(dynamic content) {
-    if (content == null) {
-      return false;
-    } else if (content is int) {
-      return false;
-    } else if (content is String) {
-      return false;
-    } else if (content is bool) {
-      return false;
-    } else if (content is double) {
+  static bool isInkWell(dynamic content) {
+    if (content == null ||
+        content is int ||
+        content is String ||
+        content is bool ||
+        content is double) {
       return false;
     } else if (content is List) {
-      if (content.isEmpty) {
-        return false;
-      } else {
-        return true;
-      }
+      return content.isNotEmpty;
     }
     return true;
   }
@@ -251,22 +243,15 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
         });
   }
 
-  static isExtensible(dynamic content) {
-    if (content == null) {
-      return false;
-    } else if (content is int) {
-      return false;
-    } else if (content is String) {
-      return false;
-    } else if (content is bool) {
-      return false;
-    } else if (content is double) {
-      return false;
-    }
-    return true;
+  static bool isExtensible(dynamic content) {
+    return content != null &&
+        !(content is int ||
+            content is String ||
+            content is bool ||
+            content is double);
   }
 
-  static getTypeName(dynamic content) {
+  static String getTypeName(dynamic content) {
     if (content is int) {
       return 'int';
     } else if (content is String) {

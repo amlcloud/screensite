@@ -3,7 +3,6 @@ import 'package:common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:providers/firestore.dart';
-import 'package:intl/intl.dart';
 
 class CaseTableWidget extends ConsumerWidget {
   final TextEditingController searchCtrl = TextEditingController();
@@ -64,29 +63,3 @@ List<T> docFieldList<T>(BuildContext context, WidgetRef ref, String address,
       loading: () => [],
       error: (e, s) => []);
 }
-
-
-// class DocFieldListWidget extends ConsumerWidget {
-
-//   /// The build strategy currently used by this builder.
-//   ///
-//   /// This builder must only return a widget and should not have any side
-//   /// effects as it may be called multiple times.
-//   final AsyncWidgetBuilder<T> builder;
-
-//   const DocFieldListWidget({
-//     super.key,
-//     required this.builder,
-//   }) : assert(builder != null);
-
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//       StreamBuilder
-//       // ref.watch(docSP('case/1')).when(
-//       //     data: (caseDoc) => caseDoc
-//       //         .data()!
-//       //         .entries
-//       //         .map<DataRow>((e) =>
-
-//   }
-// }

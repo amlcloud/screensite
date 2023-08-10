@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
 import 'package:screensite/common.dart';
 import 'package:screensite/router.dart';
 import 'package:widgets/custom_app_bar.dart';

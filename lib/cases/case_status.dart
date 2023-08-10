@@ -19,6 +19,10 @@ extension StatusExtension on STATUS {
   String get name => STATUS_NAMES[this]!;
 }
 
+List<STATUS> getAllStatuses() {
+  return STATUS.values;
+}
+
 STATUS getStatusByKey(String name) {
   return STATUS_NAMES.entries
       .firstWhere((element) => element.key.toString().split('.')[1] == name)

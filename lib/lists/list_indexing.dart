@@ -1,14 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:providers/firestore.dart';
-import 'package:providers/generic.dart';
-
-import 'indexing/indexing_array_of_values_field_form.dart';
-import 'indexing/indexing_multiple_fields_form.dart';
-import 'indexing/indexing_single_field_form.dart';
-import 'indexing/indexing_array_of_objects_field_form.dart';
+import 'list_exports.dart';
 
 const List<String> indexTypes = <String>[
   'Single field',

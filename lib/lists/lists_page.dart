@@ -1,18 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:providers/generic.dart';
-import 'package:screensite/app_bar.dart';
-import 'package:screensite/lists/lists_list.dart';
-import 'package:screensite/lists/list_details.dart';
-import 'package:screensite/drawer.dart';
-import 'package:screensite/common.dart';
-import 'jsonview_switch.dart';
-import 'package:screensite/side_nav_bar.dart';
-
-//import 'jsonview_switch.dart';
-// import 'package:flutter_json_viewer/flutter_json_viewer.dart';
-
-import 'indexing/indexing_item_list.dart';
+import 'list_exports.dart';
 
 final selectedItem = StateNotifierProvider<
         GenericStateNotifier<Map<String, dynamic>?>, Map<String, dynamic>?>(

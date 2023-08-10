@@ -9,7 +9,6 @@ import 'package:providers/firestore.dart';
 import 'package:providers/generic.dart';
 import 'package:widgets/col_stream_widget.dart';
 import 'package:widgets/copy_to_clipboard_widget.dart';
-import 'package:widgets/doc_print.dart';
 import 'package:widgets/doc_stream_widget.dart';
 import 'package:http/http.dart' as http;
 

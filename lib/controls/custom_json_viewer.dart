@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../extensions/string_validations.dart';
-import 'package:screensite/theme.dart';
 import 'dart:convert';
 
 // Make an enum to check for type
@@ -67,10 +66,9 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
             foregroundColor: Theme.of(context).colorScheme.surface,
             padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
             shape: RoundedRectangleBorder(
-              borderRadius:
-                  BorderRadius.circular(8.0),
+              borderRadius: BorderRadius.circular(8.0),
             ),
-          ),        
+          ),
           onPressed: () {
             copyToClipboard(jsonEncode(widget.jsonObj));
           },

@@ -1,8 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:providers/firestore.dart';
-import 'package:providers/generic.dart';
+import 'list_exports.dart';
 
 final selectedEntityList =
     StateNotifierProvider<GenericStateNotifier<int?>, int?>(

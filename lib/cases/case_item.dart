@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:providers/firestore.dart';
-import 'package:screensite/cases/case_page.dart';
 import 'package:widgets/doc_field_text.dart';
 
 import 'case_status.dart';
