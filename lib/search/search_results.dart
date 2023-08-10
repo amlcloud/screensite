@@ -26,6 +26,16 @@ class SearchResults extends ConsumerWidget {
     return sortedDataList;
   }
 
+  // function to calculate progress bar color based on value
+  Color calculateBackgroundColor({required double value}) {
+    if (value > 0.90) {
+      return Colors.red;
+    } else if (value > 0.50) {
+      return Colors.orange;
+    } else {
+      return Colors.green;
+    }
+  }
   @override
   Widget build(BuildContext context, WidgetRef ref) => Column(
       children: ref
@@ -58,23 +68,50 @@ class SearchResults extends ConsumerWidget {
                       ref.read(selectedSearchResultId.notifier).value = res.id;
                     },
                     child: ListTile(
-                        title: Text("Name: " + res.data()['target']),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                                "Match score: ${matchScore.toStringAsFixed(0)} %"),
-                            Text("Levscore: " +
-                                res.data()['levScore'].toString()),
-                            Text("List id: " +
-                                res.data()['ref'].parent.parent.id),
-                            Row(children: [
-                              Text('List name: '),
-                              DocFieldText(
-                                  res.data()['ref'].parent.parent, 'name')
-                            ])
-                          ],
-                        )));
+                      tileColor: Theme.of(context).listTileTheme.tileColor,
+                      subtitle:
+                          DocFieldText(res.data()['ref'].parent.parent, 'name'),
+                      trailing: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "${matchScore.toStringAsFixed(0)}%",
+                              style: Theme.of(context).textTheme.titleLarge),
+                          // Remove Row and add Text(matchScore) directly to trailing for old version
+                          // Spacing
+                          SizedBox(
+                            width: 9,
+                          ),
+                          // Linear Percentage Indicator- ??
+                          SizedBox(
+                            width: 80,
+                            height: 5,
+                            child: LinearProgressIndicator(
+                              color: calculateBackgroundColor(
+                                  value: matchScore.toDouble() / 100),
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.background,
+                              value: matchScore.toDouble() / 100,
+                              semanticsValue:
+                                  '${matchScore.toStringAsFixed(0)} %',
+                            ),
+                          ),
+
+                          //     style: Theme.of(context).textTheme.titleLarge)
+                        ],
+                      ),
+
+                      // Plain percentage
+                      //Text("${matchScore.toStringAsFixed(0)} %",
+                      //     style: Theme.of(context).textTheme.titleLarge),
+                      selectedColor:
+                          Theme.of(context).colorScheme.inverseSurface,
+                      title: Text(
+                        res.data()['target'],
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                    ));
               }).toList();
             },
           ));
