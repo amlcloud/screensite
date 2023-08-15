@@ -77,7 +77,7 @@ class SearchResults extends ConsumerWidget {
                         children: [
                           Text(
                             "${matchScore.toStringAsFixed(0)}%",
-                              style: Theme.of(context).textTheme.titleLarge),
+                              style: Theme.of(context).textTheme.titleMedium),
                           // Remove Row and add Text(matchScore) directly to trailing for old version
                           // Spacing
                           SizedBox(
@@ -109,7 +109,7 @@ class SearchResults extends ConsumerWidget {
                           Theme.of(context).colorScheme.inverseSurface,
                       title: Text(
                         res.data()['target'],
-                        style: Theme.of(context).textTheme.headlineSmall,
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ));
               }).toList();
