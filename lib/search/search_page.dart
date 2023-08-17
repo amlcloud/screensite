@@ -223,19 +223,10 @@ class SearchPage extends ConsumerWidget {
                                                     null
                                                 ? Container(
                                                     height: double.maxFinite)
-                                                : SingleChildScrollView(
-                                                    child: Padding(
-                                                      padding:
-                                                          EdgeInsets.all(8),
-                                                      child: SearchDetails(
-                                                        FirebaseFirestore
-                                                            .instance
-                                                            .doc(
-                                                          'search/${ref.watch(selectedSearchId)}',
-                                                        ),
-                                                        _searchResultsSancDocRef,
-                                                      ),
-                                                    ),
+                                                : SearchDetails(
+                                                    FirebaseFirestore.instance.doc(
+                                                        'search/${ref.watch(selectedSearchId)}'),
+                                                    _searchResultsSancDocRef,
                                                   ),
                                           ),
                                         ],

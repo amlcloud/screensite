@@ -24,7 +24,7 @@ class SearchDetails extends ConsumerWidget {
 
   SearchDetails(this.entityId, this._selectedItemNotifier);
 
-  @override
+     @override
   Widget build(BuildContext context, WidgetRef ref) {
     final FirebaseAuth auth = FirebaseAuth.instance;
     return ref
@@ -36,41 +36,62 @@ class SearchDetails extends ConsumerWidget {
               Timestamp? timeCreated = searchDoc.data()!['timeCreated'];
               return Container(
                   decoration: RoundedCornerContainer.containerStyle,
-                  child: SingleChildScrollView(
-                      child: Column(
+                  child: Column(
                     children: [
                       Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                                'Searched Target: ${searchDoc.data()!['target']}'), //kk
-
-                            ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Theme.of(context).colorScheme.onSurface,
-                                  foregroundColor: Theme.of(context).colorScheme.surface,
-                                  // padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(8.0),
-                                  ),
-                                ),
-                                child: Text("Copy"),
-                                onPressed: () async {
-                                  await Clipboard.setData(
-                                      ClipboardData(text: searchDoc.data()!['target'].toString()));
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content: Text(
-                                              'Copied: ${searchDoc.data()!['target']}')));
-                                })
+                            Expanded(
+                              child: Center(
+                                child: Text(
+                                    'Searched Target: ${searchDoc.data()!['target']}'),
+                              ),
+                            ),
+                            Align(
+                              alignment:Alignment.centerRight,
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 10.0, top: 15.5),
+                                child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface,
+                                          foregroundColor: Theme.of(context)
+                                              .colorScheme
+                                              .surface,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                        ),
+                                        child: Text("Copy"),
+                                        onPressed: () async {
+                                          await Clipboard.setData(ClipboardData(
+                                              text: searchDoc
+                                                  .data()!['target']
+                                                  .toString()));
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  content: Text(
+                                                      'Copied: ${searchDoc.data()!['target']}')));
+                                        })
+                              )
+                            )
                           ]),
-                          SizedBox(height: 10,),
+                      SizedBox(
+                        height: 10,
+                      ),
                       Text(
                           'Search Time: ${timeCreated != null ? Jiffy(timeCreated.toDate()).format("h:mm a, do MMM, yyyy") : ''}'),
-                      SearchResults(searchDoc, _selectedItemNotifier),
+                      Expanded(
+                        // Add this to make the SingleChildScrollView take the remaining space
+                        child: SingleChildScrollView(
+                          child:
+                              SearchResults(searchDoc, _selectedItemNotifier),
+                        ),
+                      ),
                     ],
-                  )));
+                  ));
             });
   }
 }
