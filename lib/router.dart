@@ -95,15 +95,15 @@ final routerProvider = Provider<GoRouter>((ref) {
             ),
           ]),
       GoRoute(
-        path: LoginPage.routeLocation,
-        name: LoginPage.routeName,
+        path: LoginPageWidget.routeLocation,
+        name: LoginPageWidget.routeName,
         builder: (context, state) {
-          return const LoginPage();
+          return const LoginPageWidget();
         },
         pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
           context: context,
           state: state,
-          child: LoginPage(),
+          child: LoginPageWidget(),
         ),
       ),
     ],
@@ -118,10 +118,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       final isAuth = authState.valueOrNull != null;
 
       if (!isAuth) {
-        return LoginPage.routeLocation;
+        return LoginPageWidget.routeLocation;
       }
 
-      final isLoggingIn = state.location == LoginPage.routeLocation;
+      final isLoggingIn = state.location == LoginPageWidget.routeLocation;
       if (isLoggingIn) return isAuth ? SearchPage.routeLocation : null;
 
       return isAuth ? null : SearchPage.routeLocation;

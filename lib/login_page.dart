@@ -1,37 +1,56 @@
-import 'package:auth/login_screen.dart';
+import 'package:auth/login_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class LoginPage extends ConsumerWidget {
+class LoginPageWidget extends ConsumerWidget {
   static String get routeName => 'login';
   static String get routeLocation => '/$routeName';
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPageWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print('build login page');
     return Scaffold(
-        body: LoginScreen(
-            SplashScreen(),
-            // SizedBox(
-            //     height: 400,
-            //     width: 300,
-            //     child: Center(
-            //         child: Text("AML Cloud",
-            //             style: TextStyle(
-            //               fontSize: 40,
-            //               fontWeight: FontWeight.bold,
-            //             )))),
-            "Login",
-            {
-          "loginGitHub": true,
-          "loginGoogle": true,
-          "loginEmail": true,
-          "loginSSO": true,
-          "loginAnonymous": true,
-          "signupOption": true,
-        }));
+        body:
+            // LoginPage(
+            //     SplashScreen(),
+            //     // SizedBox(
+            //     //     height: 400,
+            //     //     width: 300,
+            //     //     child: Center(
+            //     //         child: Text("AML Cloud",
+            //     //             style: TextStyle(
+            //     //               fontSize: 40,
+            //     //               fontWeight: FontWeight.bold,
+            //     //             )))),
+            //     "Login",
+            //     {
+            //   "loginGitHub": true,
+            //   "loginGoogle": true,
+            //   "loginEmail": true,
+            //   "loginSSO": true,
+            //   "loginAnonymous": true,
+            //   "signupOption": true,
+            // })
+            LoginPage(
+      screenTitle: 'AML Cloud',
+      header: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          SvgPicture.asset(
+            'assets/Logo_Dark.svg',
+          ),
+          Text('Sanctions Screening',
+              style:
+                  //title
+                  Theme.of(context).textTheme.titleLarge)
+        ],
+      ),
+      aboutTheApp: Text("AML Cloud"),
+      googleLogin: true,
+      // mainTitle: "AML Cloud",
+    ));
   }
 }
 

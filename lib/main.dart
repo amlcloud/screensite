@@ -16,7 +16,7 @@ void main() async {
   Chain.capture(() async {
     WidgetsFlutterBinding.ensureInitialized();
 
-    ThemeModeConfig.enableSave = true;
+    // ThemeModeConfig.enableSave = true;
     ThemeModeConfig.defaultToLightTheme = true;
 
     await Firebase.initializeApp(
