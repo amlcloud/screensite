@@ -48,11 +48,7 @@ class MainApp extends ConsumerWidget {
               routeInformationProvider: router.routeInformationProvider,
               themeMode: isDarkTheme ? ThemeMode.dark : ThemeMode.light,
               theme: lightTheme,
-              darkTheme: ThemeData.dark().copyWith(
-                  // highlightColor: Colors.orange,
-                  // colorScheme:
-                  //     ColorScheme.dark().copyWith(secondary: Colors.orange)
-                  ),
+              darkTheme: darkTheme,
             ));
   }
 }
