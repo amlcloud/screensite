@@ -2,11 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:jiffy/jiffy.dart';
-import 'package:widgets/doc_field_text.dart';
-
-import 'case_status.dart';
+import 'cases_exports.dart';
 
 class CaseItem extends ConsumerWidget {
   final DR caseRef;

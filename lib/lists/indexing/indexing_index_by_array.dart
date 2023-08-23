@@ -1,8 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:providers/firestore.dart';
+import 'indexing_exports.dart';
 
 class IndexingIndexByArray extends ConsumerWidget {
   final String entityId;

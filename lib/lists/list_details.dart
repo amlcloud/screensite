@@ -1,5 +1,5 @@
 import '../common.dart';
-import '_exports.dart';
+import 'list_exports.dart';
 
 class ListDetails extends ConsumerWidget {
   final String listId;

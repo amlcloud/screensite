@@ -1,17 +1,4 @@
-import 'package:common/common.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:providers/firestore.dart';
-import 'package:providers/generic.dart';
-import 'package:screensite/app_bar.dart';
-import 'package:screensite/drawer.dart';
-import 'package:widgets/doc_stream_widget.dart';
-
-import 'case_status.dart';
-
-import 'case_chat_widget.dart';
-import 'investigation_widget.dart';
-import 'matches_widget.dart';
+import 'cases_exports.dart';
 
 final SNP<DR?> activeSearchResDocRef = snp(null);
 

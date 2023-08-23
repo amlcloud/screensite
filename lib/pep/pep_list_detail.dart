@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:screensite/pep/pep_listinfo.dart';
-import 'package:screensite/pep/pep_entityinfo.dart';
+import 'pep_exports.dart';
 
 class PepListDetail extends ConsumerWidget {
   final String entityId;

@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:screensite/router.dart';
-import 'package:screensite/theme.dart';
-import 'package:theme/theme_mode.dart';
+import '_exports.dart';
 
 class MainApp extends ConsumerWidget {
   const MainApp({

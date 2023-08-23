@@ -1,15 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:common/common.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:providers/generic.dart';
-import 'package:screensite/app_bar.dart';
-
-import 'package:screensite/search/search_details.dart';
-import 'package:screensite/search/search_list.dart';
-import 'package:screensite/search/search_results_item.dart';
-import 'package:screensite/drawer.dart';
+import 'search_exports.dart';
 
 final selectedSearchId =
     StateNotifierProvider<GenericStateNotifier<String?>, String?>(

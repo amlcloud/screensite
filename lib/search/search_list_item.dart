@@ -1,10 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:providers/firestore.dart';
-import 'package:providers/generic.dart';
-import 'package:screensite/search/search_page.dart';
-import 'package:jiffy/jiffy.dart';
+import 'search_exports.dart';
 
 class SearchListItem extends ConsumerWidget {
   final DocumentReference searchRef;

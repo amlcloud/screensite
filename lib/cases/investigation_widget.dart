@@ -1,19 +1,6 @@
-import 'dart:convert';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:common/common.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:providers/firestore.dart';
-import 'package:providers/generic.dart';
-import 'package:widgets/col_stream_widget.dart';
-import 'package:widgets/copy_to_clipboard_widget.dart';
-import 'package:widgets/doc_stream_widget.dart';
 import 'package:http/http.dart' as http;
-
 import 'chat_widget.dart';
-import 'openai.dart';
+import 'cases_exports.dart';
 
 class InvestigationWidget extends ConsumerWidget {
   final DR caseDocRef;

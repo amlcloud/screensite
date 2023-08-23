@@ -1,4 +1,4 @@
-import 'package:common/common.dart';
+import 'cases_exports.dart';
 
 Future<Map<String, String>> prepareOpenAIHeaders() async {
   final userDoc = await kDBUserRef().get();

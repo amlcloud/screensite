@@ -1,11 +1,5 @@
+import 'indexing_exports.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:providers/firestore.dart';
-import 'package:providers/generic.dart';
-
-import 'name_field_value.dart';
 
 class IndexingItemList extends ConsumerWidget {
   final String _entityId;

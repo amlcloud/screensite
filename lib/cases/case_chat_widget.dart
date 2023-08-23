@@ -1,9 +1,5 @@
-import 'package:common/common.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:widgets/doc_field_text.dart';
-
 import 'chat_widget.dart';
+import 'cases_exports.dart';
 
 class CaseChatWidget extends ConsumerWidget {
   final TextEditingController searchCtrl = TextEditingController();

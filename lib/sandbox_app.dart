@@ -1,8 +1,5 @@
 import 'package:common/common.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:providers/generic.dart';
-import 'cases/investigation_widget.dart';
+import '_exports.dart';
 
 class SandboxApp extends StatelessWidget {
   SandboxApp({Key? key}) : super(key: key);

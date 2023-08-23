@@ -1,11 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:common/common.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:screensite/app_bar.dart';
-import 'package:screensite/drawer.dart';
-
-import 'cases_list.dart';
+import 'cases_exports.dart';
 
 class CasesPage extends ConsumerWidget {
   static String get routeName => 'cases';
