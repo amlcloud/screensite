@@ -30,17 +30,17 @@ final lightTheme = ThemeData(
 );
 
 final darkTheme = ThemeData(
-    scaffoldBackgroundColor: Colors.black,
+    scaffoldBackgroundColor: Color.fromARGB(255, 82, 82, 82),
     hoverColor: Colors.white.withOpacity(0.2),
     //primaryColor: Colors.white,
     //backgroundColor: Color(0xff181a1b),
     colorScheme: const ColorScheme(
         primary: Color(0xffcdcbc9),
-        secondary: Colors.grey,
-        onPrimary: Colors.blueGrey,
+        secondary: Color.fromARGB(255, 255, 153, 10),
+        onPrimary: Color.fromARGB(255, 0, 0, 0),
         onSecondary: Color(0xff303035),
         background: Color(0xff303035),
-        surface: Colors.black54,
+        surface: Color.fromARGB(137, 29, 29, 29),
         onSurface: Color(0xffcdcbc9),
         onBackground: Color(0xffcdcbc9),
         error: Colors.red,
@@ -48,10 +48,10 @@ final darkTheme = ThemeData(
         onError: Color(0xffcdcbc9)),
     textTheme: TextTheme(
         titleSmall: TextStyle(
-          color: Color.fromARGB(255, 255, 255, 255), //for text widget in appbar
+          color: Color.fromARGB(255, 232, 232, 232), //for text widget in appbar
         ),
         headlineMedium: TextStyle(
-          color: Color.fromARGB(255, 255, 255, 255), //headlines
+          color: Color.fromARGB(255, 213, 213, 213), //headlines
         ),
         bodyMedium: TextStyle(
           color:
