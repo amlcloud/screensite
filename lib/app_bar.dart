@@ -1,9 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:screensite/common.dart';
-import 'package:screensite/router.dart';
-import 'package:widgets/custom_app_bar.dart';
+import '_exports.dart';
 
 class MyAppBar {
   static PreferredSizeWidget getBar(BuildContext context, WidgetRef ref,

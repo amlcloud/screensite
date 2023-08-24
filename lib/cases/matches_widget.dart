@@ -1,14 +1,4 @@
-import 'package:common/common.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:providers/firestore.dart';
-import 'package:widgets/col_stream_widget.dart';
-
-import 'package:widgets/doc_stream_widget.dart';
-import 'package:widgets/doc_field_text.dart';
-
-import '../controls/custom_json_viewer.dart';
-import 'case_page.dart';
+import 'cases_exports.dart';
 
 class MatchesWidget extends ConsumerWidget {
   final DR caseDocRef;

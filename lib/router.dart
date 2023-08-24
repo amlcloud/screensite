@@ -1,13 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:screensite/search/search_page.dart';
-
-import 'cases/case_page.dart';
-import 'cases/cases_page.dart';
-import 'lists/lists_page.dart';
-import 'login_page.dart';
+import '_exports.dart';
 
 final _key = GlobalKey<NavigatorState>();
 

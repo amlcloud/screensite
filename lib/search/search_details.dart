@@ -1,13 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:jiffy/jiffy.dart';
-import 'package:providers/firestore.dart';
-import 'package:providers/generic.dart';
-import 'package:screensite/search/search_results.dart';
-import 'package:screensite/theme.dart';
-import 'package:flutter/services.dart';
+import 'search_exports.dart';
 
 final activeEntity =
     StateNotifierProvider<GenericStateNotifier<String?>, String?>(
@@ -24,7 +15,7 @@ class SearchDetails extends ConsumerWidget {
 
   SearchDetails(this.entityId, this._selectedItemNotifier);
 
-     @override
+  @override
   Widget build(BuildContext context, WidgetRef ref) {
     final FirebaseAuth auth = FirebaseAuth.instance;
     return ref
@@ -48,10 +39,11 @@ class SearchDetails extends ConsumerWidget {
                               ),
                             ),
                             Align(
-                              alignment:Alignment.centerRight,
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 10.0, top: 15.5),
-                                child: ElevatedButton(
+                                alignment: Alignment.centerRight,
+                                child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 10.0, top: 15.5),
+                                    child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Theme.of(context)
                                               .colorScheme
@@ -74,9 +66,7 @@ class SearchDetails extends ConsumerWidget {
                                               .showSnackBar(SnackBar(
                                                   content: Text(
                                                       'Copied: ${searchDoc.data()!['target']}')));
-                                        })
-                              )
-                            )
+                                        })))
                           ]),
                       SizedBox(
                         height: 10,

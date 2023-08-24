@@ -1,16 +1,6 @@
 import 'package:common/common.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:providers/generic.dart';
-import 'package:sandbox/sandbox_launcher2.dart';
-import 'package:screensite/sandbox_app.dart';
-import 'package:stack_trace/stack_trace.dart';
-import 'package:theme/config.dart';
-import 'firebase_options.dart';
-import 'main_app_widget.dart';
+import '_exports.dart';
 
 void main() async {
   Chain.capture(() async {

@@ -1,10 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import 'package:providers/firestore.dart';
-import '../list_indexing.dart';
+import 'indexing_exports.dart';
 
 abstract class IndexingForm extends ConsumerWidget {
   final String entityId;
@@ -26,7 +21,7 @@ abstract class IndexingForm extends ConsumerWidget {
         FirebaseFirestore.instance.collection('list/$entityId/fields/');
     if (type == 'Array of values') {
       query = ref.where('type', isEqualTo: 'array');
-    } else if (type == 'Array of objects') { 
+    } else if (type == 'Array of objects') {
       query = ref.where('type', isEqualTo: 'array');
     } else {
       query = ref.where('type', isNotEqualTo: 'array');

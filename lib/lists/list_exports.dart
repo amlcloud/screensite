@@ -18,7 +18,7 @@ export 'package:widgets/doc_stream_widget.dart';
 
 export 'list_count.dart';
 export 'list_indexing_widget.dart';
-export '_exports.dart';
+export 'list_exports.dart';
 
 export 'package:cloud_functions/cloud_functions.dart';
 

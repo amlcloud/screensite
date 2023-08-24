@@ -1,21 +1,5 @@
-import 'dart:convert';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:common/common.dart';
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import 'package:providers/firestore.dart';
-import 'package:providers/generic.dart';
-import 'package:providers/watchers.dart';
-import 'package:widgets/col_stream_widget.dart';
-import 'package:widgets/doc_field_text_field.dart';
-
-import 'chat_message_widget.dart';
-import 'openai.dart';
+import 'cases_exports.dart';
 
 class ChatWidget extends ConsumerWidget {
   FocusNode focusNode = FocusNode();

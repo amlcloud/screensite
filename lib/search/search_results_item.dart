@@ -1,13 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:common/common.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:providers/firestore.dart';
-import 'package:screensite/lists/jsonview_switch.dart';
-
-import 'package:widgets/doc_field_text.dart';
-
-import 'package:widgets/doc_stream_widget.dart';
+import 'search_exports.dart';
 
 class SearchResultsItem extends ConsumerWidget {
   final DR _searchResultsSancDocRef;
