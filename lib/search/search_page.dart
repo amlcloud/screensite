@@ -60,7 +60,7 @@ class SearchPage extends ConsumerWidget {
 
     searchCtrl.addListener(() {
       ref.read(searchButtonStateProvider.notifier).setEnabled(
-            searchCtrl.text.length >= MINIMUM_SEARCH_LENGTH,
+            searchCtrl.text.length > 0,
           );
     });
     void setSearchValue() async {
