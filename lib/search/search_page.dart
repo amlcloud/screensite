@@ -25,18 +25,7 @@ final _searchResultsSancDocRef =
 
 const MINIMUM_SEARCH_LENGTH = 5;
 
-class SearchButtonStateNotifier extends StateNotifier<bool> {
-  SearchButtonStateNotifier() : super(false);
-
-  void setEnabled(bool enabled) {
-    state = enabled;
-  }
-}
-
-final searchButtonStateProvider =
-    StateNotifierProvider<SearchButtonStateNotifier, bool>((ref) {
-  return SearchButtonStateNotifier();
-});
+final SNP<bool> isSearchButtonEnabledProvider = snp<bool>(false);
 
 class SearchPage extends ConsumerWidget {
   static String get routeName => 'search';
@@ -56,13 +45,8 @@ class SearchPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final searchButtonEnabled = ref.watch(searchButtonStateProvider);
+    final isSearchButtonEnabled = ref.watch(isSearchButtonEnabledProvider);
 
-    searchCtrl.addListener(() {
-      ref.read(searchButtonStateProvider.notifier).setEnabled(
-            searchCtrl.text.length > 0,
-          );
-    });
     void setSearchValue() async {
       if (!isValid()) return;
       if (searchCtrl.text.isEmpty ||
@@ -152,6 +136,14 @@ class SearchPage extends ConsumerWidget {
                                         },
                                         onChanged: (v) {
                                           _formKey.currentState?.validate();
+
+                                          ref
+                                              .read(
+                                                  isSearchButtonEnabledProvider
+                                                      .notifier)
+                                              .state = v
+                                                  .length >=
+                                              MINIMUM_SEARCH_LENGTH;
                                         },
                                         controller: searchCtrl,
                                         onFieldSubmitted: (value) async =>
@@ -187,7 +179,7 @@ class SearchPage extends ConsumerWidget {
                                       child: Text(
                                         "Search",
                                       ),
-                                      onPressed: searchButtonEnabled
+                                      onPressed: isSearchButtonEnabled == true
                                           ? () async {
                                               // if (searchCtrl.text.isEmpty) return;
                                               // var url = Uri.parse(
