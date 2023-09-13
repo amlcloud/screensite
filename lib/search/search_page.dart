@@ -14,6 +14,8 @@ final _searchResultsSancDocRef =
 
 const MINIMUM_SEARCH_LENGTH = 5;
 
+final SNP<bool> isSearchButtonEnabledProvider = snp<bool>(false);
+
 class SearchPage extends ConsumerWidget {
   static String get routeName => 'search';
   static String get routeLocation => '/$routeName';
@@ -32,6 +34,8 @@ class SearchPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isSearchButtonEnabled = ref.watch(isSearchButtonEnabledProvider);
+
     void setSearchValue() async {
       if (!isValid()) return;
       if (searchCtrl.text.isEmpty ||
@@ -121,6 +125,14 @@ class SearchPage extends ConsumerWidget {
                                         },
                                         onChanged: (v) {
                                           _formKey.currentState?.validate();
+
+                                          ref
+                                              .read(
+                                                  isSearchButtonEnabledProvider
+                                                      .notifier)
+                                              .state = v
+                                                  .length >=
+                                              MINIMUM_SEARCH_LENGTH;
                                         },
                                         controller: searchCtrl,
                                         onFieldSubmitted: (value) async =>
@@ -156,31 +168,33 @@ class SearchPage extends ConsumerWidget {
                                       child: Text(
                                         "Search",
                                       ),
-                                      onPressed: () async {
-                                        // if (searchCtrl.text.isEmpty) return;
-                                        // var url = Uri.parse(
-                                        //     'https://screen-od6zwjoy2a-an.a.run.app/?name=${searchCtrl.text.toLowerCase()}');
-                                        // var response = await http.post(url, body: {
-                                        //   // 'name': 'doodle',
-                                        //   // 'color': 'blue'
-                                        // });
-                                        // print(
-                                        //     'Response status: ${response.statusCode}');
-                                        // print('Response body: ${response.body}');
+                                      onPressed: isSearchButtonEnabled == true
+                                          ? () async {
+                                              // if (searchCtrl.text.isEmpty) return;
+                                              // var url = Uri.parse(
+                                              //     'https://screen-od6zwjoy2a-an.a.run.app/?name=${searchCtrl.text.toLowerCase()}');
+                                              // var response = await http.post(url, body: {
+                                              //   // 'name': 'doodle',
+                                              //   // 'color': 'blue'
+                                              // });
+                                              // print(
+                                              //     'Response status: ${response.statusCode}');
+                                              // print('Response body: ${response.body}');
 
-                                        // FirebaseFirestore.instance
-                                        //     .collection('search')
-                                        //     .doc(searchCtrl.text)
-                                        //     .set({
-                                        //   'target': searchCtrl.text,
-                                        //   'timeCreated':
-                                        //       FieldValue.serverTimestamp(),
-                                        //   'author': FirebaseAuth
-                                        //       .instance.currentUser!.uid,
-                                        // });
+                                              // FirebaseFirestore.instance
+                                              //     .collection('search')
+                                              //     .doc(searchCtrl.text)
+                                              //     .set({
+                                              //   'target': searchCtrl.text,
+                                              //   'timeCreated':
+                                              //       FieldValue.serverTimestamp(),
+                                              //   'author': FirebaseAuth
+                                              //       .instance.currentUser!.uid,
+                                              // });
 
-                                        setSearchValue();
-                                      }),
+                                              setSearchValue();
+                                            }
+                                          : null),
                                 )
                               ],
                             ),
