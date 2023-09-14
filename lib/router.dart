@@ -67,21 +67,18 @@ final routerProvider = Provider<GoRouter>((ref) {
               path: ':caseId', //CasePage.routeName,
               name: CasePage.routeName,
               builder: (context, state) {
-                print(
-                    "state: ${(state.extra as Map<String, dynamic>)['caseId']}");
+                // print(
+                //     "state: ${(state.extra as Map<String, dynamic>)['caseId']}");
                 // get id from state
-                // final id = state.queryParameters['caseId'] ?? "";
-                return CasePage(
-                    (state.extra as Map<String, dynamic>)['caseId']);
+                final caseId = state.pathParameters['caseId'] ?? "";
+                //print("CASE ID FROM router.dart --> " + caseId);
+                return CasePage(caseId);
               },
               pageBuilder: (context, state) {
-                // final id = state.queryParameters['caseId'] ?? "";
+                final caseId = state.pathParameters['caseId'] ?? "";
 
                 return buildPageWithDefaultTransition<void>(
-                    context: context,
-                    state: state,
-                    child: CasePage(
-                        (state.extra as Map<String, dynamic>)['caseId']));
+                    context: context, state: state, child: CasePage(caseId));
               },
             ),
           ]),
