@@ -31,19 +31,17 @@ class CaseItem extends ConsumerWidget {
               onTap: () {
                 print('InkWell tapped');
 
-                context.go(
-                  //CasePage.routeName,
+                GoRouter.of(context).go(
+   
                   '/cases/${caseRef.id}',
-                  extra: {
-                    "caseId": caseRef.id,
-                  },
+                  
                 );
-                // context.pushNamed(
-                //   'case',
-                //   queryParameters: {
-                //     "caseId": caseRef.id,
-                //   },
-                // );
+                //   context.pushNamed(
+                //     'case',
+                //     queryParameters: {
+                //       "caseId": caseRef.id,
+                //     },
+                //   );
               },
               child: Column(
                 children: [
