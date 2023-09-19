@@ -1,5 +1,7 @@
+import 'package:auth/main.dart';
 import 'package:common/common.dart';
 import 'package:flutter/foundation.dart';
+import 'package:theme/local_storage/local_storage.dart';
 import '_exports.dart';
 
 void main() async {
@@ -8,6 +10,13 @@ void main() async {
 
     // ThemeModeConfig.enableSave = true;
     ThemeModeConfig.defaultToLightTheme = true;
+
+    AuthConfig.enableGoogleAuth = true;
+    AuthConfig.enableEmailAuth = false;
+    AuthConfig.enableGithubAuth = false;
+    AuthConfig.enableLinkedinOption = false;
+
+    await LocalStorage.initialize();
 
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,

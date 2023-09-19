@@ -46,7 +46,8 @@ class LoginPageWidget extends ConsumerWidget {
         ],
       ),
       aboutTheApp: Text("AML Cloud"),
-      googleLogin: true,
+      
+      // googleLogin: true,
       // mainTitle: "AML Cloud",
     ));
   }
