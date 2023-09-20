@@ -7,6 +7,8 @@ class CaseChatWidget extends ConsumerWidget {
   final DR caseRef;
   CaseChatWidget(this.caseRef);
 
+  
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
@@ -15,6 +17,7 @@ class CaseChatWidget extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(child: Card(child: ChatWidget(caseRef))),
+
           DocFieldText(caseRef, 'error', style: TextStyle(color: Colors.red))
         ]);
   }
