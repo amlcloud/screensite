@@ -298,7 +298,11 @@ class SearchPage extends ConsumerWidget {
                               ),
                             ),
                           ),
-                          SearchHistory(_searchResultsSancDocRef),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.84,
+                            child: SingleChildScrollView(
+                                child: SearchHistory(_searchResultsSancDocRef)),
+                          ),
                         ],
                       ),
                     ),
