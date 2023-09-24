@@ -281,87 +281,87 @@ class ChatWidget extends ConsumerWidget {
 // });
 //}
 
-// class SnpTextEdit2 extends ConsumerWidget {
-//   TextEditingController? _ctrl;
-//   final SNP dataSNP;
-//   final InputDecoration? decoration;
-//   final bool debugPrint;
-//   final bool showSaveStatus;
-//   final int saveDelay;
-//   final bool enabled;
-//   final int? maxLines;
-//   final int? minLines;
-//   final bool canAddLines;
-//   final Function(String)? onChanged;
+class SnpTextEdit2 extends ConsumerWidget {
+  TextEditingController? _ctrl;
+  final SNP dataSNP;
+  final InputDecoration? decoration;
+  final bool debugPrint;
+  final bool showSaveStatus;
+  final int saveDelay;
+  final bool enabled;
+  final int? maxLines;
+  final int? minLines;
+  final bool canAddLines;
+  final Function(String)? onChanged;
 
-//   SnpTextEdit2(this.dataSNP,
-//       {TextEditingController? ctrl,
-//       this.decoration,
-//       this.saveDelay = 1000,
-//       this.showSaveStatus = true,
-//       this.debugPrint = false,
-//       this.enabled = true,
-//       this.maxLines = 1,
-//       this.minLines,
-//       this.onChanged = null,
-//       this.canAddLines = false,
-//       Key? key})
-//       : _ctrl = ctrl,
-//         super(key: key) {
-//     if (this._ctrl == null) this._ctrl = TextEditingController();
-//   }
+  SnpTextEdit2(this.dataSNP,
+      {TextEditingController? ctrl,
+      this.decoration,
+      this.saveDelay = 1000,
+      this.showSaveStatus = true,
+      this.debugPrint = false,
+      this.enabled = true,
+      this.maxLines = 1,
+      this.minLines,
+      this.onChanged = null,
+      this.canAddLines = false,
+      Key? key})
+      : _ctrl = ctrl,
+        super(key: key) {
+    if (this._ctrl == null) this._ctrl = TextEditingController();
+  }
 
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) => TextField(
-//         // this.controller,
-//         controller: _ctrl,
-//         // this.focusNode,
-//         // this.undoController,
-//         // this.decoration = const InputDecoration(),
-//         decoration: decoration,
-//         // this.textInputAction,
-//         // this.textCapitalization = TextCapitalization.none,
-//         // this.style,
-//         // this.strutStyle,
-//         // this.textAlign = TextAlign.start,
-//         // this.textAlignVertical,
-//         // this.textDirection,
-//         // this.readOnly = false,
-//         enabled: enabled,
-//         maxLines: maxLines,
-//         minLines: !canAddLines
-//             ? minLines
-//             : ref.watch(dataSNP) == null
-//                 ? 1
-//                 : (ref.watch(dataSNP).split('\n').length + 1 > maxLines
-//                     ? maxLines
-//                     : ref.watch(dataSNP).split('\n').length + 1),
-//         onChanged: (v) {
-//           // ref.read(status.notifier).value = 'changed';
-//           // if (descSaveTimer != null && descSaveTimer!.isActive) {
-//           //   descSaveTimer!.cancel();
-//           // }
-//           // descSaveTimer = Timer(
-//           //     Duration(milliseconds: widget.saveDelay), () => saveValue(v));
-//           // if (widget.onChanged != null) widget.onChanged!(v);
+  @override
+  Widget build(BuildContext context, WidgetRef ref) => TextField(
+        // this.controller,
+        controller: _ctrl,
+        // this.focusNode,
+        // this.undoController,
+        // this.decoration = const InputDecoration(),
+        decoration: decoration,
+        // this.textInputAction,
+        // this.textCapitalization = TextCapitalization.none,
+        // this.style,
+        // this.strutStyle,
+        // this.textAlign = TextAlign.start,
+        // this.textAlignVertical,
+        // this.textDirection,
+        // this.readOnly = false,
+        enabled: enabled,
+        maxLines: maxLines,
+        minLines: !canAddLines
+            ? minLines
+            : ref.watch(dataSNP) == null
+                ? 1
+                : (ref.watch(dataSNP).split('\n').length + 1 > maxLines
+                    ? maxLines
+                    : ref.watch(dataSNP).split('\n').length + 1),
+        onChanged: (v) {
+          // ref.read(status.notifier).value = 'changed';
+          // if (descSaveTimer != null && descSaveTimer!.isActive) {
+          //   descSaveTimer!.cancel();
+          // }
+          // descSaveTimer = Timer(
+          //     Duration(milliseconds: widget.saveDelay), () => saveValue(v));
+          // if (widget.onChanged != null) widget.onChanged!(v);
 
-//           // OnChanged Callback to OnChanged in SnpTextEdit2
-//           if (onChanged != null) {
-//             onChanged!(v);
-//           }
-//           saveValue(ref, v);
-//         },
-//         // onSubmitted: (v) {
-//         //   // if (descSaveTimer != null && descSaveTimer!.isActive) {
-//         //   //   descSaveTimer!.cancel();
-//         //   // }
-//         //   saveValue(ref, v);
-//         // }
-//       );
+          // OnChanged Callback to OnChanged in SnpTextEdit2
+          if (onChanged != null) {
+            onChanged!(v);
+          }
+          saveValue(ref, v);
+        },
+        // onSubmitted: (v) {
+        //   // if (descSaveTimer != null && descSaveTimer!.isActive) {
+        //   //   descSaveTimer!.cancel();
+        //   // }
+        //   saveValue(ref, v);
+        // }
+      );
 
-//   void saveValue(WidgetRef ref, String s) async {
-//     ref.read(dataSNP.notifier).value = s;
-//   }
-// }
+  void saveValue(WidgetRef ref, String s) async {
+    ref.read(dataSNP.notifier).value = s;
+  }
+}
 
 final padding8 = EdgeInsets.all(8);
