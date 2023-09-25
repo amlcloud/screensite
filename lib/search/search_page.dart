@@ -226,7 +226,7 @@ class SearchPage extends ConsumerWidget {
                                           Container(
                                               padding: EdgeInsets.all(16.0),
                                               child: Text(
-                                                "Matches",
+                                                "Search Results",
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .titleLarge,
