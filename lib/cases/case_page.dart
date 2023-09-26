@@ -1,17 +1,4 @@
-import 'package:common/common.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:providers/firestore.dart';
-import 'package:providers/generic.dart';
-import 'package:screensite/app_bar.dart';
-import 'package:screensite/drawer.dart';
-import 'package:widgets/doc_stream_widget.dart';
-
-import 'case_status.dart';
-
-import 'case_chat_widget.dart';
-import 'investigation_widget.dart';
-import 'matches_widget.dart';
+import 'cases_exports.dart';
 
 final SNP<DR?> activeSearchResDocRef = snp(null);
 
@@ -44,7 +31,7 @@ class CasePage extends ConsumerWidget {
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               // CustomNavRail.getNavRail(),
               Flexible(
@@ -53,27 +40,43 @@ class CasePage extends ConsumerWidget {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Expanded(child: Text('Case: ${caseDocRef.id}')),
+                      Text('Case: ${caseDocRef.id}'),
+                      Flexible(
+                          flex: 1,
+                          child: Container(
+                              padding: EdgeInsets.all(5),
+                              margin: EdgeInsets.fromLTRB(2, 5, 2, 5),
+                              height: 300,
+                              child: CaseChatWidget(caseDocRef))),
+                      
                       // Dropdown button for selecting the status
-
-                      DropdownButton<STATUS>(
-                        isExpanded: true,
-                        value: STATUS.draft,
-                        items: getAllStatuses()
-                            .map<DropdownMenuItem<STATUS>>(
-                              (STATUS value) => DropdownMenuItem<STATUS>(
-                                value: value,
-                                child: Text(value.name),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (newValue) async {
-                          await caseDocRef
-                              .update({'status': getStatusKey(newValue!)});
-                          print('Document updated successfully.');
-                        },
+                      Text(
+                        "Investigation status",
+                        style: Theme.of(context).textTheme.titleLarge,
                       ),
-
+                      Container(
+                        width: 250,
+                        padding: EdgeInsets.all(8),
+                        margin: EdgeInsets.fromLTRB(2, 5, 2, 5),
+                        child: DropdownButton<STATUS>(
+                          isExpanded: true,
+                          value: STATUS.draft,
+                          items: getAllStatuses()
+                              .map<DropdownMenuItem<STATUS>>(
+                                (STATUS value) => DropdownMenuItem<STATUS>(
+                                  value: value,
+                                  child: Text(value.name),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (newValue) async {
+                            await caseDocRef
+                                .update({'status': getStatusKey(newValue!)});
+                            print('Document updated successfully.');
+                          },
+                        ),
+                      ),
+                      Text('Generated Search Parameters'),
                       Flexible(
                           flex: 1,
                           child: Row(
@@ -81,6 +84,7 @@ class CasePage extends ConsumerWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
+                              
                               Expanded(
                                   child: DocStreamWidget(docSP(caseDocRef.path),
                                       (c, doc) {
@@ -124,10 +128,7 @@ class CasePage extends ConsumerWidget {
                             ],
                           )),
                       Spacer(),
-                      Flexible(
-                          flex: 1,
-                          child: SizedBox(
-                              height: 300, child: CaseChatWidget(caseDocRef))),
+                     
                     ],
                   )),
               Expanded(

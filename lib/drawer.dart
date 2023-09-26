@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:screensite/search/search_page.dart';
-import 'package:screensite/lists/lists_page.dart';
-
-import 'cases/cases_page.dart';
+import '_exports.dart';
 
 class TheDrawer {
   static Widget buildDrawer(BuildContext context) {

@@ -1,21 +1,7 @@
-import 'dart:convert';
+import 'dart:js_interop';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:common/common.dart';
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import 'package:providers/firestore.dart';
-import 'package:providers/generic.dart';
-import 'package:providers/watchers.dart';
-import 'package:widgets/col_stream_widget.dart';
-import 'package:widgets/doc_field_text_field.dart';
-
-import 'chat_message_widget.dart';
-import 'openai.dart';
+import 'cases_exports.dart';
 
 class ChatWidget extends ConsumerWidget {
   FocusNode focusNode = FocusNode();
@@ -56,7 +42,9 @@ class ChatWidget extends ConsumerWidget {
           // ),
 
           // Expanded(flex: 20, child: DocFieldText(docRef, 'content')),
-          Expanded(child: buildMessages()),
+
+          // BUILD MESSAGES RENDER
+          //Expanded(child: buildMessages()),
           Container(
               // color: Colors.purple,
               child: Padding(
@@ -84,27 +72,28 @@ class ChatWidget extends ConsumerWidget {
                 )
               : null));
 
-  Widget buildMessages() => Container(
-          // color: Colors.green,
-          child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SingleChildScrollView(
-            child: ColStreamWidget<Widget>(
-                colSPfiltered(docRef.collection('message').path,
-                    orderBy: 'timeCreated', isOrderDesc: false, limit: 50),
-                (context, col, items) => Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: items),
-                (context, messageDoc) => ChatMessageWidget(
-                    key: ValueKey(messageDoc.id),
-                    messageDoc.reference,
-                    useCode,
-                    extension: extensionBuilder != null
-                        ? extensionBuilder!(messageDoc)
-                        : null))),
-      ));
+// BUILD MESSAGES WIDGET
+  // Widget buildMessages() => Container(
+  //         // color: Colors.green,
+  //         child: Padding(
+  //       padding: const EdgeInsets.all(8.0),
+  //       child: SingleChildScrollView(
+  //           child: ColStreamWidget<Widget>(
+  //               colSPfiltered(docRef.collection('input').path,
+  //                   orderBy: 'timeCreated', isOrderDesc: false, limit: 50),
+  //               (context, col, items) => Column(
+  //                   mainAxisAlignment: MainAxisAlignment.start,
+  //                   crossAxisAlignment: CrossAxisAlignment.start,
+  //                   mainAxisSize: MainAxisSize.min,
+  //                   children: items),
+  //               (context, messageDoc) => ChatMessageWidget(
+  //                   key: ValueKey(messageDoc.id),
+  //                   messageDoc.reference,
+  //                   useCode,
+  //                   extension: extensionBuilder != null
+  //                       ? extensionBuilder!(messageDoc)
+  //                       : null))),
+  //     ));
 
   Widget buildSendMessage(BuildContext context, WidgetRef ref) {
     // Widget? chatContextWidget = buildContext(ref);
@@ -132,141 +121,165 @@ class ChatWidget extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      child: SnpTextEdit2(draftMessageSNP,
-                          ctrl: ctrl,
-                          maxLines: 10,
-                          canAddLines: true,
-                          decoration:
-                              InputDecoration(hintText: 'Type a message')),
+                      child: () {
+                        docRef.collection('input');
+                        DocumentReference<Map<String, dynamic>> inputDocRef =
+                            docRef
+                                .collection('input')
+                                .doc('input-${docRef.id}');
+                        return DocFieldTextField(inputDocRef, "text");
+                      }(),
+                      // child: SnpTextEdit2(
+                      //   draftMessageSNP,
+                      //   ctrl: ctrl,
+                      //   maxLines: 10,
+                      //   canAddLines: true,
+                      //   decoration: InputDecoration(hintText: 'Type a message'),
+                      //   onChanged: (text) {
+                      //     print(text);
+                      //     sendMessage(context, ref);
+                      //   },
+                      //),
 
                       //   DocFieldTextField(
                       // docRef,
+
                       // 'draft',
                       // decoration: InputDecoration(hintText: 'Type a message'),
                       //)
                     ),
-                    IconButton(
-                        onPressed: ref.watch(draftMessageSNP) == null ||
-                                ref.watch(draftMessageSNP).trim().length == 0
-                            ? null
-                            : () => sendMessage(context, ref),
-                        icon: Icon(Icons.send))
+
+                    // SEND BUTTON CODE
+
+                    // IconButton(
+                    //     onPressed: ref.watch(draftMessageSNP) == null ||
+                    //             ref.watch(draftMessageSNP).trim().length == 0
+                    //         ? null
+                    //         : () => sendMessage(context, ref),
+                    //     icon: Icon(Icons.send))
                   ]),
             ))
       ],
     ));
   }
 
+  // THIS FUNCTION WAS REPLACED BY DocFieldTextField.
   void sendMessage(BuildContext context, WidgetRef ref) async {
-    if (ref.read(draftMessageSNP.notifier).value == null ||
-        ref.read(draftMessageSNP.notifier).value.trim().length == 0) return;
+    // String? inputText = ref.read(draftMessageSNP.notifier).value;
 
-    final messages = await docRef.collection('message').get();
-    // if (messages.size == 0) {
-    //   final doc = await docRef.get();
+    // // if null or empty
+    // if (inputText == null || inputText.trim().isEmpty) return;
 
-    //   await docRef.collection('message').add({
-    //     // 'content': doc.get('context'),
-    //     // "The following is a conversation with code generator named assistant. Assistant should provide python code by user request to be executed by the user using python exec(). User will exectue the code and provide the log to assistant. The code should print execution log in the console using print. The file system is read-only, no files can be created, modified or deleted."
-    //     'timeCreated': FieldValue.serverTimestamp(),
-    //     'role': 'system'
+    // // Create input collection
+    // docRef.collection('input');
+
+    // // Create Document Reference
+    // // Confirm docID
+    // DocumentReference inputDocRef =
+    //     docRef.collection('input').doc('input-${docRef.id}');
+    // DocumentSnapshot inputSnapshot = await inputDocRef.get();
+
+    // // If document exists
+    // if (inputSnapshot.exists && inputSnapshot.data() != null) {
+    //   await inputDocRef.update({
+    //     'text': ref.read(draftMessageSNP.notifier).value,
+    //     'timeUpdated': FieldValue.serverTimestamp(),
+    //   });
+    // } else {
+    //   await inputDocRef.set({
+    //     'text': ref.read(draftMessageSNP.notifier).value,
+    //     'timeUpdated': FieldValue.serverTimestamp(),
     //   });
     // }
-
-    final messageDocRef = await docRef.collection('message').add({
-      'content': ref.read(draftMessageSNP.notifier).value,
-      'timeCreated': FieldValue.serverTimestamp(),
-      'role': 'user'
-    });
-    ctrl.clear();
-
-    final messagesCol = await docRef.collection('message').get();
-
-    final messagesText =
-        messagesCol.docs.map((e) => e.get('content')).join('\n');
-
-    final promptPrefix = """
-      Based on the text provided below, return JSON with the following fields:
-      {
-        "name": "The full name of the person",
-        "data_of_birth": "The date of birth of the person".,
-        "place_of_birth": "The place of birth of the person.",
-        "info": "Any additional information about the person."
-      }
-
-      Return JSON text only, no additional comments.
-
-      Text:
-""";
-
-    print('messagesText: $messagesText');
-
-    final headers = await prepareOpenAIHeaders();
-
-    await docRef.set({'error': FieldValue.delete()}, SetOptions(merge: true));
-
-    final res =
-        await http.post(Uri.parse('https://api.openai.com/v1/completions'),
-            headers: headers,
-            body: jsonEncode({
-              "model": 'text-davinci-003',
-              "prompt": promptPrefix + messagesText,
-              "max_tokens": 200,
-              "temperature": 0.6
-            }));
-    if (res.statusCode != 200) {
-      // save error
-      print(res.body);
-      docRef.update({'error': res.body});
-      return;
-    } else {
-      print(res.body);
-      final bodyJson = jsonDecode(res.body);
-      var text = bodyJson['choices'][0]['text'];
-
-      // // remove first line of the text if it doesn't have open curly bracket in it (JSON format)
-      // if (!text.startsWith('{')) {
-      //   text = text.split('\n').sublist(1).join('\n');
-      // }
-
-      // extract substring representing JSON content from the text
-      final jsonStartIndex = text.indexOf('{');
-      final jsonEndIndex = text.lastIndexOf('}');
-      text = text.substring(jsonStartIndex, jsonEndIndex + 1);
-
-      print('JSON: $text');
-
-      try {
-        final jsonContent = jsonDecode(text);
-
-        await docRef.update({
-          'content': jsonContent,
-        });
-
-        if (jsonContent["name"] != null) {
-          final searchDoc =
-              await docRef.collection('search').doc(jsonContent["name"]).get();
-          if (searchDoc.exists) return;
-
-          await docRef.collection('search').doc(jsonContent["name"]).set({
-            'target': jsonContent["name"],
-            'timeCreated': FieldValue.serverTimestamp(),
-            'author': FirebaseAuth.instance.currentUser!.uid,
-          });
-          await docRef.update({'target': jsonContent["name"]});
-        }
-      } catch (e) {
-        await docRef.update({'error': e.toString() + '\n' + text});
-      }
-    }
-
-    // docRef.collection('run').add({
-    //   'content': ref.read(draftMessageSNP.notifier).value,
-    //   'timeCreated': FieldValue.serverTimestamp(),
-    //   'user': 'user'
-    // });
   }
+// Messages collection code
+  // final messages = await docRef.collection('message').get();
+  // if (messages.size == 0) {
+  //   final doc = await docRef.get();
+  //   await docRef.collection('message').add({
+  //     'content': doc.get('context'),
+  //     // "The following is a conversation with code generator named assistant. Assistant should provide python code by user request to be executed by the user using python exec(). User will exectue the code and provide the log to assistant. The code should print execution log in the console using print. The file system is read-only, no files can be created, modified or deleted."
+  //     'timeCreated': FieldValue.serverTimestamp(),
+  //     'role': 'system'
+  //   });
+  // }
+  // final messageDocRef = await docRef.collection('message').add({
+  //   'content': ref.read(draftMessageSNP.notifier).value,
+  //   'timeCreated': FieldValue.serverTimestamp(),
+  //   'role': 'user'
+  // });
+  //ctrl.clear();
+
+// OPEN AI CALL - Moved to Backend
+  //     final promptPrefix = """
+  //       Based on the text provided below, return JSON with the following fields:
+  //       {
+  //         "name": "The full name of the person",
+  //         "data_of_birth": "The date of birth of the person".,
+  //         "place_of_birth": "The place of birth of the person.",
+  //         "info": "Any additional information about the person."
+  //       }
+  //         Return JSON text only, no additional comments.
+  //          Text:
+  //            """;
+  //final headers = await prepareOpenAIHeaders();
+  //await docRef.set({'error': FieldValue.delete()}, SetOptions(merge: true));
+  // final res =
+  //     await http.post(Uri.parse('https://api.openai.com/v1/completions'),
+  //         headers: headers,
+  //         body: jsonEncode({
+  //           "model": 'text-davinci-003',
+  //           "prompt": promptPrefix + messagesText,
+  //           "max_tokens": 200,
+  //           "temperature": 0.6
+  //         }));
+  // if (res.statusCode != 200) {
+  //   // save error
+  //   print(res.body);
+  //   docRef.update({'error': res.body});
+  //   return;
+  // } else {
+  //   print(res.body);
+  //   final bodyJson = jsonDecode(res.body);
+  //   var text = bodyJson['choices'][0]['text'];
+  //   // // remove first line of the text if it doesn't have open curly bracket in it (JSON format)
+  //   // if (!text.startsWith('{')) {
+  //   //   text = text.split('\n').sublist(1).join('\n');
+  //   // }
+  //   // extract substring representing JSON content from the text
+  //   final jsonStartIndex = text.indexOf('{');
+  //   final jsonEndIndex = text.lastIndexOf('}');
+  //   text = text.substring(jsonStartIndex, jsonEndIndex + 1);
+  //   print('JSON: $text');
+
+// CREATE SEARCH ON INPUT CHANGE - Moved to Backend
+  // try {
+  //   final jsonContent = jsonDecode(text);
+  //   await docRef.update({
+  //     'content': jsonContent,
+  //   });
+  //   if (jsonContent["name"] != null) {
+  //     final searchDoc =
+  //         await docRef.collection('search').doc(jsonContent["name"]).get();
+  //     if (searchDoc.exists) return;
+  //     await docRef.collection('search').doc(jsonContent["name"]).set({
+  //       'target': jsonContent["name"],
+  //       'timeCreated': FieldValue.serverTimestamp(),
+  //       'author': FirebaseAuth.instance.currentUser!.uid,
+  //     });
+  //     await docRef.update({'target': jsonContent["name"]});
+  //   }
+  // } catch (e) {
+  //   await docRef.update({'error': e.toString() + '\n' + text});
+  // }
 }
+
+// docRef.collection('run').add({
+//   'content': ref.read(draftMessageSNP.notifier).value,
+//   'timeCreated': FieldValue.serverTimestamp(),
+//   'user': 'user'
+// });
+//}
 
 class SnpTextEdit2 extends ConsumerWidget {
   TextEditingController? _ctrl;
@@ -300,45 +313,51 @@ class SnpTextEdit2 extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => TextField(
-      // this.controller,
-      controller: _ctrl,
-      // this.focusNode,
-      // this.undoController,
-      // this.decoration = const InputDecoration(),
-      decoration: decoration,
-      // this.textInputAction,
-      // this.textCapitalization = TextCapitalization.none,
-      // this.style,
-      // this.strutStyle,
-      // this.textAlign = TextAlign.start,
-      // this.textAlignVertical,
-      // this.textDirection,
-      // this.readOnly = false,
-      enabled: enabled,
-      maxLines: maxLines,
-      minLines: !canAddLines
-          ? minLines
-          : ref.watch(dataSNP) == null
-              ? 1
-              : (ref.watch(dataSNP).split('\n').length + 1 > maxLines
-                  ? maxLines
-                  : ref.watch(dataSNP).split('\n').length + 1),
-      onChanged: (v) {
-        // ref.read(status.notifier).value = 'changed';
-        // if (descSaveTimer != null && descSaveTimer!.isActive) {
-        //   descSaveTimer!.cancel();
+        // this.controller,
+        controller: _ctrl,
+        // this.focusNode,
+        // this.undoController,
+        // this.decoration = const InputDecoration(),
+        decoration: decoration,
+        // this.textInputAction,
+        // this.textCapitalization = TextCapitalization.none,
+        // this.style,
+        // this.strutStyle,
+        // this.textAlign = TextAlign.start,
+        // this.textAlignVertical,
+        // this.textDirection,
+        // this.readOnly = false,
+        enabled: enabled,
+        maxLines: maxLines,
+        minLines: !canAddLines
+            ? minLines
+            : ref.watch(dataSNP) == null
+                ? 1
+                : (ref.watch(dataSNP).split('\n').length + 1 > maxLines
+                    ? maxLines
+                    : ref.watch(dataSNP).split('\n').length + 1),
+        onChanged: (v) {
+          // ref.read(status.notifier).value = 'changed';
+          // if (descSaveTimer != null && descSaveTimer!.isActive) {
+          //   descSaveTimer!.cancel();
+          // }
+          // descSaveTimer = Timer(
+          //     Duration(milliseconds: widget.saveDelay), () => saveValue(v));
+          // if (widget.onChanged != null) widget.onChanged!(v);
+
+          // OnChanged Callback to OnChanged in SnpTextEdit2
+          if (onChanged != null) {
+            onChanged!(v);
+          }
+          saveValue(ref, v);
+        },
+        // onSubmitted: (v) {
+        //   // if (descSaveTimer != null && descSaveTimer!.isActive) {
+        //   //   descSaveTimer!.cancel();
+        //   // }
+        //   saveValue(ref, v);
         // }
-        // descSaveTimer = Timer(
-        //     Duration(milliseconds: widget.saveDelay), () => saveValue(v));
-        // if (widget.onChanged != null) widget.onChanged!(v);
-        saveValue(ref, v);
-      },
-      onSubmitted: (v) {
-        // if (descSaveTimer != null && descSaveTimer!.isActive) {
-        //   descSaveTimer!.cancel();
-        // }
-        saveValue(ref, v);
-      });
+      );
 
   void saveValue(WidgetRef ref, String s) async {
     ref.read(dataSNP.notifier).value = s;

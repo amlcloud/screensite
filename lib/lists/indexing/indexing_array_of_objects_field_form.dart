@@ -1,13 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:providers/generic.dart';
-
-import 'package:widgets/doc_field_drop_down.dart';
-import 'package:providers/firestore.dart';
-import 'indexing_form.dart';
-import 'indexing_index_by_array.dart';
-import 'name_field_value.dart';
+import 'indexing_exports.dart';
 
 class IndexingArrayOfObjectsFieldForm extends IndexingForm {
   final StateNotifierProvider<GenericStateNotifier<String?>, String?>
@@ -69,23 +60,20 @@ class IndexingArrayOfObjectsFieldForm extends IndexingForm {
                                                 .toList())))
                           ]))
                       .toList());
-                       children.add(
-                          Row(children: [
-                            Container(
-                              width: 80,
-                              child: Padding(
-                                padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
-                                child: Text('Name field name')
-                              )
-                            ),
-                            Flexible(
-                              flex: 1,
-                              child: TextField(
-                                controller: nameFieldValue,
-                              )
-                            )
-                          ]),
-                      );
+                  children.add(
+                    Row(children: [
+                      Container(
+                          width: 80,
+                          child: Padding(
+                              padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
+                              child: Text('Name field name'))),
+                      Flexible(
+                          flex: 1,
+                          child: TextField(
+                            controller: nameFieldValue,
+                          ))
+                    ]),
+                  );
                   children.add(IndexingIndexByArray(entityId, document.id));
                   return children;
                 }));

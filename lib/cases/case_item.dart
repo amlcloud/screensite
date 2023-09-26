@@ -2,11 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:jiffy/jiffy.dart';
-import 'package:widgets/doc_field_text.dart';
-
-import 'case_status.dart';
+import 'cases_exports.dart';
 
 class CaseItem extends ConsumerWidget {
   final DR caseRef;
@@ -35,19 +31,17 @@ class CaseItem extends ConsumerWidget {
               onTap: () {
                 print('InkWell tapped');
 
-                context.go(
-                  //CasePage.routeName,
+                GoRouter.of(context).go(
+   
                   '/cases/${caseRef.id}',
-                  extra: {
-                    "caseId": caseRef.id,
-                  },
+                  
                 );
-                // context.pushNamed(
-                //   'case',
-                //   queryParameters: {
-                //     "caseId": caseRef.id,
-                //   },
-                // );
+                //   context.pushNamed(
+                //     'case',
+                //     queryParameters: {
+                //       "caseId": caseRef.id,
+                //     },
+                //   );
               },
               child: Column(
                 children: [

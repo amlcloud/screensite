@@ -1,12 +1,4 @@
-import 'dart:math';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:providers/firestore.dart';
-import 'package:providers/generic.dart';
-import 'package:screensite/search/search_page.dart';
-import 'package:widgets/doc_field_text.dart';
+import 'search_exports.dart';
 
 class SearchResults extends ConsumerWidget {
   final DocumentSnapshot searchDoc;
@@ -36,6 +28,7 @@ class SearchResults extends ConsumerWidget {
       return Colors.green;
     }
   }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) => Column(
       children: ref
@@ -75,8 +68,7 @@ class SearchResults extends ConsumerWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
-                            "${matchScore.toStringAsFixed(0)}%",
+                          Text("${matchScore.toStringAsFixed(0)}%",
                               style: Theme.of(context).textTheme.titleMedium),
                           // Remove Row and add Text(matchScore) directly to trailing for old version
                           // Spacing

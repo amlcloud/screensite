@@ -78,9 +78,14 @@ class SearchDetails extends ConsumerWidget {
                         alignment: Alignment.topLeft,
                         child: Text(
                             'Search Time: ${timeCreated != null ? Jiffy(timeCreated.toDate()).format("h:mm a, do MMM, yyyy") : ''}',
-                            style: DefaultTextStyle.of(context)
-                                .style
-                                .apply(fontSizeFactor: 0.8))),
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.color
+                                    ?.withOpacity(0.5),
+                                fontSize: 10.0, // Adjust the font size
+                                letterSpacing: 1.2))),
                   ),
                   Expanded(
                     // Add this to make the SingleChildScrollView take the remaining space

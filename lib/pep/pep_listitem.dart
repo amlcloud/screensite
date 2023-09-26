@@ -1,10 +1,5 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:screensite/pep/pep_library.dart';
-import 'package:providers/firestore.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:jiffy/jiffy.dart';
+import 'pep_exports.dart';
 
 class PepListItem extends ConsumerWidget {
   final String entityId;

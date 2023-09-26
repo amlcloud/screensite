@@ -1,0 +1,12 @@
+export 'package:cloud_firestore/cloud_firestore.dart';
+export 'package:flutter/material.dart';
+export 'package:flutter_riverpod/flutter_riverpod.dart';
+export 'package:providers/generic.dart';
+export 'package:widgets/doc_field_drop_down.dart';
+export 'package:providers/firestore.dart';
+export 'indexing_form.dart';
+export 'indexing_index_by_array.dart';
+export 'name_field_value.dart';
+export '../list_indexing.dart';
+// export 'package:flutter/foundation.dart';
+export 'indexing_index_by.dart';
